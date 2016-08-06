@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>司开星的博客</title>
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://yoursite.com/"/>
+  <updated>2016-08-06T14:32:56.000Z</updated>
+  <id>http://yoursite.com/</id>
+  
+  <author>
+    <name>司开星</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title></title>
+    <link href="http://yoursite.com/2016/08/06/firstcommit/"/>
+    <id>http://yoursite.com/2016/08/06/firstcommit/</id>
+    <published>2016-08-06T14:32:08.000Z</published>
+    <updated>2016-08-06T14:32:56.000Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+  </entry>
+  
+</feed>
