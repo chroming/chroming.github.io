@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="sikaixing.com/"/>
-  <updated>2016-08-06T14:32:56.000Z</updated>
+  <updated>2016-08-09T16:28:48.000Z</updated>
   <id>sikaixing.com/</id>
   
   <author>
@@ -16,16 +16,272 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title></title>
-    <link href="sikaixing.com/2016/08/06/firstcommit/"/>
-    <id>sikaixing.com/2016/08/06/firstcommit/</id>
-    <published>2016-08-06T14:32:08.000Z</published>
-    <updated>2016-08-06T14:32:56.000Z</updated>
+    <title>curl_in_php</title>
+    <link href="sikaixing.com/2016/03/15/curl-in-php/"/>
+    <id>sikaixing.com/2016/03/15/curl-in-php/</id>
+    <published>2016-03-14T16:25:26.000Z</published>
+    <updated>2016-08-09T16:28:48.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Curl命令及PHP中Curl的应用"><a href="#Curl命令及PHP中Curl的应用" class="headerlink" title="Curl命令及PHP中Curl的应用"></a>Curl命令及PHP中Curl的应用</h1><p>##Curl命令<br>参考资料：curl网站开发指南（<a href="http://www.ruanyifeng.com/blog/2011/09/curl.html）。" target="_blank" rel="external">http://www.ruanyifeng.com/blog/2011/09/curl.html）。</a></p>
+<ul>
+<li>直接获取网页源码：curl www.sina.com</li>
+<li>保存文件名：curl -o [文件名] www.sina.com</li>
+<li>自动跳转：curl -L www.sina.com</li>
+<li>显示源码以及header：curl -i www.sina.com</li>
+<li>只显示header：curl -I www.sina.com</li>
+<li>显示整个通信过程：curl -v www.sina.com</li>
+<li>获取更详细的通信过程：curl –trace output.txt www.sina.com</li>
+<li>发送get表单：curl example.com/form.cgi?data=xxx</li>
+<li>发送post表单：curl -X POST –data “data=xxx” example.com/form.cgi</li>
+<li>发送经过curl编码的post表单：curl -X POST–data-urlencode “date=April 1” example.com/form.cgi</li>
+<li>其他动作：curl -X DELETE www.example.com</li>
+<li>上传文件：curl –form upload=@localfilename –form press=OK [URL]</li>
+<li>提供refer：curl –referer <a href="http://www.example.com" target="_blank" rel="external">http://www.example.com</a> <a href="http://www.example.com" target="_blank" rel="external">http://www.example.com</a></li>
+<li>模拟UA：curl –user-agent “[User Agent]” [URL]</li>
+<li>提供Cookie：curl –cookie “name=xxx” www.example.com</li>
+<li>保存Cookie：curl -c cookies <a href="http://example.com" target="_blank" rel="external">http://example.com</a></li>
+<li>使用Cookie文件：curl -b cookies <a href="http://example.com" target="_blank" rel="external">http://example.com</a></li>
+<li>增加其他header：curl –header “Content-Type:application/json” <a href="http://example.com" target="_blank" rel="external">http://example.com</a></li>
+<li>提供验证：curl –user name:password example.com</li>
+</ul>
+<h2 id="PHP中Curl"><a href="#PHP中Curl" class="headerlink" title="PHP中Curl"></a>PHP中Curl</h2><p>参考资料：<a href="http://php.net/manual/zh/curl.examples-basic.php" target="_blank" rel="external">http://php.net/manual/zh/curl.examples-basic.php</a></p>
+<p>使用cURL函数的基本思想是先使用<code>curl_init()</code>初始化一个cURL会话，接着你可以通过<code>curl_setopt()</code>设置你需要的全部选项，然后使用<code>curl_exec()</code>来执行会话，当执行完会话后使用<code>curl_close()</code>关闭会话。这是一个使用cURL函数获取example.com的主页保存到文件的例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line"></div><div class="line">$ch = curl_init(&quot;http://www.example.com/&quot;);</div><div class="line">$fp = fopen(&quot;example_homepage.txt&quot;, &quot;w&quot;);</div><div class="line"></div><div class="line">curl_setopt($ch, CURLOPT_FILE, $fp);</div><div class="line">curl_setopt($ch, CURLOPT_HEADER, 0);</div><div class="line"></div><div class="line">curl_exec($ch);</div><div class="line">curl_close($ch);</div><div class="line">fclose($fp);</div><div class="line">?&gt;</div></pre></td></tr></table></figure>
+]]></content>
     
     <summary type="html">
     
+      &lt;h1 id=&quot;Curl命令及PHP中Curl的应用&quot;&gt;&lt;a href=&quot;#Curl命令及PHP中Curl的应用&quot; class=&quot;headerlink&quot; title=&quot;Curl命令及PHP中Curl的应用&quot;&gt;&lt;/a&gt;Curl命令及PHP中Curl的应用&lt;/h1&gt;&lt;p&gt;##Curl
+    
     </summary>
     
+      <category term="编程语言" scheme="sikaixing.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
+    
+      <category term="PHP" scheme="sikaixing.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/PHP/"/>
+    
+    
+      <category term="PHP" scheme="sikaixing.com/tags/PHP/"/>
+    
+      <category term="Curl" scheme="sikaixing.com/tags/Curl/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Centos7中使用shadowsocks建立多用户并控制流量全记录</title>
+    <link href="sikaixing.com/2016/03/06/ss_manyuser/"/>
+    <id>sikaixing.com/2016/03/06/ss_manyuser/</id>
+    <published>2016-03-06T02:00:00.000Z</published>
+    <updated>2016-08-09T16:14:14.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="manyuser安装及启用"><a href="#manyuser安装及启用" class="headerlink" title="manyuser安装及启用"></a>manyuser安装及启用</h2><h3 id="下载及依赖库安装"><a href="#下载及依赖库安装" class="headerlink" title="下载及依赖库安装"></a>下载及依赖库安装</h3><h4 id="下载manyuser"><a href="#下载manyuser" class="headerlink" title="下载manyuser"></a>下载manyuser</h4><p>shadowsocks manyuser是一个shadowsocks多用户修改版。官方地址：<a href="https://github.com/mengskysama/shadowsocks/tree/manyuser" target="_blank" rel="external">https://github.com/mengskysama/shadowsocks/tree/manyuser</a></p>
+<p>下载：<br><code>git clone -b manyuser https://github.com/mengskysama/shadowsocks.git</code><br>会在当前目录下载manyuser。<br>解压出来为/shadowsocks/shadowsocks</p>
+<h4 id="安装及使用Mysql"><a href="#安装及使用Mysql" class="headerlink" title="安装及使用Mysql"></a>安装及使用Mysql</h4><p>manyuser使用Mysql存储数据。故需要先安装mysql，centos7中默认为mariaDB（myspl修改版）</p>
+<p><code>yum install mariadb-server mariadb</code></p>
+<ul>
+<li><p>启动及关闭：<br><code>systemctl start mariadb</code><br><code>systemctl enable mariadb</code></p>
+</li>
+<li><p>修改密码：<br><code>/usr/bin/mysql_secure_installation</code></p>
+</li>
+<li><p>登录：<br><code>mysql -u root -p</code></p>
+</li>
+<li><p>根据manyuser官方指南需要创建一个shadowsocks数据库：<br><code>create database shadowsocks</code></p>
+</li>
+<li><p>选择数据库<br><code>use shadowsocks</code></p>
+</li>
+<li><p>导入下载的manyuser的/shadowsocks/shadowsocks/下的shadowsocks.sql脚本：<br><code>source /shadowsocks/shadowsocks/shadowsocks.sql</code><br>脚本会自动在数据库中建立一个user表。<br>查看脚本写入的内容：<br><code>show tables</code></p>
+</li>
+<li><p>查看表内容：<br><code>select * from user</code><br>其中：</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">passwd: server pass</div><div class="line"></div><div class="line">port: server port</div><div class="line"></div><div class="line">t: last keepalive time</div><div class="line"></div><div class="line">u: upload transfer</div><div class="line"></div><div class="line">d: download transer</div><div class="line"></div><div class="line">transfer_enable: if u + d &gt; transfer_enable this server will be stop (db_transfer.py del_server_out_of_bound_safe)</div></pre></td></tr></table></figure>
+<ul>
+<li><p>添加内容：<br><code>insert into user() values()</code></p>
+</li>
+<li><p>修改内容<br><code>update 表名称 set 列名称=新值 where 更新条件;</code></p>
+</li>
+<li><p>新建一个数据库用户以方便shadowsocks程序管理数据库：<br><code>create user ssuser@localhost identified by &#39;passwd&#39;</code><br>授权：<br><code>grant all on shadowsocks.* to &#39;ssuser&#39;@&#39;localhost&#39;</code></p>
+</li>
+</ul>
+<h4 id="安装其他依赖"><a href="#安装其他依赖" class="headerlink" title="安装其他依赖"></a>安装其他依赖</h4><p><code>yum install m2crypto</code><br><code>pip install cymysql</code></p>
+<h4 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h4><p><code>vi Config.py</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">#Config Example</div><div class="line">MYSQL_HOST = &apos;localhost&apos;</div><div class="line">MYSQL_PORT = 3306</div><div class="line">MYSQL_USER = &apos;ssuser&apos;</div><div class="line">MYSQL_PASS = &apos;passwd&apos;</div><div class="line">MYSQL_DB = &apos;shadowsocks&apos;</div><div class="line"></div><div class="line">MANAGE_PASS = &apos;ss233333333&apos;</div><div class="line">#if you want manage in other server you should set this value to global ip</div><div class="line">MANAGE_BIND_IP = &apos;127.0.0.1&apos;</div><div class="line">#make sure this port is idle</div><div class="line">MANAGE_PORT = 23333</div></pre></td></tr></table></figure>
+<h3 id="防火墙配置"><a href="#防火墙配置" class="headerlink" title="防火墙配置"></a>防火墙配置</h3><p>不要忘记在系统防火墙中开启需要使用的端口：<br><code>firewall-cmd --zone=public --add-port=50000/tcp --permanent</code><br><code>firewall-cmd --reload</code></p>
+<h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><p><code>python server.py</code><br>如果没有报错就说明启动正常了。<br>后台运行且注销也不停止：<br><code>nohup python server.py &gt; /dev/null 2&gt;&amp;1 &amp;</code></p>
+<p>开机启动：（无法正常执行）<br>开机启动mariadb:<br><code>systemctl enable mariadb</code><br>开机启动many-user:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd /shadowsocks/shadowsocks/ #server.py配置文件在这个目录中，调用要先进入这个目录</div><div class="line">python server.py --fast-open #不知道fast-open参数是否有用</div></pre></td></tr></table></figure></p>
+<h3 id="本地配置"><a href="#本地配置" class="headerlink" title="本地配置"></a>本地配置</h3><p>本地配置的服务器IP填VPS的IP，端口和密码填VPS上服务开启后显示的端口和密码（也就是数据库表中的port和passwd），加密方式选rc4-md5。即可正常使用。</p>
+<blockquote>
+<p>《RHEL 及 CentOS 7 安裝 Apache, MariaDB, PHP(LAMP)》<a href="http://www.phpini.com/linux/redhat-centos-7-setup-apache-mariadb-php" target="_blank" rel="external">http://www.phpini.com/linux/redhat-centos-7-setup-apache-mariadb-php</a><br>《21分钟 MySQL 入门教程》<a href="http://www.cnblogs.com/mr-wid/archive/2013/05/09/3068229.html" target="_blank" rel="external">http://www.cnblogs.com/mr-wid/archive/2013/05/09/3068229.html</a><br>《mysql导入sql脚本》<a href="http://www.cnblogs.com/Dot-Boy/archive/2008/08/04/1260185.html" target="_blank" rel="external">http://www.cnblogs.com/Dot-Boy/archive/2008/08/04/1260185.html</a><br>《mysql 创建用户与授权、修改密码》<a href="http://www.111cn.net/database/mysql/46288.htm" target="_blank" rel="external">http://www.111cn.net/database/mysql/46288.htm</a></p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;manyuser安装及启用&quot;&gt;&lt;a href=&quot;#manyuser安装及启用&quot; class=&quot;headerlink&quot; title=&quot;manyuser安装及启用&quot;&gt;&lt;/a&gt;manyuser安装及启用&lt;/h2&gt;&lt;h3 id=&quot;下载及依赖库安装&quot;&gt;&lt;a href=&quot;#下
+    
+    </summary>
+    
+      <category term="日常问题" scheme="sikaixing.com/categories/%E6%97%A5%E5%B8%B8%E9%97%AE%E9%A2%98/"/>
+    
+      <category term="日常工具" scheme="sikaixing.com/categories/%E6%97%A5%E5%B8%B8%E9%97%AE%E9%A2%98/%E6%97%A5%E5%B8%B8%E5%B7%A5%E5%85%B7/"/>
+    
+    
+      <category term="shadowsocks" scheme="sikaixing.com/tags/shadowsocks/"/>
+    
+      <category term="Centos" scheme="sikaixing.com/tags/Centos/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Mac下使用aircrack-ng记录</title>
+    <link href="sikaixing.com/2016/03/01/mac-aircrack-ng/"/>
+    <id>sikaixing.com/2016/03/01/mac-aircrack-ng/</id>
+    <published>2016-02-29T16:06:30.000Z</published>
+    <updated>2016-08-09T16:13:31.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="安装aircrack-ng"><a href="#安装aircrack-ng" class="headerlink" title="安装aircrack-ng"></a>安装aircrack-ng</h2><p><code>brew install aircrack-ng</code><br>安装到最后发现aircrack-ng.org终端连不上。需要先设置一下终端使用http代理：<br><code>export https_proxy=&quot;http://127.0.0.1:6152&quot;</code><br><code>export http_proxy=&quot;http://127.0.0.1:6152&quot;</code><br>也可以使用</p>
+<h2 id="使用airport命令"><a href="#使用airport命令" class="headerlink" title="使用airport命令"></a>使用airport命令</h2><p>Mac系统自带一个airport命令可用来查看无线的详情。这个命令隐藏的很深，在<code>/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport</code>下。网上一般使用如下命令建立链接以方便使用：<br><code>sudo ln -s /System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport /usr/sbin/airport</code><br>但10.11下无法在/usr/sbin/下写入文件。故将路径修改，如下：<br><code>sudo ln -s /System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport /usr/local/bin/airport</code><br>这样即可使用airport命令</p>
+<h2 id="airport抓包"><a href="#airport抓包" class="headerlink" title="airport抓包"></a>airport抓包</h2><p>显示无线网列表：<br><code>airport -s</code><br>找一个信号好的信道，如1，使用命令开始抓包：<br><code>airport en1 sniff  1</code><br>几分钟后ctrl+c，包保存在/tmp下。</p>
+<h2 id="aircrack破解"><a href="#aircrack破解" class="headerlink" title="aircrack破解"></a>aircrack破解</h2><p><code>aircrack-ng -w zd.txt 1.cap</code><br>找有<code>1 handshake</code>的包。之后选择这条代码，就开始使用选择的字典破解。</p>
+<p>参考资料：</p>
+<blockquote>
+<p>《Mac OS X 用终端破解附近 Wifi 密码教程》<a href="http://chaishiwei.com/blog/562.html" target="_blank" rel="external">http://chaishiwei.com/blog/562.html</a><br>《Mac安装Aircrack-ng》<a href="http://walkginkgo.com/free/2015/09/09/mac-aircrack.html" target="_blank" rel="external">http://walkginkgo.com/free/2015/09/09/mac-aircrack.html</a><br>《如何为MacOS X终端设置代理》<a href="http://codelife.me/blog/2012/09/02/how-to-set-proxy-for-terminal/" target="_blank" rel="external">http://codelife.me/blog/2012/09/02/how-to-set-proxy-for-terminal/</a><br>《MacOS让终端命令使用全局代理》<a href="http://venmos-com.qiniudn.com/blog/2013/06/18/cli-proxy" target="_blank" rel="external">http://venmos-com.qiniudn.com/blog/2013/06/18/cli-proxy</a> </p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;安装aircrack-ng&quot;&gt;&lt;a href=&quot;#安装aircrack-ng&quot; class=&quot;headerlink&quot; title=&quot;安装aircrack-ng&quot;&gt;&lt;/a&gt;安装aircrack-ng&lt;/h2&gt;&lt;p&gt;&lt;code&gt;brew install aircrac
+    
+    </summary>
+    
+      <category term="日常问题" scheme="sikaixing.com/categories/%E6%97%A5%E5%B8%B8%E9%97%AE%E9%A2%98/"/>
+    
+      <category term="日常工具" scheme="sikaixing.com/categories/%E6%97%A5%E5%B8%B8%E9%97%AE%E9%A2%98/%E6%97%A5%E5%B8%B8%E5%B7%A5%E5%85%B7/"/>
+    
+    
+      <category term="macOS" scheme="sikaixing.com/tags/macOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SecureCRT命令行参数</title>
+    <link href="sikaixing.com/2015/11/24/secure-crt-command/"/>
+    <id>sikaixing.com/2015/11/24/secure-crt-command/</id>
+    <published>2015-11-23T16:21:47.000Z</published>
+    <updated>2016-08-09T16:23:04.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>翻译自官方帮助文档。</p>
+<p>###标准命令行参数</p>
+<ul>
+<li>/ARG +主题：可以在运行时给SecureCRT脚本传递参数。在一个命令中可以使用多个/ARG参数</li>
+<li>/COLOR_SCHEME +方案：设置该会话的颜色方案</li>
+<li>/F +文件夹：改变运行路径。如果没有此文件夹则新建。</li>
+<li>/FIREWALL +防火墙名：此会话使用特定防火墙连接</li>
+<li>/LOG +文件名：指定此会话的日志文件</li>
+<li>/MAC_COLS +数字：指定最大队列数（132~1024之间）</li>
+<li>/N +标签名：指定显示在标签上的名字</li>
+<li>/NOMENU ：隐藏菜单栏</li>
+<li>/NOTOOLBAR ：隐藏工具栏</li>
+<li>/NOSAVE ：不保存对设置的任何改变</li>
+<li>/POS +x y：设定窗口打开时的初始位置</li>
+<li>/SCRIPT +脚本名：运行脚本</li>
+<li>/SESSION_FOLDER +文件夹：在特定文件夹中打开会话</li>
+<li>/TITLEBAR +显示名：设置标题栏显示的名称</li>
+</ul>
+<p>###特殊命令行参数</p>
+<ul>
+<li>/S +会话名：打开一个会话，会话名可以是IP,可以使用目录下的会话名</li>
+<li>/T ：在新中打开会话。如/T /S alpha /S beta 将在两个不同窗口打开会话</li>
+<li>/SSH1 +[ssh1参数] [用户名@]主机名：使用SSH1连接主机<br>其中SSH1支持参数如下：<ol>
+<li>/ACCEPTHOSTKEYS ：定义SecureCRT支持热键</li>
+<li>/C ：定义该会话使用的加密方式</li>
+<li>/ENCRYPTEDPASSWORD +密码：使用编码过的密码连接。在Session Options中打开该会话的.ini文件，从中就可以找到编码过的密码</li>
+<li>/I +密钥文件：使用RSA密钥登录</li>
+<li>/L +用户名：使用某用户登录</li>
+<li>/P +端口：使用某个端口登录，默认端口22</li>
+<li>/PASSPHRASE +passphrase：使用passphrase密码登录</li>
+<li>/PASSWORD password：使用特定密码登录</li>
+<li>/Z +压缩等级：定义压缩等级，从1~9，0表示不使用压缩</li>
+</ol>
+</li>
+<li>/SSH2 +[ssh2参数][用户名@]主机名：使用SSH2连接主机<br>其中SSH2支持的参数如下：<ol>
+<li>/ACCEPTHOSTKEYS ：定义SecureCRT支持热键</li>
+<li>/AUTO +验证方式：定义SSH2服务器接收的验证方式，如/AUTH password,publickey,keyboard-interactive,gssapi</li>
+<li>/C ：定义该会话使用的加密方式</li>
+<li>/COMPRESSIONS +类型：定义会话的压缩类型</li>
+<li>/ENCRYPTEDPASSWORD +密码：使用编码过的密码连接。在Session Options中打开该会话的.ini文件，从中就可以找到编码过的密码</li>
+<li>/I +密钥文件：使用RSA密钥登录</li>
+<li>/L +用户名：使用某用户登录</li>
+<li>/LOCAL +[本地ip:]本地端口:主机:主机端口 ：设置一个本地监听IP地址用于端口转发</li>
+<li>/M +MAC验证码：定义MAC验证码</li>
+<li>/P +端口：使用某个端口登录，默认端口22</li>
+<li>/PASSPHRASE +passphrase：使用passphrase密码登录</li>
+<li>/PASSWORD password：使用特定密码登录</li>
+<li>/REMOTE [监听IP:]监听端口:目的主机:目的端口 ：远程端口转发</li>
+</ol>
+</li>
+<li>/TELNET +主机名[端口] ：使用telnet协议连接主机</li>
+<li>/RLOGIN +主机名：使用rlogin协议连接主机</li>
+<li>/TAPI +电话号码：使用TAPI协议连接主机</li>
+<li>/SERIAL +端口：使用串口连接。端口默认COM2<br>其中SERIAL支持的参数如下：<ol>
+<li>/BAUD +波特率：设置波特率。可设置选项为110,300,600,1200,2400,4800,9600,14400,19200,38400,57600,115200,230400,380400,460800</li>
+<li>/CTS(NOCTS)：是否允许RTS/CTS（request-to-send/clear-to-send)。默认为允许</li>
+<li>/DATA +数据位：设置数据位。可设置选项为5，6，7，8。默认为8</li>
+<li>/DSR(NODSR)：是否允许DTR/DSR(data-terminal-ready/date-set-ready)。默认为不允许</li>
+<li>/PARITY +校验方式：设置奇偶校验方式。可设置选项为NONE,ODD,EVEN,MARK,SPACE。默认为NONE</li>
+<li>/STOP +停止位：设置停止位。允许的停止位为0(1停止位)，1(1.5停止位)，2(2停止位)。默认为0</li>
+<li>/XON(NOXON)：是否允许XON/XOFF。默认为不允许。</li>
+</ol>
+</li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;翻译自官方帮助文档。&lt;/p&gt;
+&lt;p&gt;###标准命令行参数&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;/ARG +主题：可以在运行时给SecureCRT脚本传递参数。在一个命令中可以使用多个/ARG参数&lt;/li&gt;
+&lt;li&gt;/COLOR_SCHEME +方案：设置该会话的颜色方案&lt;/li&gt;
+&lt;
+    
+    </summary>
+    
+      <category term="日常问题" scheme="sikaixing.com/categories/%E6%97%A5%E5%B8%B8%E9%97%AE%E9%A2%98/"/>
+    
+      <category term="日常工具" scheme="sikaixing.com/categories/%E6%97%A5%E5%B8%B8%E9%97%AE%E9%A2%98/%E6%97%A5%E5%B8%B8%E5%B7%A5%E5%85%B7/"/>
+    
+    
+      <category term="secureCRT" scheme="sikaixing.com/tags/secureCRT/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SecureCRT初始化设置</title>
+    <link href="sikaixing.com/2015/11/19/secure-crt-start/"/>
+    <id>sikaixing.com/2015/11/19/secure-crt-start/</id>
+    <published>2015-11-18T16:16:16.000Z</published>
+    <updated>2016-08-09T16:17:45.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>###自动记录日志<br>Options – Global Options – General – Default Session – Terminal – Log File</p>
+<p>###防止长时间不使用自动断开<br>Options – Global Options – General – Default Session – Terminal –Send protocol NO-OP 60s<br>(每60s发送无任何操作的操作指令）</p>
+<p>###没有找到防火墙<br>在C:/用户/当前用户/AppData/Roaming/VanDyke/Config/sessions/Default.ini 中找到Firewall Name修改默认的Firewall<br>或者在C:/用户/当前用户/AppData/Roaming/VanDyke/Config/<br>下建立一个FireWalls文件夹，里面建一个空的 None.ini(或 空.ini）</p>
+<p>修改C:/用户/当前用户/AppData/Roaming/VanDyke/Config/sessions/ 下会话的Firewall Name</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;###自动记录日志&lt;br&gt;Options – Global Options – General – Default Session – Terminal – Log File&lt;/p&gt;
+&lt;p&gt;###防止长时间不使用自动断开&lt;br&gt;Options – Global Option
+    
+    </summary>
+    
+      <category term="日常问题" scheme="sikaixing.com/categories/%E6%97%A5%E5%B8%B8%E9%97%AE%E9%A2%98/"/>
+    
+      <category term="日常工具" scheme="sikaixing.com/categories/%E6%97%A5%E5%B8%B8%E9%97%AE%E9%A2%98/%E6%97%A5%E5%B8%B8%E5%B7%A5%E5%85%B7/"/>
+    
+    
+      <category term="secureCRT" scheme="sikaixing.com/tags/secureCRT/"/>
     
   </entry>
   
