@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="sikaixing.com/"/>
-  <updated>2016-08-09T16:35:56.000Z</updated>
+  <updated>2016-08-21T14:03:50.000Z</updated>
   <id>sikaixing.com/</id>
   
   <author>
@@ -14,6 +14,171 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>HTTPS中的对称密钥加密，公开密钥加密，数字证书</title>
+    <link href="sikaixing.com/2016/03/27/https_about/"/>
+    <id>sikaixing.com/2016/03/27/https_about/</id>
+    <published>2016-03-26T16:25:26.000Z</published>
+    <updated>2016-08-21T14:03:50.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="密钥"><a href="#密钥" class="headerlink" title="密钥"></a>密钥</h2><p>我们将未加密的内容称为明文，加密之后的内容称为密文。</p>
+<p>简单来说，要加密一段明文，可以将这段内容输入到一个加密函数中，输出密文。但这种简单的加密方式存在被人盗取到加密函数从而破解明文的危险，且加密函数一般构成复杂，一旦被盗取更换成本较高。</p>
+<p>于是人们想出了一个办法，在加密函数中再添加一个参数，这个参数只有通信双方知道，没有参数则无法正确解密出明文。这个参数被称为密钥。对于同一个加密函数而言，密钥值的不同则加密方式也不同，得出的密文也就不同。这样加密系统的安全性提高了，被盗取密钥之后更换密钥的成本也低了很多。常见的情景是加密函数都是使用公开的算法，用户需要保存的仅仅是自己的密钥。</p>
+<h2 id="对称密钥加密"><a href="#对称密钥加密" class="headerlink" title="对称密钥加密"></a>对称密钥加密</h2><p>对称密钥加密就是加密与解密使用相同的是密钥值。</p>
+<p>流行的对称密钥加密包括：</p>
+<ul>
+<li>DES</li>
+<li>TRiple-DES</li>
+<li>RC2</li>
+<li>RC4</li>
+</ul>
+<p>对称密钥需要通信双方共享密钥。对互联网通信而言，不同的通信双方需要不同的对称密钥，如果有N个用户需要相互通信，总共需要密钥数N*(N-1)。</p>
+<h2 id="公开密钥加密"><a href="#公开密钥加密" class="headerlink" title="公开密钥加密"></a>公开密钥加密</h2><p>对称密钥加密存在需要密钥数太多以及传递密钥不方便的缺点，于是人们研究出非对称的密钥加密技术，即加密和解密的密钥不需要一样。常见的一种称为公开密钥加密。</p>
+<p>公开密钥加密将通信一端的加密和解密密钥分成两个，其中加密密钥可以公开发布，也就是随便谁都可以使用该加密密钥为明文加密，但要解密这段密文只能靠该端私有的解密密钥。这解决了对称密钥加密中的缺点。其中公开的加密密钥称为公开密钥，私有的解密密钥称为私有密钥。</p>
+<p>要保证公开密钥加密的可用性必须确保以下情况无法计算出私有密钥：</p>
+<ul>
+<li>有公开密钥；</li>
+<li>一段密文；</li>
+<li>一段明文和使用公开密钥加密过的密文；</li>
+</ul>
+<p>流行的公开密钥加密包括：</p>
+<ul>
+<li>RSA</li>
+<li>DH</li>
+<li>ECDHE</li>
+<li>ECDH</li>
+<li>DHE</li>
+</ul>
+<p>公开密钥加密虽然更加简单安全但其加密算法运算比较慢，所以一般混合使用公开密钥加密和对称密钥加密的使用方式，即先通过公开密钥加密获取到对称密钥加密的密钥，再通过对称密钥加密传输数据。这种情况在后文说明。</p>
+<h2 id="数字签名"><a href="#数字签名" class="headerlink" title="数字签名"></a>数字签名</h2><p>对称密钥加密和公开密钥加密都是将报文加密的技术。但加密能做的不止如此，还可以用加密算法来证明报文是谁编写的以及中途没有被篡改。数字签名就是这种技术。</p>
+<p>数字签名是附加在报文上的特殊加密校验码。其使用了私有密钥加密生成校验码，除发送者外其他人都无法重新生成对应的校验码，这样就证明了报文的身份以及中途没有被人篡改过。</p>
+<p>数字签名通常通过公开密钥技术产生，但使用方式相反。发送者首先为要签名内容生成报文摘要，使用签名函数并输入私有密钥作为参数，对报文摘要进行加密，生成签名并随报文一起发送出去。接收者通过附加了公开密钥参数的签名函数反函数将签名解密，并与生成的报文摘要进行对比，如果结果一致则代表报文无误。</p>
+<p>常见的RSA加密系统可以同时用于公开密钥加密和数字签名。RSA加密系统将解码函数D作为签名函数使用，编码函数E作为解签名函数。</p>
+<h2 id="数字证书"><a href="#数字证书" class="headerlink" title="数字证书"></a>数字证书</h2><p>单纯的公开密钥加密只适合对等的两端通信，对于常用的服务器-客户端通信模式仍存在一些问题。1是公开密钥加密只能证明报文确实是发送方发送的且没有篡改，但发送方本身是谁则无从得知，因为谁都可以生成公钥私钥对。如果把所有需要访问的网站的公钥都事先保存下来，数量巨大不说，如何发送这些公钥且如何证明保存的公钥确实是这个网站的公钥也是个问题。数字证书则可以解决这些问题。</p>
+<p>数字证书是网络上的身份证明。一般包括如下内容：</p>
+<ul>
+<li>证书格式版本号</li>
+<li>证书序列号；</li>
+<li>证书签名算法；</li>
+<li>证书颁发者；</li>
+<li>有效期；</li>
+<li>对象名称；</li>
+<li>对象公开密钥；</li>
+<li>证书颁发者的数字签名；</li>
+</ul>
+<p>其中颁发者的数字签名是通过数字证书的其余部分的报文摘要经证书签名算法及证书颁发者的私有密钥计算出的，用于验证数字证书的真实性。</p>
+<p>任何人都能自行生成一个数字证书，但只有值得信任的组织（CA）生成的数字证书才会默认被浏览器信任。具体原因在下一节说明。</p>
+<h2 id="详解数字证书验证流程"><a href="#详解数字证书验证流程" class="headerlink" title="详解数字证书验证流程"></a>详解数字证书验证流程</h2><p>关于浏览器验证网站数字证书的流程网上的资料一般讲的都不是很清楚。在查阅了不少资料后终于搞清楚这部分。</p>
+<p>CA下发给网站的证书都是一个证书链，也就是一层一层的证书，从根证书开始，到下级CA，一层一层，最后一层就是网站证书。</p>
+<p>浏览器收到服务器发送的证书后，需要验证其真实性。而证书的签名是通过签名算法和<strong>上级CA</strong>的私钥生成的，并非很多文章里简单说的靠CA私钥生成。浏览器需要用上级CA的公钥才能解密签名，并与生成的指纹对比，那么问题来了，这个上级CA的公钥从哪来呢？</p>
+<p>答案是此公钥来自于证书链该层的上级CA的证书明文内。单个X509v3证书由以下部分组成：</p>
+<p>X.509v3证书由三部分组成：</p>
+<ul>
+<li>tbsCertificate (to be signed certificate)，待签名证书。</li>
+<li>SignatureAlgorithm，签名算法。</li>
+<li>SignatureValue，签名值。</li>
+</ul>
+<p>tbsCertificate又包含10项内容，在HTTPS握手过程中以明文方式传输：</p>
+<ul>
+<li>Version Number，版本号。</li>
+<li>Serial Number，序列号。</li>
+<li>Signature Algorithm ID，签名算法ID。</li>
+<li>Issuer Name，发行者。</li>
+<li>Validity period，有效时间。</li>
+<li>Subject name ，证书主体名称。</li>
+<li>Subject Public Key Info ，证书主体公钥信息，包含公钥算法和公钥值。</li>
+<li>Issuer Unique Identifier (optional)，发行商唯一ID。</li>
+<li>Subject Unique Identifier (optional)，主体唯一ID。</li>
+<li>Extensions (optional)，扩展。</li>
+</ul>
+<p>证书链由多个证书一层一层组成的，除了最底层的网站证书的公钥是给用户加密报文外，其他层证书中的公钥均用于解密底层的证书指纹签名。最高层的根证书是<strong>自签名</strong>的，也就是自己颁发给自己，所以它的公钥不仅用来解密下层的签名，也用来给自己的签名解密。</p>
+<p>验证证书是否真实的任务完成了，那么证书是否可靠如何验证呢？一句话，只要根证书可靠，整个证书链就可靠，而根证书是否可靠要看这个根证书是否在操作系统或浏览器内置的可信根证书内，在的话就可信。</p>
+<h2 id="HTTPS"><a href="#HTTPS" class="headerlink" title="HTTPS"></a>HTTPS</h2><p>HTTPS是在HTTP报文发送给TCP之前对报文进行加密的安全协议。使用443端口进行通信。</p>
+<p>普通的HTTP有如下四层：</p>
+<ul>
+<li>应用层HTTP</li>
+<li>传输层TCP</li>
+<li>网络层IP</li>
+<li>数据链路层</li>
+</ul>
+<p>HTTPS多了一个安全层：</p>
+<ul>
+<li>应用层HTTP</li>
+<li>安全层SSL/TLS</li>
+<li>传输层TCP</li>
+<li>网络层IP</li>
+<li>数据链路层</li>
+</ul>
+<p>证书密钥验证都是在安全层验证。常用的SSL/TLS编程实现库是OPENSSL。</p>
+<h2 id="HTTPS实际验证过程"><a href="#HTTPS实际验证过程" class="headerlink" title="HTTPS实际验证过程"></a>HTTPS实际验证过程</h2><p><em>此部分内容主要参考《SSL/TLS协议运行机制的概述》<a href="http://www.ruanyifeng.com/blog/2014/02/ssl_tls.html" target="_blank" rel="external">http://www.ruanyifeng.com/blog/2014/02/ssl_tls.html</a></em></p>
+<p>实际的HTTPS验证过程如下：</p>
+<h3 id="ClientHello阶段"><a href="#ClientHello阶段" class="headerlink" title="ClientHello阶段"></a>ClientHello阶段</h3><ul>
+<li>支持的协议版本，比如TLS 1.0版；</li>
+<li>一个客户端生成的随机数，稍后用于生成”对话密钥”；</li>
+<li>支持的加密方法，比如RSA公钥加密；</li>
+<li>支持的压缩方法；</li>
+</ul>
+<h3 id="ServerHello阶段"><a href="#ServerHello阶段" class="headerlink" title="ServerHello阶段"></a>ServerHello阶段</h3><ul>
+<li>确认使用的加密通信协议版本；</li>
+<li>一个服务器生成的随机数，稍后用于生成”对话密钥”；</li>
+<li>确认使用的加密方法，比如RSA公钥加密；</li>
+<li>服务器证书；</li>
+</ul>
+<p>对于需要验证用户证书的还会包含请求要求用户提供证书。</p>
+<h3 id="客户端回应"><a href="#客户端回应" class="headerlink" title="客户端回应"></a>客户端回应</h3><p>客户端收到回应后首先验证服务器证书：</p>
+<ul>
+<li>是否由可信CA颁布；</li>
+<li>证书中域名是否与实际域名一致；</li>
+<li>是否在有效期内；</li>
+</ul>
+<p>证书没问题的话客户端会回应以下内容：</p>
+<ul>
+<li>一个随机数（pre-master key)。该随机数用服务器公钥加密，防止被窃听；</li>
+<li>编码改变通知，表示随后的信息都将用双方商定的加密方法和密钥发送；</li>
+<li>客户端握手结束通知，表示客户端的握手阶段已经结束。这一项同时也是前面发送的所有内容的hash值，用来供服务器校验；</li>
+</ul>
+<p>此时通信双方都有了这三个随机数。通过商定的加密方法根据三个随机数生成一个相同的会话密钥SessionSecret，用于之后的对称加密。</p>
+<h3 id="服务器回应"><a href="#服务器回应" class="headerlink" title="服务器回应"></a>服务器回应</h3><p>服务器收到回应后计算出SessionSecret，并发送以下内容给客户端：</p>
+<ul>
+<li>编码改变通知，表示随后的信息都将用双方商定的加密方法和密钥发送；</li>
+<li>服务器握手结束通知，表示服务器的握手阶段已经结束。这一项同时也是前面发送的所有内容的hash值，用来供客户端校验</li>
+</ul>
+<p>这样HTTPS握手过程就结束了，之后就是通过HTTP发送经过对称加密的报文。</p>
+<p>参考资料：</p>
+<blockquote>
+<ol>
+<li>《HTTP权威指南》一书</li>
+<li>《数字证书原理》<a href="http://www.cnblogs.com/JeffreySun/archive/2010/06/24/1627247.html" target="_blank" rel="external">http://www.cnblogs.com/JeffreySun/archive/2010/06/24/1627247.html</a></li>
+<li>《数字签名是什么？》<a href="http://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html" target="_blank" rel="external">http://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html</a></li>
+<li>《HTTPS通信中的身份认证机制》<a href="https://cnodejs.org/topic/56eb698ec95e8f992473c5a3" target="_blank" rel="external">https://cnodejs.org/topic/56eb698ec95e8f992473c5a3</a></li>
+<li>《SSL证书必知必会：数字证书及CA基础知识》<a href="http://liuqunying.blog.51cto.com/3984207/1664246" target="_blank" rel="external">http://liuqunying.blog.51cto.com/3984207/1664246</a></li>
+<li>《SSL/TLS协议运行机制的概述》<a href="http://www.ruanyifeng.com/blog/2014/02/ssl_tls.html" target="_blank" rel="external">http://www.ruanyifeng.com/blog/2014/02/ssl_tls.html</a></li>
+<li>《大型网站的 HTTPS 实践（一）—— HTTPS 协议和原理》<a href="http://op.baidu.com/2015/04/https-s01a01/" target="_blank" rel="external">http://op.baidu.com/2015/04/https-s01a01/</a></li>
+<li>《理解 HTTPS 原理，SSL/TLS 协议》<a href="https://hacpai.com/article/1447920990604" target="_blank" rel="external">https://hacpai.com/article/1447920990604</a></li>
+<li>《HTTPS证书生成原理和部署细节》<a href="http://www.barretlee.com/blog/2015/10/05/how-to-build-a-https-server/" target="_blank" rel="external">http://www.barretlee.com/blog/2015/10/05/how-to-build-a-https-server/</a></li>
+<li>《HTTPS原理学习笔记》<a href="http://www.kevenwu.com/blogs/14/" target="_blank" rel="external">http://www.kevenwu.com/blogs/14/</a></li>
+</ol>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;密钥&quot;&gt;&lt;a href=&quot;#密钥&quot; class=&quot;headerlink&quot; title=&quot;密钥&quot;&gt;&lt;/a&gt;密钥&lt;/h2&gt;&lt;p&gt;我们将未加密的内容称为明文，加密之后的内容称为密文。&lt;/p&gt;
+&lt;p&gt;简单来说，要加密一段明文，可以将这段内容输入到一个加密函数中，输出密文。
+    
+    </summary>
+    
+      <category term="日常问题" scheme="sikaixing.com/categories/%E6%97%A5%E5%B8%B8%E9%97%AE%E9%A2%98/"/>
+    
+      <category term="基础知识" scheme="sikaixing.com/categories/%E6%97%A5%E5%B8%B8%E9%97%AE%E9%A2%98/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    
+    
+      <category term="HTTPS" scheme="sikaixing.com/tags/HTTPS/"/>
+    
+      <category term="网络" scheme="sikaixing.com/tags/%E7%BD%91%E7%BB%9C/"/>
+    
+  </entry>
   
   <entry>
     <title>Curl命令及PHP中Curl的应用</title>
@@ -63,6 +228,75 @@
       <category term="PHP" scheme="sikaixing.com/tags/PHP/"/>
     
       <category term="Curl" scheme="sikaixing.com/tags/Curl/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SAE 上使用PHP搭建微信公众号后台</title>
+    <link href="sikaixing.com/2016/03/15/wechat_in_sae/"/>
+    <id>sikaixing.com/2016/03/15/wechat_in_sae/</id>
+    <published>2016-03-14T16:09:26.000Z</published>
+    <updated>2016-08-21T14:10:40.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="准备阶段"><a href="#准备阶段" class="headerlink" title="准备阶段"></a>准备阶段</h2><h3 id="SAE准备"><a href="#SAE准备" class="headerlink" title="SAE准备"></a>SAE准备</h3><p><em>SAE的应用平台提供了一个语言环境。比如提供了PHP环境的应用即可运行PHP代码。当然环境中也可以放HTML和CSS，将要展示的页面命名为index.html即可。</em></p>
+<p>SAE的申请略过。创建一个PHP5.6空应用，代码管理中打开git。本地文件就可以通过Git命令上传到SAE上了。具体命令SAE页面有写。<br>应用有个地址，记下来，需要填到微信中。</p>
+<h3 id="微信准备"><a href="#微信准备" class="headerlink" title="微信准备"></a>微信准备</h3><p>申请微信公众号略过。在后台的开发项中修改配置。其中：</p>
+<ul>
+<li>URL：填刚刚SAE中创建的应用地址</li>
+<li>Token：自己想填什么都可以</li>
+<li>EncodingAESKey：可以随机生成的加密密钥</li>
+<li>加解密方式：一开始建议明文，熟悉了之后可以使用密文模式</li>
+</ul>
+<p>之后需要在SAE的应用端验证一下这个地址可用才能启用开发者模式。<br>参考微信官方文档：<a href="http://mp.weixin.qq.com/wiki/8/f9a0b8382e0b77d87b3bcc1ce6fbc104.html" target="_blank" rel="external">http://mp.weixin.qq.com/wiki/8/f9a0b8382e0b77d87b3bcc1ce6fbc104.html</a> ，直接把PHP示例代码下载下来，代码里的TOKEN填刚刚配置中填的，文件名修改为index.php。<br>接着通过Git上传到SAE中。<br>确定上传完成后即可点击微信后台中的启用，如果SAE上正常运行了刚刚上传的php的话就能够启用成功。</p>
+<h2 id="开始写后台"><a href="#开始写后台" class="headerlink" title="开始写后台"></a>开始写后台</h2><h3 id="官方代码"><a href="#官方代码" class="headerlink" title="官方代码"></a>官方代码</h3><p>刚刚下载的示例代码不仅有验证函数，还有一个用于响应公众号用户消息的函数<code>responseMsg()</code>。我们先试着用示例代码写一些功能。<br>将刚刚修改的本地index.php文件中的<code>$wechatObj-&gt;valid();</code>注释掉，在下面添加一行<code>$wechatObj-&gt;responseMsg();</code> 再次上传修改 <code>git commit</code>,<code>git push</code>。如果代码正常上传的话你给这个公众号发消息应该都能收到回复了。</p>
+<h3 id="写一个获取天气的功能"><a href="#写一个获取天气的功能" class="headerlink" title="写一个获取天气的功能"></a>写一个获取天气的功能</h3><h4 id="通过API获取天气信息并返回"><a href="#通过API获取天气信息并返回" class="headerlink" title="通过API获取天气信息并返回"></a>通过API获取天气信息并返回</h4><p><del>网上搜索得到一个简单的天气查询网址：<a href="http://mobile.weather.com.cn/data/sk/101340101.html" target="_blank" rel="external">http://mobile.weather.com.cn/data/sk/101340101.html</a> 和 <a href="http://mobile.weather.com.cn/data/sk/101340101.html" target="_blank" rel="external">http://mobile.weather.com.cn/data/sk/101340101.html</a> ，其中101340101表示weather.com.cn使用的城市编码，所有对应编码可见参考资料2。这里我们将参考资料2的所有对应编码保存到本地weathercode.xml中。</del><br>更新：weather.com.cn的接口无法使用了。使用<a href="http://www.heweather.com代替。(先在官网申请账户，API" target="_blank" rel="external">http://www.heweather.com代替。(先在官网申请账户，API</a> <a href="https://api.heweather.com/x3/weather?cityid=城市ID&amp;key=你的认证key）" target="_blank" rel="external">https://api.heweather.com/x3/weather?cityid=城市ID&amp;key=你的认证key）</a></p>
+<p>此处我们选择使用cURL的方式获取网页返回，因为这种方式比较方便且SAE官方声明支持cURL（<a href="http://www.sinacloud.com/doc/sae/php/fetchurl.html?highlight=curl）" target="_blank" rel="external">http://www.sinacloud.com/doc/sae/php/fetchurl.html?highlight=curl）</a></p>
+<p>根据参考资料5的示例代码可以写出获取台北天气的代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line">//$wt = curl_init(&quot;http://mobile.weather.com.cn/data/sk/101340101.html&quot;);</div><div class="line">$wt = curl_init(&quot;https://api.heweather.com/x3/weather?cityid=CN101340101&amp;key=你的认证key</div><div class="line">curl_setopt($wt,CURLOPT_RETURNTRANSFER,1);</div><div class="line">$weatherjson = curl_exec($wt);</div><div class="line">curl_close($wt);</div><div class="line">?&gt;</div></pre></td></tr></table></figure>
+<p>要获取指定城市的天气需要读取xml。但读取xml较麻烦（见参考资料6），于是将weathercode.xml手动转换为json格式。读取文件并转换为数组的代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$jsoncontent = file_get_contents(&apos;weathercode.json&apos;);</div><div class="line">$weatherarray = json_decode($jsoncontent);</div></pre></td></tr></table></figure>
+<p>对于获取的json由于层数太多使用PHP处理太复杂，直接使用正则表达式获取需要的内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line">preg_match(&quot;/\&quot;now\&quot;:&#123;.*?&#123;.*?&#125;.*?&#125;.*?&#125;/&quot;,$json,$matches);</div><div class="line">echo $matches[0];</div><div class="line">?&gt;</div></pre></td></tr></table></figure>
+<p>实现功能的完整的代码部分如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">if(!empty( $keyword ))</div><div class="line">            &#123;</div><div class="line">                if(strpos($keyword,&quot;天气&quot;)!==false)</div><div class="line">                &#123;</div><div class="line">                    //get weather by user input</div><div class="line">                    $location = str_ireplace(&quot;天气&quot;, &quot;&quot;,$keyword);</div><div class="line">                    $jsoncontent = file_get_contents(&apos;weathercode.json&apos;);</div><div class="line">                    $locationarray = json_decode($jsoncontent, true);</div><div class="line">                    $locationcode = $locationarray[$location];</div><div class="line">                    $cncode = &quot;CN&quot; . $locationcode;</div><div class="line"></div><div class="line">                    //weather can&apos;t use,use heweather instead</div><div class="line">                    //$wt = curl_init(&quot;http://mobile.weather.com.cn/data/sk/$locationcode.html&quot;);</div><div class="line">                    $wt = curl_init(&quot;https://api.heweather.com/x3/weather?cityid=$cncode&amp;key=你的认证key&quot;);</div><div class="line"></div><div class="line">                    curl_setopt($wt,CURLOPT_RETURNTRANSFER,1);</div><div class="line">                    //curl_setopt($wt,CURLOPT_REFERER,&apos;http://mobile.weather.com.cn/&apos;);</div><div class="line">                    $weatherjson = curl_exec($wt);</div><div class="line">                    //the limit of word</div><div class="line">                    //$weatherarray = json_decode($weatherjson);</div><div class="line">                    //$weathernow = $weatherarray-&gt;&#123;&apos;HeWeather data service 3.0&apos;&#125;;</div><div class="line">                    curl_close($wt);</div><div class="line">                    preg_match(&quot;/\&quot;now\&quot;:(&#123;.*?&#123;.*?&#125;.*?&#125;.*?&#125;)/&quot;,$weatherjson,$matches);</div><div class="line">                    $weathernow = $matches[1];</div><div class="line">                    $msgType = &quot;text&quot;;</div><div class="line">                    $contentStr = $weathernow;</div><div class="line">                    $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);</div><div class="line">                    echo $resultStr;</div><div class="line"></div><div class="line">                &#125;</div></pre></td></tr></table></figure>
+<h4 id="格式化返回的数据"><a href="#格式化返回的数据" class="headerlink" title="格式化返回的数据"></a>格式化返回的数据</h4><p>返回的数据类似于：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&quot;now&quot;:&#123;&quot;cond&quot;:&#123;&quot;code&quot;:&quot;101&quot;,&quot;txt&quot;:&quot;多云&quot;&#125;,&quot;fl&quot;:&quot;11&quot;,&quot;hum&quot;:&quot;46&quot;,&quot;pcpn&quot;:&quot;0&quot;,&quot;pres&quot;:&quot;1021&quot;,&quot;tmp&quot;:&quot;12&quot;,&quot;vis&quot;:&quot;10&quot;,&quot;wind&quot;:&#123;&quot;deg&quot;:&quot;120&quot;,&quot;dir&quot;:&quot;东风&quot;,&quot;sc&quot;:&quot;3-4&quot;,&quot;spd&quot;:&quot;11&quot;&#125;&#125;</div></pre></td></tr></table></figure></p>
+<p>根据官方API说明，通过正则获取内容，即可获得格式化的内容。</p>
+<h4 id="添加对错误城市的处理"><a href="#添加对错误城市的处理" class="headerlink" title="添加对错误城市的处理"></a>添加对错误城市的处理</h4><p>有些时候用户会输入不存在的城市天气查询，这样返回的结果比较不好看。可以加一个判断部分,在输入不存在的城市时提示检查输入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">if($locationcode) &#123;</div><div class="line"></div><div class="line">……</div><div class="line"></div><div class="line">&#125;</div><div class="line">else &#123;</div><div class="line">                        $contentStr = &quot;没有找到这个城市哦~ 请确认城市或区名。示例1: 南京天气; 示例2: 海淀天气&quot;;</div><div class="line">                        $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);</div><div class="line">                        echo $resultStr;</div></pre></td></tr></table></figure>
+<p>这样天气查询的代码就算完成了~</p>
+<p>参考资料：</p>
+<blockquote>
+<ol>
+<li>《中国天气网 天气预报API 国家气象局 根据城市名称抓取城市ID，XML格式、JSON格式、图片代码》<a href="http://www.wjxfpf.com/2015/10/69618.html" target="_blank" rel="external">http://www.wjxfpf.com/2015/10/69618.html</a></li>
+<li>《中国天气网天气预报API接口城市代码，XML格式，数据具体到县、区级别》<a href="http://www.wjxfpf.com/2015/10/279028.html" target="_blank" rel="external">http://www.wjxfpf.com/2015/10/279028.html</a></li>
+<li>《【荐】怎么用PHP发送HTTP请求（POST请求、GET请求）?》<a href="http://www.php-note.com/article/detail/161" target="_blank" rel="external">http://www.php-note.com/article/detail/161</a></li>
+<li>《curl网站开发指南》<a href="http://www.ruanyifeng.com/blog/2011/09/curl.html" target="_blank" rel="external">http://www.ruanyifeng.com/blog/2011/09/curl.html</a></li>
+<li>《<a href="http://php.net/manual/zh/book.curl.php》http://php.net/manual/zh/book.curl.php" target="_blank" rel="external">http://php.net/manual/zh/book.curl.php》http://php.net/manual/zh/book.curl.php</a></li>
+<li>《PHP通过SimpleXML访问xml文档》<a href="http://blog.csdn.net/guoguo1980/article/details/2436318" target="_blank" rel="external">http://blog.csdn.net/guoguo1980/article/details/2436318</a></li>
+<li>《json_decode》<a href="http://us3.php.net/manual/zh/function.json-decode.php" target="_blank" rel="external">http://us3.php.net/manual/zh/function.json-decode.php</a></li>
+<li>《PHP创建和解析JSON数据的方法》<a href="http://www.crazyant.net/920.html" target="_blank" rel="external">http://www.crazyant.net/920.html</a></li>
+<li>《在PHP语言中使用JSON》<a href="http://www.ruanyifeng.com/blog/2011/01/json_in_php.html" target="_blank" rel="external">http://www.ruanyifeng.com/blog/2011/01/json_in_php.html</a></li>
+<li>《PHP高级特性一之正则表达式用法》<a href="http://cuiqingcai.com/1186.html" target="_blank" rel="external">http://cuiqingcai.com/1186.html</a></li>
+</ol>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;准备阶段&quot;&gt;&lt;a href=&quot;#准备阶段&quot; class=&quot;headerlink&quot; title=&quot;准备阶段&quot;&gt;&lt;/a&gt;准备阶段&lt;/h2&gt;&lt;h3 id=&quot;SAE准备&quot;&gt;&lt;a href=&quot;#SAE准备&quot; class=&quot;headerlink&quot; title=&quot;SAE准备&quot;&gt;
+    
+    </summary>
+    
+      <category term="编程语言" scheme="sikaixing.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
+    
+      <category term="PHP" scheme="sikaixing.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/PHP/"/>
+    
+    
+      <category term="PHP" scheme="sikaixing.com/tags/PHP/"/>
+    
+      <category term="SAE" scheme="sikaixing.com/tags/SAE/"/>
+    
+      <category term="微信" scheme="sikaixing.com/tags/%E5%BE%AE%E4%BF%A1/"/>
     
   </entry>
   
@@ -160,6 +394,226 @@
     
     
       <category term="macOS" scheme="sikaixing.com/tags/macOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Python中的多进程，多线程，协程</title>
+    <link href="sikaixing.com/2016/01/21/multiprocess_in_python/"/>
+    <id>sikaixing.com/2016/01/21/multiprocess_in_python/</id>
+    <published>2016-01-20T16:16:21.000Z</published>
+    <updated>2016-08-21T14:26:43.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="多进程"><a href="#多进程" class="headerlink" title="多进程"></a>多进程</h2><h3 id="Linux-系统"><a href="#Linux-系统" class="headerlink" title="Linux 系统"></a>Linux 系统</h3><p>linux系统可通过<code>os.fork()</code>复制当前进程状态作为子进程。复制时子进程返回0,父进程返回子进程的pid. 子进程可通过<code>os.getppid()</code>获取父进程的pid.同时<code>os.getpid()</code>可获得当前进程的pid.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> os</div><div class="line"></div><div class="line"><span class="keyword">print</span> <span class="string">'Process (%s) start...'</span> % os.getpid()</div><div class="line">pid = os.fork()</div><div class="line"><span class="keyword">if</span> pid==<span class="number">0</span>:</div><div class="line">    <span class="keyword">print</span> <span class="string">'I am child process (%s) and my parent is %s.'</span> % (os.getpid(),                os.getppid())</div><div class="line"><span class="keyword">else</span>:</div><div class="line"><span class="keyword">print</span> <span class="string">'I (%s) just created a child process (%s).'</span> % (os.getpid(), pid)</div></pre></td></tr></table></figure>
+<p>结果:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Process (876) start...</div><div class="line">I (876) just created a child process (877).</div><div class="line">I am child process (877) and my parent is 876.</div></pre></td></tr></table></figure>
+<h3 id="Python自带的多进程模块"><a href="#Python自带的多进程模块" class="headerlink" title="Python自带的多进程模块"></a>Python自带的多进程模块</h3><p>windows没有<code>fork()</code>.可以通过python提供的通用多进程模块<code>multiprocessing</code>创建多进程。</p>
+<pre><code>  创建多进程需要导入`Process`模块:
+
+  `from multiprocess import Process`
+
+  使用
+
+  `p = Process(target=function, args=(parament,...)`
+
+  创建子进程实例.其中`target=`传入子进程需执行的*函数本身*`function`,args传入函数需要的参数.参数数量不固定.
+  之后使用
+
+  `p.start()`
+
+  运行实例.要等待该子进程运行结束再运行之后的代码可以使用:
+
+  `p.join()`
+
+  以下是一个例子:
+
+​<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">  <span class="keyword">from</span> multiprocessing <span class="keyword">import</span> Process</div><div class="line">  <span class="keyword">import</span> os</div><div class="line">  </div><div class="line">  <span class="comment"># 子进程要执行的代码</span></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">run_proc</span><span class="params">(name)</span>:</span></div><div class="line">      <span class="keyword">print</span> <span class="string">'Run child process %s (%s)...'</span> % (name, os.getpid())</div><div class="line">  </div><div class="line">  <span class="keyword">if</span> __name__==<span class="string">'__main__'</span>:</div><div class="line">      <span class="keyword">print</span> <span class="string">'Parent process %s.'</span> % os.getpid()</div><div class="line">      p = Process(target=run_proc, args=(<span class="string">'test'</span>,))</div><div class="line">      <span class="keyword">print</span> <span class="string">'Process will start.'</span></div><div class="line">      p.start()</div><div class="line">      p.join()</div><div class="line">      <span class="keyword">print</span> <span class="string">'Process end.'</span></div><div class="line">​</div></pre></td></tr></table></figure>
+
+  结果:
+
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Parent process 928.</div><div class="line">Process will start.</div><div class="line">Run child process test (929)...</div><div class="line">Process end.</div></pre></td></tr></table></figure>
+</code></pre><p>对于需启动大量子进程的情况,可使用<code>Pool</code>模块:</p>
+<pre><code>    `from multiprocessing import Pool`
+
+    使用:
+
+    `p = Pool(number)`
+
+    创建进程池.其中number为进程池包含子进程数量.不写默认为CPU核数.
+
+    使用:
+    `p.map(function,inter)`
+    `p.map_async(function,inter)`
+    `p.apply(function, args=(parament,...)`
+    `p.apply_async(function, args=(parament,...)`
+    其中之一同时运行子进程.其中map只支持单个参数.inter为可迭代对象.async为非阻塞方式运行，即不等结果出来主程序也会继续运行后面的代码。而apply输入则是一个list中的数量超过一个的参数。
+
+    之后需关闭进程池:
+
+    `p.close()`
+
+    同时,需等待所有子进程运行结束可使用:
+
+    `p.join()`
+
+    简单的例子：
+
+    ​<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">        from multiprocessing import Pool</div><div class="line">​    ​    import os </div><div class="line">        def Pri(x):</div><div class="line">            print x*x</div><div class="line">            print os.getpid()</div><div class="line">            </div><div class="line">        p = Pool(5)</div><div class="line">        for i in range(10):</div><div class="line">            p.apply_async(Pri, [i])</div><div class="line">            p.close()</div><div class="line">        ​</div></pre></td></tr></table></figure>
+
+
+    ​<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">        from multiprocessing import Pool</div><div class="line">​    ​    import os </div><div class="line">        def Pri(x):</div><div class="line">            print x*x</div><div class="line">            print os.getpid()</div><div class="line">            </div><div class="line">        p = Pool(5)</div><div class="line">        p.map(Pri, range(10))</div><div class="line">        p.close()</div><div class="line">        ​</div></pre></td></tr></table></figure>
+
+
+    另一个例子:
+
+​<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">    <span class="keyword">from</span> multiprocessing <span class="keyword">import</span> Pool</div><div class="line">    <span class="keyword">import</span> os, time, random</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">long_time_task</span><span class="params">(name)</span>:</span></div><div class="line">        <span class="keyword">print</span> <span class="string">'Run task %s (%s)...'</span> % (name, os.getpid())</div><div class="line">        start = time.time()</div><div class="line">        time.sleep(random.random() * <span class="number">3</span>)</div><div class="line">        end = time.time()</div><div class="line">        <span class="keyword">print</span> <span class="string">'Task %s runs %0.2f seconds.'</span> % (name, (end - start))</div><div class="line">    </div><div class="line">    <span class="keyword">if</span> __name__==<span class="string">'__main__'</span>:</div><div class="line">        <span class="keyword">print</span> <span class="string">'Parent process %s.'</span> % os.getpid()</div><div class="line">        p = Pool()</div><div class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>):</div><div class="line">            p.apply_async(long_time_task, args=(i,))</div><div class="line">        <span class="keyword">print</span> <span class="string">'Waiting for all subprocesses done...'</span></div><div class="line">        p.close()</div><div class="line">        p.join()</div><div class="line">        <span class="keyword">print</span> <span class="string">'All subprocesses done.'</span></div><div class="line">​</div></pre></td></tr></table></figure>
+
+
+    结果:
+
+    ​<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">Parent process 669.</div><div class="line">Waiting for all subprocesses done...</div><div class="line">Run task 0 (671)...</div><div class="line">Run task 1 (672)...</div><div class="line">Run task 2 (673)...</div><div class="line">Run task 3 (674)...</div><div class="line">Task 2 runs 0.14 seconds.</div><div class="line">Run task 4 (673)...</div><div class="line">Task 1 runs 0.27 seconds.</div><div class="line">Task 3 runs 0.86 seconds.</div><div class="line">Task 0 runs 1.41 seconds.</div><div class="line">Task 4 runs 1.91 seconds.</div><div class="line">All subprocesses done.</div><div class="line">​</div></pre></td></tr></table></figure>
+</code></pre><ul>
+<li><p>进程间通讯</p>
+<pre><code>不同进程间可以通过`Queue`,`Pipe`来通信.`Pipe`用于两个进程间通信,`Quene`用于多个进程间通信.在只有两个进程通信的情况下`Pipe`效率高于`Queue`.
+</code></pre><ul>
+<li><p>Pipe</p>
+<p>  导入<code>Pipe</code>模块:</p>
+<p>  <code>from multiprocessing import Pipe</code></p>
+<p>  创建Pipe通信的两端(返回一个双元素的list):</p>
+<p>  <code>p = Pipe(duplex=False)</code><br>  其中<code>duplex=False</code>表示该<code>Pipe只</code>能单向通信.默认不写该参数为双向通信.</p>
+<p>  <code>p[0]</code>,<code>p[1]</code>可以分别作为两个子进程的参数传递给子进程函数.也可以只传递一端给子进程,另一端交给父进程.</p>
+<p>  <code>Pipe</code>的两端可通过<code>p.send()</code>传送值,<code>p.recv()</code>接收值.</p>
+<p>  例子1:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> multiprocessing <span class="keyword">import</span> Process, Pipe</div><div class="line">       </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">(conn)</span>:</span></div><div class="line">    conn.send([<span class="number">42</span>, <span class="keyword">None</span>, <span class="string">'hello'</span>])</div><div class="line">    conn.close()</div><div class="line"> </div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    parent_conn, child_conn = Pipe()</div><div class="line">    p = Process(target=f, args=(child_conn,))</div><div class="line">    p.start()</div><div class="line">    <span class="keyword">print</span> parent_conn.recv()   <span class="comment"># prints "[42, None, 'hello']"</span></div><div class="line">    p.join()</div></pre></td></tr></table></figure>
+<p>  例子2:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> multiprocessing <span class="keyword">as</span> mul</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">proc1</span><span class="params">(pipe)</span>:</span></div><div class="line">    pipe.send(<span class="string">'hello'</span>)</div><div class="line">    print(<span class="string">'proc1 rec:'</span>,pipe.recv())</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">proc2</span><span class="params">(pipe)</span>:</span></div><div class="line">    print(<span class="string">'proc2 rec:'</span>,pipe.recv())</div><div class="line">    pipe.send(<span class="string">'hello, too'</span>)</div><div class="line"></div><div class="line"><span class="comment"># Build a pipe</span></div><div class="line">pipe = mul.Pipe()</div><div class="line"></div><div class="line"><span class="comment"># Pass an end of the pipe to process 1</span></div><div class="line">p1   = mul.Process(target=proc1, args=(pipe[<span class="number">0</span>],))</div><div class="line"><span class="comment"># Pass the other end of the pipe to process 2</span></div><div class="line">p2   = mul.Process(target=proc2, args=(pipe[<span class="number">1</span>],))</div><div class="line">p1.start()</div><div class="line">p2.start()</div><div class="line">p1.join()</div><div class="line">p2.join()</div></pre></td></tr></table></figure>
+</li>
+<li><p>Queue</p>
+<p>  导入<code>Queue</code>模块:</p>
+<p>  <code>from multiprocessing import Queue</code></p>
+<p>  创建<code>Queue</code>对象:</p>
+<p>  <code>q = Queue(max)</code><br>  其中max表示对象中可以存放的最大数量.</p>
+<p>  q可作为全局变量使用,也可以作为参数传递给子进程.<br>  使用<code>q.put()</code>在<code>Queue</code>对象中放入需传递的值,<code>q.get()</code>取出值.</p>
+<p>  例子1:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> multiprocessing <span class="keyword">import</span> Process,Queue</div><div class="line">       </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">writer_proc</span><span class="params">()</span>:</span></div><div class="line">   q.put(<span class="number">100</span>)</div><div class="line"> </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">reader_proc</span><span class="params">()</span>:</span></div><div class="line">   <span class="keyword">print</span> q.get()</div><div class="line"> </div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    q = Queue()</div><div class="line">    reader = Process(target=reader_proc,args=(q,))</div><div class="line">    reader.start()</div><div class="line">    writer = Process(target=writer_proc,args=(q,))</div><div class="line">    writer.start()</div><div class="line">    reader.join()</div><div class="line">    writer.join()</div></pre></td></tr></table></figure>
+<p>  例子2:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> multiprocessing</div><div class="line">       </div><div class="line">q = multiprocessing.Queue()</div><div class="line"> </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">reader_proc</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">print</span> q.get()</div><div class="line"> </div><div class="line">reader = multiprocessing.Process(target=reader_proc)</div><div class="line">reader.start()</div><div class="line"> </div><div class="line">q.put(<span class="number">100</span>)</div><div class="line">reader.join()</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h2><p>多任务除了使用多进程外还可以使用多线程来完成.单个进程中可以有多个线程,它们共享进程中的数据.<br>​<br>python中可使用高级模块<code>Threading</code>来创建多线程.其使用方法与<code>multiprocessing</code>相似.</p>
+<p>导入<code>Threading</code>模块:</p>
+<p><code>import Threading</code></p>
+<p><em>threading 模块提供的常用方法：<br>threading.currentThread(): 返回当前的线程变量。 (也可以使用threading.current_thread())<br>threading.enumerate(): 返回一个包含正在运行的线程的list。正在运行指线程启动后、结束前，不包括启动前和终止后的线程。<br>threading.activeCount(): 返回正在运行的线程数量，与len(threading.enumerate())有相同的结果。<br>threading模块提供的类：<br>Thread, Lock, Rlock, Condition, [Bounded]Semaphore, Event, Timer, local.</em></p>
+<p>构建新线程实例:</p>
+<p><code>t = Threading.thread(target=function,...)</code><br>同时构建实例支持以下几种方法:</p>
+<p><em>Thread(group=None, target=None, name=None, args=(), kwargs={})<br>group: 线程组，目前还没有实现，库引用中提示必须是None；<br>target: 要执行的方法；<br>name: 线程名；<br>args/kwargs: 要传入方法的参数。</em></p>
+<p>实例支持以下方法:<br><em>isAlive(): 返回线程是否在运行。正在运行指启动后、终止前。<br>get/setName(name): 获取/设置线程名。<br>is/setDaemon(bool): 获取/设置是否守护线程。初始值从创建该线程的线程继承。当没有非守护线程仍在运行时，程序将终止。<br>start(): 启动线程。<br>join([timeout]): 阻塞当前上下文环境的线程，直到调用此方法的线程终止或到达指定的timeout（可选参数）。</em></p>
+<p>使用:</p>
+<p><code>t.start()</code><br>运行新线程.</p>
+<p>如需等待线程运行结束:</p>
+<p><code>t.join()</code></p>
+<ul>
+<li><p>锁<br>  由于多线程共享进程中的变量, 如果直接使用多线程修改变量的话容易出问题.所以多线程中一般会创建锁.</p>
+<p>  创建锁:</p>
+<p>  <code>lock = threading.Lock()</code><br>  此时有了一个锁的实例.</p>
+<p>  <em>锁的实例方法:<br>  acquire([timeout]): 使线程进入同步阻塞状态，尝试获得锁定。<br>  release(): 释放锁。使用前线程必须已获得锁定，否则将抛出异常。</em></p>
+<p>  在每个线程需要修改变量前调用实例方法,尝试将修改变量的过程置于锁中,不让其他线程修改变量:</p>
+<p>  <code>lock.acquire()</code></p>
+<p>  修改之后需要释放锁:</p>
+<p>  <code>lock.release()</code></p>
+<p>  例子1:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">balance = <span class="number">0</span></div><div class="line">lock = threading.Lock()</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">run_thread</span><span class="params">(n)</span>:</span></div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">100000</span>):</div><div class="line">        <span class="comment"># 先要获取锁:</span></div><div class="line">        lock.acquire()</div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            <span class="comment"># 放心地改吧:</span></div><div class="line">            change_it(n)</div><div class="line">        <span class="keyword">finally</span>:</div><div class="line">            <span class="comment"># 改完了一定要释放锁:</span></div><div class="line">            lock.release()</div></pre></td></tr></table></figure>
+<p>  例子2:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># encoding: UTF-8</span></div><div class="line"><span class="keyword">import</span> threading</div><div class="line"><span class="keyword">import</span> time</div><div class="line"> </div><div class="line">data = <span class="number">0</span></div><div class="line">lock = threading.Lock()</div><div class="line"> </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">global</span> data</div><div class="line">    <span class="keyword">print</span> <span class="string">'%s acquire lock...'</span> % threading.currentThread().getName()</div><div class="line">    </div><div class="line">    <span class="comment"># 调用acquire([timeout])时，线程将一直阻塞，</span></div><div class="line">    <span class="comment"># 直到获得锁定或者直到timeout秒后（timeout参数可选）。</span></div><div class="line">    <span class="comment"># 返回是否获得锁。</span></div><div class="line">    <span class="keyword">if</span> lock.acquire():</div><div class="line">        <span class="keyword">print</span> <span class="string">'%s get the lock.'</span> % threading.currentThread().getName()</div><div class="line">        data += <span class="number">1</span></div><div class="line">        time.sleep(<span class="number">2</span>)</div><div class="line">        <span class="keyword">print</span> <span class="string">'%s release lock...'</span> % threading.currentThread().getName()</div><div class="line">        </div><div class="line">        <span class="comment"># 调用release()将释放锁。</span></div><div class="line">        lock.release()</div><div class="line"> </div><div class="line">t1 = threading.Thread(target=func)</div><div class="line">t2 = threading.Thread(target=func)</div><div class="line">t3 = threading.Thread(target=func)</div><div class="line">t1.start()</div><div class="line">t2.start()</div><div class="line">t3.start()</div></pre></td></tr></table></figure>
+<p>  其他锁及线程间通信见参考资料5中.</p>
+</li>
+<li><p>多线程的全局变量与局部变量<br>  多线程之间修改全局变量需要加锁. 在线程的函数中创建局部变量可以解决加锁问题, 但如果线程需要运行不同函数, 函数之间需要共享变量, 局部变量调用不是很方便. <code>threading.local()</code>可以解决这个问题.<br>  <code>localschool = threading.local()</code></p>
+<p>  创建实例后, 不同线程在同时使用实例时不会产生冲突.</p>
+<p>  例子:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> threading</div><div class="line"></div><div class="line"><span class="comment"># 创建全局ThreadLocal对象:</span></div><div class="line">local_school = threading.local()</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">process_student</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">print</span> <span class="string">'Hello, %s (in %s)'</span> % (local_school.student, threading.current_thread().name)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">process_thread</span><span class="params">(name)</span>:</span></div><div class="line">    <span class="comment"># 绑定ThreadLocal的student:</span></div><div class="line">    local_school.student = name</div><div class="line">    process_student()</div><div class="line"></div><div class="line">t1 = threading.Thread(target= process_thread, args=(<span class="string">'Alice'</span>,), name=<span class="string">'Thread-A'</span>)</div><div class="line">t2 = threading.Thread(target= process_thread, args=(<span class="string">'Bob'</span>,), name=<span class="string">'Thread-B'</span>)</div><div class="line">t1.start()</div><div class="line">t2.start()</div><div class="line">t1.join()</div><div class="line">t2.join()</div></pre></td></tr></table></figure>
+</li>
+<li><p>分布式进程(待完善</p>
+</li>
+</ul>
+<h2 id="协程"><a href="#协程" class="headerlink" title="协程"></a>协程</h2><p>协程是单线程在不同的函数间中断并相互切换的一种运行模式.比如在函数A运行遇到阻塞时转向运行函数B,等到函数B运行结束再回来接着运行函数A.与多线程相比协程没有锁的问题.协程可以在IO密集的程序中节省IO等待时间,提高运行效率.</p>
+<ul>
+<li><p>yield<br>  python的生成器<code>yield</code>一定程度上支持协程.定义生成器<code>yield</code>可以直接在函数定义中将<code>return</code>换成<code>yield</code>.在调用生成器函数时首先将生成器赋给变量,通过变量的<code>.next()</code>方法调用生成器生成第一个值.再次调用<code>.next()</code>方法可生成第二个值.<code>.send(value)</code>方法可在调用生成器时给它传递一个参数.<br>  例子:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> time</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">consumer</span><span class="params">()</span>:</span></div><div class="line">    r = <span class="string">''</span></div><div class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">        n = <span class="keyword">yield</span> r</div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> n:</div><div class="line">            <span class="keyword">return</span></div><div class="line">        print(<span class="string">'[CONSUMER] Consuming %s...'</span> % n)</div><div class="line">        time.sleep(<span class="number">1</span>)</div><div class="line">        r = <span class="string">'200 OK'</span></div><div class="line">     </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">produce</span><span class="params">(c)</span>:</span></div><div class="line">    c.next()</div><div class="line">    n = <span class="number">0</span></div><div class="line">    <span class="keyword">while</span> n &lt; <span class="number">5</span>:</div><div class="line">        n = n + <span class="number">1</span></div><div class="line">        print(<span class="string">'[PRODUCER] Producing %s...'</span> % n)</div><div class="line">        r = c.send(n)</div><div class="line">        print(<span class="string">'[PRODUCER] Consumer return: %s'</span> % r)</div><div class="line">    c.close()</div><div class="line">     </div><div class="line"><span class="keyword">if</span> __name__==<span class="string">'__main__'</span>:</div><div class="line">    c = consumer()</div><div class="line">    produce(c)</div></pre></td></tr></table></figure>
+<p>  结果:</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">[PRODUCER] Producing 1...</div><div class="line">[CONSUMER] Consuming 1...</div><div class="line">[PRODUCER] Consumer return: 200 OK</div><div class="line">[PRODUCER] Producing 2...</div><div class="line">[CONSUMER] Consuming 2...</div><div class="line">[PRODUCER] Consumer return: 200 OK</div><div class="line">[PRODUCER] Producing 3...</div><div class="line">[CONSUMER] Consuming 3...</div><div class="line">[PRODUCER] Consumer return: 200 OK</div><div class="line">[PRODUCER] Producing 4...</div><div class="line">[CONSUMER] Consuming 4...</div><div class="line">[PRODUCER] Consumer return: 200 OK</div><div class="line">[PRODUCER] Producing 5...</div><div class="line">[CONSUMER] Consuming 5...</div><div class="line">[PRODUCER] Consumer return: 200 OK</div></pre></td></tr></table></figure>
+<p>  更多关于<code>yield</code>见参考资料6.</p>
+</li>
+<li><p>gevent</p>
+<pre><code>gevent模块为python提供了完整的协程实现.
+
+使用需先导入模块:
+
+`import gevent`
+</code></pre><ul>
+<li><p>在网络通信中一般还会导入<code>monkey</code>模块以将默认<code>socket</code>替换为可协程的<code>socket</code>:</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">from gevent import monkey</div><div class="line">monkey.patch_socket()</div></pre></td></tr></table></figure>
+<p>  或者将所有阻塞式调用,包括<code>socket</code>, <code>ssl</code>, <code>threading</code>, <code>select</code>都替换为异步式:</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">from gevent import monkey</div><div class="line">monkey.patch_all()</div></pre></td></tr></table></figure>
+<p>  这种替换调用一般放在第一行.替换后这些调用会自动处理阻塞问题.</p>
+<p>  在需使用协程时要用:</p>
+<p>  <code>g = gevent.spawn(function,parament)</code><br>  使用协程方式启动函数.参数为函数的参数.</p>
+<p>  等待任务结束可以使用:</p>
+<p>  <code>g.join()</code></p>
+<p>  等待所有任务结束可以使用:</p>
+<p>  <code>gevent.joinall(spawnlist)</code></p>
+</li>
+<li><p>不过使用<code>monkey</code>模块补丁自动处理有时候不能满足要求.这时我们可以使用其他模块.<br>如自动处理会并发所有连接,如果需要限制并发数量的话可以使用<code>Pool</code>模块.</p>
+<p>  <code>from gevent.pool import Pool</code></p>
+<p>  新建一个<code>Pool</code>池:</p>
+<p>  <code>p = Pool(number)</code><br>  number为最高并发数</p>
+<p>  在并发池中启动函数:</p>
+<p>  <code>p.spawn(function,parament)</code></p>
+<p>  等待所有任务结束:</p>
+<p>  <code>p.join()</code></p>
+</li>
+<li><p>需要直接指定跳转时用<code>sleep</code>函数:</p>
+<p>  <code>gevent.sleep(time)</code><br>  其中<code>time</code>表示此处至少要阻塞time秒.</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>参考资料:</p>
+<ol>
+<li><p><code>&lt;&lt;多进程&gt;&gt;</code><br> <a href="http://www.liaoxuefeng.com/wiki/001374738125095c955c1e6d8bb493182103fac9270762a000/0013868323401155ceb3db1e2044f80b974b469eb06cb43000" target="_blank" rel="external">http://www.liaoxuefeng.com/wiki/001374738125095c955c1e6d8bb493182103fac9270762a000/0013868323401155ceb3db1e2044f80b974b469eb06cb43000</a></p>
+</li>
+<li><p><code>&lt;&lt;Python多进程并发(multiprocessing)&gt;&gt;</code><br> <a href="http://www.coder4.com/archives/3352" target="_blank" rel="external">http://www.coder4.com/archives/3352</a></p>
+</li>
+<li><p><code>&lt;&lt;Python标准库10 多进程初步 (multiprocessing包)&gt;&gt;</code><br> <a href="http://www.cnblogs.com/vamei/archive/2012/10/12/2721484.html" target="_blank" rel="external">http://www.cnblogs.com/vamei/archive/2012/10/12/2721484.html</a></p>
+</li>
+<li><p><code>&lt;&lt;python多线程模块multiprocessing的进程间通信&gt;&gt;</code><br> <a href="https://blog.weizhe.net/?p=77" target="_blank" rel="external">https://blog.weizhe.net/?p=77</a></p>
+</li>
+<li><p><code>&lt;&lt;Python线程指南&gt;&gt;</code><br> <a href="http://www.cnblogs.com/huxi/archive/2010/06/26/1765808.html" target="_blank" rel="external">http://www.cnblogs.com/huxi/archive/2010/06/26/1765808.html</a></p>
+</li>
+<li><p><code>&lt;&lt;生成器&gt;&gt;</code><br> <a href="http://wiki.jikexueyuan.com/project/start-learning-python/215.html" target="_blank" rel="external">http://wiki.jikexueyuan.com/project/start-learning-python/215.html</a></p>
+</li>
+<li><p><code>&lt;&lt;Gevent Introduction&gt;&gt;</code> <a href="http://www.gevent.org/intro.html#installation-and-requirements" target="_blank" rel="external">http://www.gevent.org/intro.html#installation-and-requirements</a></p>
+</li>
+<li>《python 进程池2 - Pool相关函数》<a href="http://www.cnblogs.com/congbo/archive/2012/08/23/2652490.html" target="_blank" rel="external">http://www.cnblogs.com/congbo/archive/2012/08/23/2652490.html</a></li>
+</ol>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;多进程&quot;&gt;&lt;a href=&quot;#多进程&quot; class=&quot;headerlink&quot; title=&quot;多进程&quot;&gt;&lt;/a&gt;多进程&lt;/h2&gt;&lt;h3 id=&quot;Linux-系统&quot;&gt;&lt;a href=&quot;#Linux-系统&quot; class=&quot;headerlink&quot; title=&quot;Linux
+    
+    </summary>
+    
+      <category term="编程语言" scheme="sikaixing.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
+    
+      <category term="Python" scheme="sikaixing.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/"/>
+    
+    
+      <category term="Python" scheme="sikaixing.com/tags/Python/"/>
+    
+      <category term="多进程" scheme="sikaixing.com/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B/"/>
     
   </entry>
   
