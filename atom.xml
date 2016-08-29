@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="sikaixing.com/"/>
-  <updated>2016-08-29T10:10:00.000Z</updated>
+  <updated>2016-08-29T10:26:38.000Z</updated>
   <id>sikaixing.com/</id>
   
   <author>
@@ -14,6 +14,62 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>QLineEdit实现点击全选文本</title>
+    <link href="sikaixing.com/2016/08/05/QLineEdit_click/"/>
+    <id>sikaixing.com/2016/08/05/QLineEdit_click/</id>
+    <published>2016-08-05T09:34:10.000Z</published>
+    <updated>2016-08-29T10:26:38.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近收到一个需求：希望实现点击一个QLineEdit全文其中的文本。由于QLineEdit没有点击信号，要实现这个功能还是花了一点时间。</p>
+<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>最近写的软件包含一个简单的网页浏览器的部分，其中地址栏用的标准QLineEdit。另外界面文件是用Qt Designer画的，代码中直接引用UI文件。这样修改界面比较直观。</p>
+<p>现在有个需求，希望点击地址栏的QLineEdit时直接全选地址，效果类似chrome浏览器地址栏的点击效果。</p>
+<h2 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h2><p>翻了一下QLineEdit的自带信号，并没有单击的信号。</p>
+<p>网上搜索了一下，基本上都是说要重写QLineEdit的方法。但是由于我的界面.ui文件，要重写方法只能先把.ui转换成.py。</p>
+<p>转换方法：</p>
+<p><code>pyuic4 -i 0 MyWindow.ui -o MyWindow.py</code></p>
+<p>在安装pyqt4之后命令行中就能使用<code>pyuic4</code>命令。具体参数的含义这里暂时不深究。</p>
+<p> 转换之后需要在源码中引用新生成的py文件。将之前的引用ui文件的代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> PyQt4.uic <span class="keyword">import</span> loadUiType </div><div class="line"></div><div class="line">qtCreatorFile = <span class="string">"MyWindow.ui"</span></div><div class="line"></div><div class="line">Ui_MainWindow, QtBaseClass = loadUiType(qtCreatorFile)</div></pre></td></tr></table></figure>
+<p>修改为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> MyWindow <span class="keyword">import</span> Ui_MainWindow</div></pre></td></tr></table></figure>
+<p>之后就是重写QLineEdit类了。这里有个问题：QLineEdit有两个相关的方法可以被重写：<code>mousePressEvent()</code></p>
+<p><code>focusInEvent()</code> 。一开始笔者重写了<code>focusInEvent ()</code>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">focusInEvent</span><span class="params">(self, event)</span>:</span></div><div class="line">    self.setText(<span class="string">"www"</span>)</div><div class="line">    self.selectAll()</div></pre></td></tr></table></figure>
+<p>但测试时发现<code>setText()</code>有效果，但<code>selectAll()</code>没有效果。搜索之后发现如下回答：</p>
+<p><em>With <code>focusInEvent</code>, when you click the widget, it gets executed, but since you click, it removes the selected text.</em></p>
+<p>也就是<code>focusInEvent()</code> 会自动移除选中效果。换成重写 <code>mousePressEvent()</code>后即可正常实现。</p>
+<h2 id="更好的办法"><a href="#更好的办法" class="headerlink" title="更好的办法"></a>更好的办法</h2><p>在之前的问题回答下不仅回答了重写<code>mousePressEvent()</code> ，还提供了另一个更方便的解决方式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">txt_demo = QtGui.QLineEdit()</div><div class="line">txt_demo.mousePressEvent = <span class="keyword">lambda</span> _ : txt_demo.selectAll()</div></pre></td></tr></table></figure>
+<p>即使用匿名函数重写实例的方法，这样不需要修改类。</p>
+<p>后来搜索了一下，这种写法算给实例动态添加方法。</p>
+<p>参考资料：</p>
+<blockquote>
+<ol>
+<li>《使用Designer编写PyQt程序的简单流程》<a href="http://richardustc.github.io/2015-07-06-create-PyQt-Program-with-Designer.html" target="_blank" rel="external">http://richardustc.github.io/2015-07-06-create-PyQt-Program-with-Designer.html</a></li>
+<li>《Pyside - Select all text when QLineEdit gets focus》<a href="http://stackoverflow.com/questions/23076698/pyside-select-all-text-when-qlineedit-gets-focus" target="_blank" rel="external">http://stackoverflow.com/questions/23076698/pyside-select-all-text-when-qlineedit-gets-focus</a></li>
+</ol>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;最近收到一个需求：希望实现点击一个QLineEdit全文其中的文本。由于QLineEdit没有点击信号，要实现这个功能还是花了一点时间。&lt;/p&gt;
+&lt;h2 id=&quot;需求&quot;&gt;&lt;a href=&quot;#需求&quot; class=&quot;headerlink&quot; title=&quot;需求&quot;&gt;&lt;/a&gt;需求&lt;/
+    
+    </summary>
+    
+      <category term="编程语言" scheme="sikaixing.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
+    
+      <category term="Python" scheme="sikaixing.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/"/>
+    
+    
+      <category term="Python" scheme="sikaixing.com/tags/Python/"/>
+    
+      <category term="PyQt" scheme="sikaixing.com/tags/PyQt/"/>
+    
+  </entry>
   
   <entry>
     <title>Python 程序扩展名（py, pyc, pyw, pyo, pyd)及发布程序时的选择</title>
