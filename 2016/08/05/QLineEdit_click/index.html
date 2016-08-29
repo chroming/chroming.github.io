@@ -86,20 +86,20 @@
 
 
 
-<meta name="description" content="最近收到一个需求：希望实现点击一个QLineEdit全文其中的文本。由于QLineEdit没有点击信号，要实现这个功能还是花了一点时间。
+<meta name="description" content="最近收到一个需求：希望实现点击一个QLineEdit全选其中的文本。由于QLineEdit没有点击信号，要实现这个功能还是花了一点时间。
 需求最近写的软件包含一个简单的网页浏览器的部分，其中地址栏用的标准QLineEdit。另外界面文件是用Qt Designer画的，代码中直接引用UI文件。这样修改界面比较直观。
 现在有个需求，希望点击地址栏的QLineEdit时直接全选地址，效果类似chrome">
 <meta property="og:type" content="article">
 <meta property="og:title" content="QLineEdit实现点击全选文本">
 <meta property="og:url" content="sikaixing.com/2016/08/05/QLineEdit_click/index.html">
 <meta property="og:site_name" content="司开星的博客">
-<meta property="og:description" content="最近收到一个需求：希望实现点击一个QLineEdit全文其中的文本。由于QLineEdit没有点击信号，要实现这个功能还是花了一点时间。
+<meta property="og:description" content="最近收到一个需求：希望实现点击一个QLineEdit全选其中的文本。由于QLineEdit没有点击信号，要实现这个功能还是花了一点时间。
 需求最近写的软件包含一个简单的网页浏览器的部分，其中地址栏用的标准QLineEdit。另外界面文件是用Qt Designer画的，代码中直接引用UI文件。这样修改界面比较直观。
 现在有个需求，希望点击地址栏的QLineEdit时直接全选地址，效果类似chrome">
-<meta property="og:updated_time" content="2016-08-29T10:26:38.000Z">
+<meta property="og:updated_time" content="2016-08-29T10:33:31.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="QLineEdit实现点击全选文本">
-<meta name="twitter:description" content="最近收到一个需求：希望实现点击一个QLineEdit全文其中的文本。由于QLineEdit没有点击信号，要实现这个功能还是花了一点时间。
+<meta name="twitter:description" content="最近收到一个需求：希望实现点击一个QLineEdit全选其中的文本。由于QLineEdit没有点击信号，要实现这个功能还是花了一点时间。
 需求最近写的软件包含一个简单的网页浏览器的部分，其中地址栏用的标准QLineEdit。另外界面文件是用Qt Designer画的，代码中直接引用UI文件。这样修改界面比较直观。
 现在有个需求，希望点击地址栏的QLineEdit时直接全选地址，效果类似chrome">
 
@@ -354,7 +354,7 @@
       
 
       
-        <p>最近收到一个需求：希望实现点击一个QLineEdit全文其中的文本。由于QLineEdit没有点击信号，要实现这个功能还是花了一点时间。</p>
+        <p>最近收到一个需求：希望实现点击一个QLineEdit全选其中的文本。由于QLineEdit没有点击信号，要实现这个功能还是花了一点时间。</p>
 <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>最近写的软件包含一个简单的网页浏览器的部分，其中地址栏用的标准QLineEdit。另外界面文件是用Qt Designer画的，代码中直接引用UI文件。这样修改界面比较直观。</p>
 <p>现在有个需求，希望点击地址栏的QLineEdit时直接全选地址，效果类似chrome浏览器地址栏的点击效果。</p>
 <h2 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h2><p>翻了一下QLineEdit的自带信号，并没有单击的信号。</p>
