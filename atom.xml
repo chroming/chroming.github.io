@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="sikaixing.com/"/>
-  <updated>2016-08-21T14:03:50.000Z</updated>
+  <updated>2016-08-29T10:10:00.000Z</updated>
   <id>sikaixing.com/</id>
   
   <author>
@@ -14,6 +14,63 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Python 程序扩展名（py, pyc, pyw, pyo, pyd)及发布程序时的选择</title>
+    <link href="sikaixing.com/2016/08/03/Python_pyc/"/>
+    <id>sikaixing.com/2016/08/03/Python_pyc/</id>
+    <published>2016-08-03T02:25:26.000Z</published>
+    <updated>2016-08-29T10:10:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="扩展名"><a href="#扩展名" class="headerlink" title="扩展名"></a>扩展名</h2><p>Python程序中常见的扩展名是py, pyc，其实还有其他几种扩展名。下面是几种扩展名的用法。</p>
+<h3 id="py"><a href="#py" class="headerlink" title="py"></a>py</h3><p>py就是最基本的源码扩展名。windows下直接双击运行会调用python.exe执行。</p>
+<h3 id="pyw"><a href="#pyw" class="headerlink" title="pyw"></a>pyw</h3><p>pyw是另一种源码扩展名，跟py唯一的区别是在windows下双击pyw扩展名的源码会调用pythonw.exe执行源码，这种执行方式不会有命令行窗口。主要用于GUI程序发布时不需要看到控制台信息的情况。</p>
+<h3 id="pyc"><a href="#pyc" class="headerlink" title="pyc"></a>pyc</h3><p>在执行python代码时经常会看到同目录下自动生成同名的pyc文件。这是python源码编译后的字节码，一般会在代码执行时自动生成你代码中引用的py文件的pyc文件。这个文件可以直接执行，用文本编辑器打开也看不到源码。</p>
+<h3 id="pyo"><a href="#pyo" class="headerlink" title="pyo"></a>pyo</h3><p>pyo是跟pyc类似的优化编码后的文件。</p>
+<h3 id="pyd"><a href="#pyd" class="headerlink" title="pyd"></a>pyd</h3><p>pyd并非从python程序生成，而是其他语言写成的可以被python调用的扩展。</p>
+<h2 id="程序发布的选择"><a href="#程序发布的选择" class="headerlink" title="程序发布的选择"></a>程序发布的选择</h2><p>由于笔者基本只在windows平台下考虑发布问题，其他平台均使用源码，故此处讨论基本围绕windows平台。</p>
+<h3 id="打包为正常exe程序"><a href="#打包为正常exe程序" class="headerlink" title="打包为正常exe程序"></a>打包为正常exe程序</h3><p>如果要公开发布程序，最常见的方式就是打包成exe程序了。打包的好处是使用者不需要考虑Python的运行环境，且也容易被接受。但不好的是一般打包出来的程序都比较大，而且由于是依靠模块打包，有可能出现兼容性等问题。</p>
+<p>笔者常用的打包模块是pyinstaller。常用的打包命令是：</p>
+<p><code>pyinstaller -F example.py</code></p>
+<p>-F参数可将代码打包成单个exe程序。</p>
+<p>另外如果是GUI程序不需要控制台窗口的还可以加上-w参数：</p>
+<p><code>pyinstaller -w -F example.py</code></p>
+<h3 id="发布编译后的pyc-pyo"><a href="#发布编译后的pyc-pyo" class="headerlink" title="发布编译后的pyc/pyo"></a>发布编译后的pyc/pyo</h3><p>如果使用者有python环境，又不想让他们看到源码，就可以选择发布pyc/pyo文件。</p>
+<p>直接执行的py文件不会自动生成pyc，需要手动编译一下。单文件编译：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> py_compile</div><div class="line">py_compile.compile(<span class="string">r'c:\test.py'</span>)</div></pre></td></tr></table></figure>
+<p>文件夹编译：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> compileall</div><div class="line">compileall.compile_dir(dirpath)</div></pre></td></tr></table></figure>
+<p>编译成pyo：</p>
+<p><code>python -O -m py_compile file.py</code></p>
+<p>如果是GUI程序不需要控制台窗口，可以新建一个pyw文件用于调用主pyc程序。pyw中只需要导入pyc程序即可。</p>
+<h3 id="发布源码py"><a href="#发布源码py" class="headerlink" title="发布源码py"></a>发布源码py</h3><p>发布源码一般是开源项目使用的，没什么需要说明的。直接发py文件就可以了，只要对方有环境就可以运行。</p>
+<p>参考资料：</p>
+<blockquote>
+<ol>
+<li>《python 文件 .py .pyc .pyw .pyo .pyd》 <a href="http://blog.csdn.net/feeltouch/article/details/45952003" target="_blank" rel="external">http://blog.csdn.net/feeltouch/article/details/45952003</a></li>
+<li>《Python程序的执行原理》<a href="http://tech.uc.cn/?p=1932" target="_blank" rel="external">http://tech.uc.cn/?p=1932</a></li>
+<li>《python的pyc和pyo文件》<a href="http://gmingzhe.blog.51cto.com/810664/163444" target="_blank" rel="external">http://gmingzhe.blog.51cto.com/810664/163444</a></li>
+<li>《运行Python程序(pyc)隐藏DOS窗口的简便方法》<a href="https://apfantasy.wordpress.com/2011/02/13/%E8%BF%90%E8%A1%8Cpython%E7%A8%8B%E5%BA%8Fpyc%E9%9A%90%E8%97%8Fdos%E7%AA%97%E5%8F%A3%E7%9A%84%E7%AE%80%E4%BE%BF%E6%96%B9%E6%B3%95/" target="_blank" rel="external">https://apfantasy.wordpress.com/2011/02/13/%E8%BF%90%E8%A1%8Cpython%E7%A8%8B%E5%BA%8Fpyc%E9%9A%90%E8%97%8Fdos%E7%AA%97%E5%8F%A3%E7%9A%84%E7%AE%80%E4%BE%BF%E6%96%B9%E6%B3%95/</a></li>
+<li>《py文件编译为pyc》<a href="http://blog.csdn.net/sislcb/article/details/4002414" target="_blank" rel="external">http://blog.csdn.net/sislcb/article/details/4002414</a></li>
+</ol>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;扩展名&quot;&gt;&lt;a href=&quot;#扩展名&quot; class=&quot;headerlink&quot; title=&quot;扩展名&quot;&gt;&lt;/a&gt;扩展名&lt;/h2&gt;&lt;p&gt;Python程序中常见的扩展名是py, pyc，其实还有其他几种扩展名。下面是几种扩展名的用法。&lt;/p&gt;
+&lt;h3 id=&quot;py&quot;&gt;&lt;
+    
+    </summary>
+    
+      <category term="编程语言" scheme="sikaixing.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
+    
+      <category term="Python" scheme="sikaixing.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/"/>
+    
+    
+      <category term="Python" scheme="sikaixing.com/tags/Python/"/>
+    
+  </entry>
   
   <entry>
     <title>HTTPS中的对称密钥加密，公开密钥加密，数字证书</title>
