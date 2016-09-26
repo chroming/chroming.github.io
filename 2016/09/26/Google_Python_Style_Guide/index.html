@@ -68,10 +68,12 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Python" />
+  <meta name="keywords" content="基础知识," />
 
 
 
+
+  
 
 
   <link rel="alternate" href="/atom.xml" title="司开星的博客" type="application/atom+xml" />
@@ -86,12 +88,31 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="司开星的博客">
-<meta property="og:url" content="sikaixing.com/tags/硬件/index.html">
+<meta name="description" content="主要记录个人在阅读《Python 风格指南》时觉得可能会用到的一些建议。
+风格规范
+不要在行尾加分号, 也不要用分号将两条命令放在同一行；
+每行不超过80个字符, 如果要连接超过80字符的行，用额外的圆括号将其隐式地连接起来；
+顶级定义（函数或者类定义）之间空两行, 方法定义之间空一行；
+文档字符串：文档字符串即包，模块，类或函数中作为注释文档的语句。通常以三重双引号”””包围，格式：首行为概述，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python 风格指南（Google Python Style Guide系列 ）阅读笔记">
+<meta property="og:url" content="sikaixing.com/2016/09/26/Google_Python_Style_Guide/index.html">
 <meta property="og:site_name" content="司开星的博客">
+<meta property="og:description" content="主要记录个人在阅读《Python 风格指南》时觉得可能会用到的一些建议。
+风格规范
+不要在行尾加分号, 也不要用分号将两条命令放在同一行；
+每行不超过80个字符, 如果要连接超过80字符的行，用额外的圆括号将其隐式地连接起来；
+顶级定义（函数或者类定义）之间空两行, 方法定义之间空一行；
+文档字符串：文档字符串即包，模块，类或函数中作为注释文档的语句。通常以三重双引号”””包围，格式：首行为概述，">
+<meta property="og:updated_time" content="2016-09-26T13:07:36.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="司开星的博客">
+<meta name="twitter:title" content="Python 风格指南（Google Python Style Guide系列 ）阅读笔记">
+<meta name="twitter:description" content="主要记录个人在阅读《Python 风格指南》时觉得可能会用到的一些建议。
+风格规范
+不要在行尾加分号, 也不要用分号将两条命令放在同一行；
+每行不超过80个字符, 如果要连接超过80字符的行，用额外的圆括号将其隐式地连接起来；
+顶级定义（函数或者类定义）之间空两行, 方法定义之间空一行；
+文档字符串：文档字符串即包，模块，类或函数中作为注释文档的语句。通常以三重双引号”””包围，格式：首行为概述，">
 
 
 
@@ -112,9 +133,9 @@
 
 
 
-  <link rel="canonical" href="sikaixing.com/tags/硬件/"/>
+  <link rel="canonical" href="sikaixing.com/2016/09/26/Google_Python_Style_Guide/"/>
 
-  <title> 标签: 硬件 | 司开星的博客 </title>
+  <title> Python 风格指南（Google Python Style Guide系列 ）阅读笔记 | 司开星的博客 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -145,7 +166,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left  ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -243,46 +264,197 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-collapse">
-    <div class="collection-title">
-      <h2 >
-        硬件
-        <small>标签</small>
-      </h2>
-    </div>
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
 
     
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Python 风格指南（Google Python Style Guide系列 ）阅读笔记
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-26T21:06:00+08:00" content="2016-09-26">
+              2016-09-26
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/编程语言/" itemprop="url" rel="index">
+                    <span itemprop="name">编程语言</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/编程语言/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/09/26/Google_Python_Style_Guide/" class="leancloud_visitors" data-flag-title="Python 风格指南（Google Python Style Guide系列 ）阅读笔记">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
       
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+      
+        <p>主要记录个人在阅读《Python 风格指南》时觉得可能会用到的一些建议。</p>
+<h2 id="风格规范"><a href="#风格规范" class="headerlink" title="风格规范"></a>风格规范</h2><ol>
+<li>不要在行尾加分号, 也不要用分号将两条命令放在同一行；</li>
+<li>每行不超过80个字符, 如果要连接超过80字符的行，用额外的圆括号将其隐式地连接起来；</li>
+<li>顶级定义（函数或者类定义）之间空两行, 方法定义之间空一行；</li>
+<li>文档字符串：文档字符串即包，模块，类或函数中作为注释文档的语句。通常以三重双引号”””包围，格式：首行为概述，接着空一行，下面是详细文档。其中：模块的文档字符串需包含许可样版；函数和方法的文档字符串应包含args，returns，raises；类的文档字符串应包含类的说明及公共属性attributes的说明；</li>
+<li>注释应以#开头（包含多行注释），且注释应离开代码两个空格。技巧性部分或复杂部分需注释，但不要描述代码，假设看代码的人比你更懂Python；</li>
+<li>如果类不继承其他类，则显式集成object类；</li>
+<li>避免在循环中使用+来累加字符串。如果有需要，用list.append来替代；</li>
+<li>为临时代码使用TODO注释；</li>
+<li>即使是打算作为脚本的文件也应该是可导入的，且导入时不应导致脚本主程序运行，应将主功能放在main()中。</li>
+<li>命名：module_name, package_name, ClassName, method_name, ExceptionName, function_name, GLOBAL_VAR_NAME, instance_var_name, function_parameter_name, local_var_name.</li>
+</ol>
+<p>参考资料：</p>
+<blockquote>
+<p>《Python语言规范》<a href="http://zh-google-styleguide.readthedocs.io/en/latest/google-python-styleguide/python_language_rules/" target="_blank" rel="external">http://zh-google-styleguide.readthedocs.io/en/latest/google-python-styleguide/python_language_rules/</a></p>
+</blockquote>
 
-      <h1 class="post-title">
+      
+    </div>
+
+    <div>
+      
         
-            <a class="post-title-link" href="/2016/09/18/Windows_10_system thread_exception_not_handled/" itemprop="url">
-              
-                <span itemprop="name">Windows 10 循环蓝屏重启 system thread exception not handled 的一种解决办法</span>
-              
-            </a>
+
+      
+    </div>
+
+    <div>
+      
         
-      </h1>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-09-18T14:00:00+08:00"
-              content="2016-09-18" >
-          09-18
-        </time>
-      </div>
+      
+    </div>
 
-    </header>
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/基础知识/" rel="tag">#基础知识</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/18/Windows_10_system thread_exception_not_handled/" rel="next" title="Windows 10 循环蓝屏重启 system thread exception not handled 的一种解决办法">
+                <i class="fa fa-chevron-left"></i> Windows 10 循环蓝屏重启 system thread exception not handled 的一种解决办法
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </article>
 
 
-    
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
-  
+  <div class="page-footer">
+    
+      <div id="eof" class="print-invisible">
+        <hr class="eof">
+      </div>
+
+      <div class="copyright" style="clear:both;">
+         <p><span>本文标题:</span><a href="/2016/09/26/Google_Python_Style_Guide/">Python 风格指南（Google Python Style Guide系列 ）阅读笔记</a></p>
+         <p><span>文章作者:</span><a href="/" title="访问 司开星 的个人博客">司开星</a></p>
+         <p><span>原始链接:</span><a href="/2016/09/26/Google_Python_Style_Guide/" title="Python 风格指南（Google Python Style Guide系列 ）阅读笔记">sikaixing.com/2016/09/26/Google_Python_Style_Guide/</a></p>
+         <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/" title="Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)">Attribution-NonCommercial 4.0</a></p>
+         <p><span>转载请保留以上信息。</span></p>
+      </div>
+    
+
+    
+
+  </div>
 
 
           </div>
@@ -290,6 +462,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -309,8 +485,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/uploads/avatar.jpg"
@@ -402,6 +587,17 @@
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#风格规范"><span class="nav-number">1.</span> <span class="nav-text">风格规范</span></a></li></ol></div>
+            
+          </div>
+        </section>
       
 
     </div>
@@ -499,6 +695,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
 
   
 

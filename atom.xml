@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="sikaixing.com/"/>
-  <updated>2016-09-17T06:02:40.000Z</updated>
+  <updated>2016-09-26T13:07:36.000Z</updated>
   <id>sikaixing.com/</id>
   
   <author>
@@ -14,6 +14,49 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Python 风格指南（Google Python Style Guide系列 ）阅读笔记</title>
+    <link href="sikaixing.com/2016/09/26/Google_Python_Style_Guide/"/>
+    <id>sikaixing.com/2016/09/26/Google_Python_Style_Guide/</id>
+    <published>2016-09-26T13:06:00.000Z</published>
+    <updated>2016-09-26T13:07:36.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>主要记录个人在阅读《Python 风格指南》时觉得可能会用到的一些建议。</p>
+<h2 id="风格规范"><a href="#风格规范" class="headerlink" title="风格规范"></a>风格规范</h2><ol>
+<li>不要在行尾加分号, 也不要用分号将两条命令放在同一行；</li>
+<li>每行不超过80个字符, 如果要连接超过80字符的行，用额外的圆括号将其隐式地连接起来；</li>
+<li>顶级定义（函数或者类定义）之间空两行, 方法定义之间空一行；</li>
+<li>文档字符串：文档字符串即包，模块，类或函数中作为注释文档的语句。通常以三重双引号”””包围，格式：首行为概述，接着空一行，下面是详细文档。其中：模块的文档字符串需包含许可样版；函数和方法的文档字符串应包含args，returns，raises；类的文档字符串应包含类的说明及公共属性attributes的说明；</li>
+<li>注释应以#开头（包含多行注释），且注释应离开代码两个空格。技巧性部分或复杂部分需注释，但不要描述代码，假设看代码的人比你更懂Python；</li>
+<li>如果类不继承其他类，则显式集成object类；</li>
+<li>避免在循环中使用+来累加字符串。如果有需要，用list.append来替代；</li>
+<li>为临时代码使用TODO注释；</li>
+<li>即使是打算作为脚本的文件也应该是可导入的，且导入时不应导致脚本主程序运行，应将主功能放在main()中。</li>
+<li>命名：module_name, package_name, ClassName, method_name, ExceptionName, function_name, GLOBAL_VAR_NAME, instance_var_name, function_parameter_name, local_var_name.</li>
+</ol>
+<p>参考资料：</p>
+<blockquote>
+<p>《Python语言规范》<a href="http://zh-google-styleguide.readthedocs.io/en/latest/google-python-styleguide/python_language_rules/" target="_blank" rel="external">http://zh-google-styleguide.readthedocs.io/en/latest/google-python-styleguide/python_language_rules/</a></p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;主要记录个人在阅读《Python 风格指南》时觉得可能会用到的一些建议。&lt;/p&gt;
+&lt;h2 id=&quot;风格规范&quot;&gt;&lt;a href=&quot;#风格规范&quot; class=&quot;headerlink&quot; title=&quot;风格规范&quot;&gt;&lt;/a&gt;风格规范&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;不要在行尾加分号, 也不
+    
+    </summary>
+    
+      <category term="编程语言" scheme="sikaixing.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
+    
+      <category term="Python" scheme="sikaixing.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/"/>
+    
+    
+      <category term="基础知识" scheme="sikaixing.com/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    
+  </entry>
   
   <entry>
     <title>Windows 10 循环蓝屏重启 system thread exception not handled 的一种解决办法</title>
