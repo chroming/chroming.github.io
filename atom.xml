@@ -90,11 +90,11 @@
   </entry>
   
   <entry>
-    <title>我的电脑必装软件 -- macOS篇</title>
+    <title>我的电脑必装软件 -- macOS 篇</title>
     <link href="sikaixing.com/2016/09/18/installed_software_macos/"/>
     <id>sikaixing.com/2016/09/18/installed_software_macos/</id>
     <published>2016-09-18T02:34:00.000Z</published>
-    <updated>2016-09-17T02:34:51.000Z</updated>
+    <updated>2016-09-27T04:18:45.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="MAS-软件"><a href="#MAS-软件" class="headerlink" title="MAS 软件"></a>MAS 软件</h2><ol>
 <li>QQ</li>
@@ -267,11 +267,11 @@
   </entry>
   
   <entry>
-    <title>Python 程序扩展名（py, pyc, pyw, pyo, pyd)及发布程序时的选择</title>
+    <title>Python 程序扩展名（py, pyc, pyw, pyo, pyd）及发布程序时的选择</title>
     <link href="sikaixing.com/2016/08/03/Python_pyc/"/>
     <id>sikaixing.com/2016/08/03/Python_pyc/</id>
     <published>2016-08-03T02:25:26.000Z</published>
-    <updated>2016-08-29T10:10:00.000Z</updated>
+    <updated>2016-09-27T04:18:16.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="扩展名"><a href="#扩展名" class="headerlink" title="扩展名"></a>扩展名</h2><p>Python程序中常见的扩展名是py, pyc，其实还有其他几种扩展名。下面是几种扩展名的用法。</p>
 <h3 id="py"><a href="#py" class="headerlink" title="py"></a>py</h3><p>py就是最基本的源码扩展名。windows下直接双击运行会调用python.exe执行。</p>
