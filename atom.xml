@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="sikaixing.com/"/>
-  <updated>2016-09-26T13:07:36.000Z</updated>
+  <updated>2016-10-15T12:28:36.000Z</updated>
   <id>sikaixing.com/</id>
   
   <author>
@@ -14,6 +14,94 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>国内常用的 iOS 应用 URL Schemes 列表</title>
+    <link href="sikaixing.com/2016/10/15/ios_url_schemes/"/>
+    <id>sikaixing.com/2016/10/15/ios_url_schemes/</id>
+    <published>2016-10-15T10:42:26.000Z</published>
+    <updated>2016-10-15T12:28:36.000Z</updated>
+    
+    <content type="html"><![CDATA[<p><em>经常用到 URL Schemes，发现网上还没有比较完整的对于国内常用 App的 URL Schemes，故整理此文。内容基本收集自网络，如有侵权烦请告知。</em></p>
+<h2 id="iOS10-系统内置"><a href="#iOS10-系统内置" class="headerlink" title="iOS10 系统内置"></a>iOS10 系统内置</h2><p>此部分内容来源于此页面：<br><a href="https://github.com/cyanzhong/app-tutorials/blob/master/schemes.md" target="_blank" rel="external">https://github.com/cyanzhong/app-tutorials/blob/master/schemes.md</a></p>
+<ul>
+<li><code>电池电量</code> Prefs:root=BATTERY_USAGE</li>
+<li><code>通用设置</code> Prefs:root=General</li>
+<li><code>存储空间</code> Prefs:root=General&amp;path=STORAGE_ICLOUD_USAGE/DEVICE_STORAGE</li>
+<li><code>蜂窝数据</code> Prefs:root=MOBILE_DATA_SETTINGS_ID</li>
+<li><code>Wi-Fi 设置</code> Prefs:root=WIFI</li>
+<li><code>蓝牙设置</code> Prefs:root=Bluetooth</li>
+<li><code>定位设置</code> Prefs:root=Privacy&amp;path=LOCATION</li>
+<li><code>辅助功能</code> Prefs:root=General&amp;path=ACCESSIBILITY</li>
+<li><code>关于手机</code> Prefs:root=General&amp;path=About</li>
+<li><code>键盘设置</code> Prefs:root=General&amp;path=Keyboard</li>
+<li><code>显示设置</code> Prefs:root=DISPLAY</li>
+<li><code>声音设置</code> Prefs:root=Sounds</li>
+<li><code>App Store 设置</code> Prefs:root=STORE</li>
+<li><code>墙纸设置</code> Prefs:root=Wallpaper</li>
+<li><code>打开电话</code> Mobilephone://</li>
+<li><code>世界时钟</code> Clock-worldclock://</li>
+<li><code>闹钟</code> Clock-alarm://</li>
+<li><code>秒表</code> Clock-stopwatch://</li>
+<li><code>倒计时</code> Clock-timer://</li>
+<li><code>打开相册</code> Photos://</li>
+</ul>
+<h2 id="微信"><a href="#微信" class="headerlink" title="微信"></a>微信</h2><ul>
+<li><code>扫一扫</code> weixin://scanqrcode</li>
+<li><code>朋友圈</code> weixin://dl/moments</li>
+<li><code>收藏</code> weixin://dl/favorites</li>
+<li><code>我的二维码</code> weixin://dl/myQRcode</li>
+</ul>
+<h2 id="支付宝"><a href="#支付宝" class="headerlink" title="支付宝"></a>支付宝</h2><ul>
+<li><code>扫一扫</code> alipayqr://platformapi/startapp?saId=10000007</li>
+<li><code>付款码</code> alipayqr://platformapi/startapp?saId=20000056</li>
+<li><code>红包</code> alipay://platformapi/startapp?saId=88886666</li>
+<li><code>发起聊天</code> alipay://platformapi/startapp?appId=20000254&amp;actionType=createGroup</li>
+</ul>
+<h2 id="淘宝"><a href="#淘宝" class="headerlink" title="淘宝"></a>淘宝</h2><ul>
+<li><code>打开</code> taobao://</li>
+<li><code>搜索</code> taobao://s.taobao.com/?q=</li>
+</ul>
+<h2 id="Moke-微博客户端"><a href="#Moke-微博客户端" class="headerlink" title="Moke 微博客户端"></a>Moke 微博客户端</h2><p>此部分内容来源于官方帮助文档：<br><a href="https://moke.com/moke/url\_schemes.html" target="_blank" rel="external">https://moke.com/moke/url\_schemes.html</a></p>
+<ul>
+<li><code>打开</code> moke:///</li>
+<li><code>查看微博</code> moke:///link?url=微博正文页面链接</li>
+<li><code>查看用户</code> moke:///link?url=用户主页链接</li>
+<li><code>搜索微博</code> moke:///search/statuses?query=关键字</li>
+<li><code>搜索用户</code> moke:///search/users?query=关键字</li>
+<li><code>发微博</code> moke://账号昵称或ID(缺省使用当前账号)/post?text=微博内容</li>
+</ul>
+<h2 id="微博官方客户端"><a href="#微博官方客户端" class="headerlink" title="微博官方客户端"></a>微博官方客户端</h2><ul>
+<li><code>打开</code> sinaweibo://</li>
+<li><code>扫码</code> sinaweibo://qrcode</li>
+</ul>
+<h2 id="知乎客户端"><a href="#知乎客户端" class="headerlink" title="知乎客户端"></a>知乎客户端</h2><ul>
+<li><code>打开</code> zhihu:</li>
+<li><code>问题页面</code> zhihu://questions/id</li>
+<li><code>回答</code> zhihu://answers/id</li>
+<li><code>用户页</code> zhihu://people/id</li>
+</ul>
+<p>参考资料：</p>
+<blockquote>
+<p>《app-tutorials/schemes.md》<a href="https://github.com/cyanzhong/app-tutorials/blob/master/schemes.md" target="_blank" rel="external">https://github.com/cyanzhong/app-tutorials/blob/master/schemes.md</a><br>《收集各类 App 的 URL schemes》<a href="https://github.com/paicha/url-schemes-collecting" target="_blank" rel="external">https://github.com/paicha/url-schemes-collecting</a><br>《Moke 官方帮助手册》<a href="https://moke.com/moke/url\_schemes.html" target="_blank" rel="external">https://moke.com/moke/url\_schemes.html</a><br>《你所知道好玩有趣的 iOS URL schemes 有哪些？》<a href="https://www.zhihu.com/question/19907735" target="_blank" rel="external">https://www.zhihu.com/question/19907735</a><br>《URL Schemes 使用详解》<a href="http://sspai.com/31500" target="_blank" rel="external">http://sspai.com/31500</a><br>《iOS 知乎客户端的 url scheme 支持哪些参数？》<a href="https://www.zhihu.com/question/27883599" target="_blank" rel="external">https://www.zhihu.com/question/27883599</a></p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;em&gt;经常用到 URL Schemes，发现网上还没有比较完整的对于国内常用 App的 URL Schemes，故整理此文。内容基本收集自网络，如有侵权烦请告知。&lt;/em&gt;&lt;/p&gt;
+&lt;h2 id=&quot;iOS10-系统内置&quot;&gt;&lt;a href=&quot;#iOS10-系统内置&quot; cla
+    
+    </summary>
+    
+      <category term="日常问题" scheme="sikaixing.com/categories/%E6%97%A5%E5%B8%B8%E9%97%AE%E9%A2%98/"/>
+    
+      <category term="日常工具" scheme="sikaixing.com/categories/%E6%97%A5%E5%B8%B8%E9%97%AE%E9%A2%98/%E6%97%A5%E5%B8%B8%E5%B7%A5%E5%85%B7/"/>
+    
+    
+      <category term="iOS" scheme="sikaixing.com/tags/iOS/"/>
+    
+  </entry>
   
   <entry>
     <title>Python 风格指南（Google Python Style Guide系列 ）阅读笔记</title>
@@ -156,7 +244,7 @@
     <link href="sikaixing.com/2016/09/17/installed_software_windows/"/>
     <id>sikaixing.com/2016/09/17/installed_software_windows/</id>
     <published>2016-09-16T16:59:00.000Z</published>
-    <updated>2016-09-27T04:23:32.000Z</updated>
+    <updated>2016-10-12T06:35:07.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="日常软件"><a href="#日常软件" class="headerlink" title="日常软件"></a>日常软件</h2><ol>
 <li>腾讯QQ轻聊版</li>
@@ -166,7 +254,7 @@
 <li>7-zip(备选：winrar免费版)</li>
 <li>Internet Download Manager</li>
 <li>Everything</li>
-<li>Wox</li>
+<li>Listary(备选：Wox)</li>
 <li>百度输入法</li>
 <li>Typora</li>
 <li>potplayer</li>
@@ -175,16 +263,27 @@
 <li>Microsoft Office 365</li>
 <li>为知笔记</li>
 <li>snipaste</li>
+<li>flux</li>
 </ol>
 <h2 id="开发相关"><a href="#开发相关" class="headerlink" title="开发相关"></a>开发相关</h2><ol>
-<li>Pycharm</li>
-<li>Python2 环境</li>
-<li>Sublime Text</li>
-<li>putty(备选：xshell)</li>
-<li>Fiddler</li>
-<li>Wireshark</li>
-<li>zeal(备选：velocity)</li>
-<li>Github客户端</li>
+<li><p>Pycharm</p>
+</li>
+<li><p>Python2 环境</p>
+</li>
+<li><p>ipython</p>
+</li>
+<li><p>Sublime Text</p>
+</li>
+<li><p>putty(备选：xshell)</p>
+</li>
+<li><p>Fiddler</p>
+</li>
+<li><p>Wireshark</p>
+</li>
+<li><p>zeal(备选：velocity)</p>
+</li>
+<li><p>Github客户端</p>
+</li>
 <li><p>Firefox</p>
 <p>​</p>
 </li>
