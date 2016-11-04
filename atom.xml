@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="sikaixing.com/"/>
-  <updated>2016-10-15T12:28:36.000Z</updated>
+  <updated>2016-10-26T03:38:49.000Z</updated>
   <id>sikaixing.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="sikaixing.com/2016/10/15/ios_url_schemes/"/>
     <id>sikaixing.com/2016/10/15/ios_url_schemes/</id>
     <published>2016-10-15T10:42:26.000Z</published>
-    <updated>2016-10-15T12:28:36.000Z</updated>
+    <updated>2016-10-26T03:38:49.000Z</updated>
     
     <content type="html"><![CDATA[<p><em>经常用到 URL Schemes，发现网上还没有比较完整的对于国内常用 App的 URL Schemes，故整理此文。内容基本收集自网络，如有侵权烦请告知。</em></p>
 <h2 id="iOS10-系统内置"><a href="#iOS10-系统内置" class="headerlink" title="iOS10 系统内置"></a>iOS10 系统内置</h2><p>此部分内容来源于此页面：<br><a href="https://github.com/cyanzhong/app-tutorials/blob/master/schemes.md" target="_blank" rel="external">https://github.com/cyanzhong/app-tutorials/blob/master/schemes.md</a></p>
@@ -54,9 +54,11 @@
 </ul>
 <h2 id="支付宝"><a href="#支付宝" class="headerlink" title="支付宝"></a>支付宝</h2><ul>
 <li><code>扫一扫</code> alipayqr://platformapi/startapp?saId=10000007</li>
-<li><code>付款码</code> alipayqr://platformapi/startapp?saId=20000056</li>
+<li><code>付款码</code> alipayqr://platformapi/startapp?saId=20000056<ul>
 <li><code>红包</code> alipay://platformapi/startapp?saId=88886666</li>
 <li><code>发起聊天</code> alipay://platformapi/startapp?appId=20000254&amp;actionType=createGroup</li>
+</ul>
+</li>
 </ul>
 <h2 id="淘宝"><a href="#淘宝" class="headerlink" title="淘宝"></a>淘宝</h2><ul>
 <li><code>打开</code> taobao://</li>
@@ -83,7 +85,7 @@
 </ul>
 <p>参考资料：</p>
 <blockquote>
-<p>《app-tutorials/schemes.md》<a href="https://github.com/cyanzhong/app-tutorials/blob/master/schemes.md" target="_blank" rel="external">https://github.com/cyanzhong/app-tutorials/blob/master/schemes.md</a><br>《收集各类 App 的 URL schemes》<a href="https://github.com/paicha/url-schemes-collecting" target="_blank" rel="external">https://github.com/paicha/url-schemes-collecting</a><br>《Moke 官方帮助手册》<a href="https://moke.com/moke/url\_schemes.html" target="_blank" rel="external">https://moke.com/moke/url\_schemes.html</a><br>《你所知道好玩有趣的 iOS URL schemes 有哪些？》<a href="https://www.zhihu.com/question/19907735" target="_blank" rel="external">https://www.zhihu.com/question/19907735</a><br>《URL Schemes 使用详解》<a href="http://sspai.com/31500" target="_blank" rel="external">http://sspai.com/31500</a><br>《iOS 知乎客户端的 url scheme 支持哪些参数？》<a href="https://www.zhihu.com/question/27883599" target="_blank" rel="external">https://www.zhihu.com/question/27883599</a></p>
+<p><a href="https://github.com/cyanzhong/app-tutorials/blob/master/schemes.md" target="_blank" rel="external">《app-tutorials/schemes.md》</a><br><a href="https://github.com/paicha/url-schemes-collecting" target="_blank" rel="external">《收集各类 App 的 URL schemes》</a><br><a href="https://moke.com/moke/url\_schemes.html" target="_blank" rel="external">《Moke 官方帮助手册》</a><br><a href="https://www.zhihu.com/question/19907735" target="_blank" rel="external">《你所知道好玩有趣的 iOS URL schemes 有哪些？》</a><br><a href="http://sspai.com/31500" target="_blank" rel="external">《URL Schemes 使用详解》</a><br><a href="https://www.zhihu.com/question/27883599" target="_blank" rel="external">《iOS 知乎客户端的 url scheme 支持哪些参数？》</a></p>
 </blockquote>
 ]]></content>
     
@@ -108,7 +110,7 @@
     <link href="sikaixing.com/2016/09/26/Google_Python_Style_Guide/"/>
     <id>sikaixing.com/2016/09/26/Google_Python_Style_Guide/</id>
     <published>2016-09-26T13:06:00.000Z</published>
-    <updated>2016-10-26T03:21:09.000Z</updated>
+    <updated>2016-10-26T03:37:03.000Z</updated>
     
     <content type="html"><![CDATA[<p>主要记录个人在阅读《Python 风格指南》时觉得可能会用到的一些建议。</p>
 <h2 id="风格规范"><a href="#风格规范" class="headerlink" title="风格规范"></a>风格规范</h2><ol>
@@ -125,7 +127,7 @@
 </ol>
 <p>参考资料：</p>
 <blockquote>
-<p>《Python语言规范》<a href="http://zh-google-styleguide.readthedocs.io/en/latest/google-python-styleguide/python_language_rules/" target="_blank" rel="external">http://zh-google-styleguide.readthedocs.io/en/latest/google-python-styleguide/python_language_rules/</a></p>
+<p><a href="http://zh-google-styleguide.readthedocs.io/en/latest/google-python-styleguide/python_language_rules/" target="_blank" rel="external">《Python语言规范》</a></p>
 </blockquote>
 ]]></content>
     
@@ -151,14 +153,14 @@
     <link href="sikaixing.com/2016/09/18/Windows_10_system%20thread_exception_not_handled/"/>
     <id>sikaixing.com/2016/09/18/Windows_10_system thread_exception_not_handled/</id>
     <published>2016-09-18T06:00:00.000Z</published>
-    <updated>2016-09-17T06:02:40.000Z</updated>
+    <updated>2016-10-26T03:42:33.000Z</updated>
     
     <content type="html"><![CDATA[<p>近期自己的老笔记本在打开一个游戏一段时间后突然蓝屏并无限循环重启，屏幕显示错误提示为：system thread exception not handled。在试了一些常见方法未果后差不多准备重装系统时，偶然看到一个帖子：<a href="http://answers.microsoft.com/zh-hans/windows/forum/windows_10-performance/win10/2c730d1a-9e1d-4da1-a11b-5659df6169ec?auth=1" target="_blank" rel="external">http://answers.microsoft.com/zh-hans/windows/forum/windows_10-performance/win10/2c730d1a-9e1d-4da1-a11b-5659df6169ec?auth=1</a></p>
 <p>此帖提问者回复说拆卸电池后问题解决，笔者也试着将自己的笔记本电池拆下并断电后，再开机，果然解决了问题。也就是说解决办法是给电脑断电，由于笔记本有电池，要彻底断电需要将电池取下才可以。</p>
 <p>这个问题具体原因官方也没说清楚，姑且认为是系统BUG吧。</p>
 <p>参考资料：</p>
 <blockquote>
-<p>《Win10 无限蓝屏重启 显示 system thread exception not handled》<a href="http://answers.microsoft.com/zh-hans/windows/forum/windows_10-performance/win10/2c730d1a-9e1d-4da1-a11b-5659df6169ec?auth=1" target="_blank" rel="external">http://answers.microsoft.com/zh-hans/windows/forum/windows_10-performance/win10/2c730d1a-9e1d-4da1-a11b-5659df6169ec?auth=1</a></p>
+<p><a href="http://answers.microsoft.com/zh-hans/windows/forum/windows_10-performance/win10/2c730d1a-9e1d-4da1-a11b-5659df6169ec?auth=1" target="_blank" rel="external">《Win10 无限蓝屏重启 显示 system thread exception not handled》</a></p>
 </blockquote>
 ]]></content>
     
@@ -315,7 +317,7 @@
     <link href="sikaixing.com/2016/08/05/QLineEdit_click/"/>
     <id>sikaixing.com/2016/08/05/QLineEdit_click/</id>
     <published>2016-08-05T09:34:10.000Z</published>
-    <updated>2016-08-29T10:34:02.000Z</updated>
+    <updated>2016-11-04T06:34:32.000Z</updated>
     
     <content type="html"><![CDATA[<p>最近收到一个需求：希望实现点击一个QLineEdit全选其中的文本。由于QLineEdit没有点击信号，要实现这个功能还是花了一点时间。</p>
 <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>最近写的软件包含一个简单的网页浏览器的部分，其中地址栏用的标准QLineEdit。另外界面文件是用Qt Designer画的，代码中直接引用UI文件。这样修改界面比较直观。</p>
@@ -342,8 +344,8 @@
 <p>参考资料：</p>
 <blockquote>
 <ol>
-<li>《使用Designer编写PyQt程序的简单流程》<a href="http://richardustc.github.io/2015-07-06-create-PyQt-Program-with-Designer.html" target="_blank" rel="external">http://richardustc.github.io/2015-07-06-create-PyQt-Program-with-Designer.html</a></li>
-<li>《Pyside - Select all text when QLineEdit gets focus》<a href="http://stackoverflow.com/questions/23076698/pyside-select-all-text-when-qlineedit-gets-focus" target="_blank" rel="external">http://stackoverflow.com/questions/23076698/pyside-select-all-text-when-qlineedit-gets-focus</a></li>
+<li>《<a href="http://richardustc.github.io/2015-07-06-create-PyQt-Program-with-Designer.html" target="_blank" rel="external">使用Designer编写PyQt程序的简单流程</a>》</li>
+<li>《<a href="http://stackoverflow.com/questions/23076698/pyside-select-all-text-when-qlineedit-gets-focus" target="_blank" rel="external">Pyside - Select all text when QLineEdit gets focus</a>》</li>
 </ol>
 </blockquote>
 ]]></content>
@@ -371,7 +373,7 @@
     <link href="sikaixing.com/2016/08/03/Python_pyc/"/>
     <id>sikaixing.com/2016/08/03/Python_pyc/</id>
     <published>2016-08-03T02:25:26.000Z</published>
-    <updated>2016-09-27T04:18:16.000Z</updated>
+    <updated>2016-11-04T06:36:08.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="扩展名"><a href="#扩展名" class="headerlink" title="扩展名"></a>扩展名</h2><p>Python程序中常见的扩展名是py, pyc，其实还有其他几种扩展名。下面是几种扩展名的用法。</p>
 <h3 id="py"><a href="#py" class="headerlink" title="py"></a>py</h3><p>py就是最基本的源码扩展名。windows下直接双击运行会调用python.exe执行。</p>
@@ -398,11 +400,11 @@
 <p>参考资料：</p>
 <blockquote>
 <ol>
-<li>《python 文件 .py .pyc .pyw .pyo .pyd》 <a href="http://blog.csdn.net/feeltouch/article/details/45952003" target="_blank" rel="external">http://blog.csdn.net/feeltouch/article/details/45952003</a></li>
-<li>《Python程序的执行原理》<a href="http://tech.uc.cn/?p=1932" target="_blank" rel="external">http://tech.uc.cn/?p=1932</a></li>
-<li>《python的pyc和pyo文件》<a href="http://gmingzhe.blog.51cto.com/810664/163444" target="_blank" rel="external">http://gmingzhe.blog.51cto.com/810664/163444</a></li>
-<li>《运行Python程序(pyc)隐藏DOS窗口的简便方法》<a href="https://apfantasy.wordpress.com/2011/02/13/%E8%BF%90%E8%A1%8Cpython%E7%A8%8B%E5%BA%8Fpyc%E9%9A%90%E8%97%8Fdos%E7%AA%97%E5%8F%A3%E7%9A%84%E7%AE%80%E4%BE%BF%E6%96%B9%E6%B3%95/" target="_blank" rel="external">https://apfantasy.wordpress.com/2011/02/13/%E8%BF%90%E8%A1%8Cpython%E7%A8%8B%E5%BA%8Fpyc%E9%9A%90%E8%97%8Fdos%E7%AA%97%E5%8F%A3%E7%9A%84%E7%AE%80%E4%BE%BF%E6%96%B9%E6%B3%95/</a></li>
-<li>《py文件编译为pyc》<a href="http://blog.csdn.net/sislcb/article/details/4002414" target="_blank" rel="external">http://blog.csdn.net/sislcb/article/details/4002414</a></li>
+<li>《<a href="http://blog.csdn.net/feeltouch/article/details/45952003" target="_blank" rel="external">python 文件 .py .pyc .pyw .pyo .pyd</a>》</li>
+<li>《<a href="http://tech.uc.cn/?p=1932" target="_blank" rel="external">Python程序的执行原理</a>》</li>
+<li>《<a href="http://gmingzhe.blog.51cto.com/810664/163444" target="_blank" rel="external">python的pyc和pyo文件</a>》</li>
+<li>《<a href="https://apfantasy.wordpress.com/2011/02/13/%E8%BF%90%E8%A1%8Cpython%E7%A8%8B%E5%BA%8Fpyc%E9%9A%90%E8%97%8Fdos%E7%AA%97%E5%8F%A3%E7%9A%84%E7%AE%80%E4%BE%BF%E6%96%B9%E6%B3%95/" target="_blank" rel="external">运行Python程序(pyc)隐藏DOS窗口的简便方法</a>》</li>
+<li>《<a href="http://blog.csdn.net/sislcb/article/details/4002414" target="_blank" rel="external">py文件编译为pyc</a>》</li>
 </ol>
 </blockquote>
 ]]></content>
@@ -428,7 +430,7 @@
     <link href="sikaixing.com/2016/03/27/https_about/"/>
     <id>sikaixing.com/2016/03/27/https_about/</id>
     <published>2016-03-26T16:25:26.000Z</published>
-    <updated>2016-08-21T14:03:50.000Z</updated>
+    <updated>2016-10-26T03:41:31.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="密钥"><a href="#密钥" class="headerlink" title="密钥"></a>密钥</h2><p>我们将未加密的内容称为明文，加密之后的内容称为密文。</p>
 <p>简单来说，要加密一段明文，可以将这段内容输入到一个加密函数中，输出密文。但这种简单的加密方式存在被人盗取到加密函数从而破解明文的危险，且加密函数一般构成复杂，一旦被盗取更换成本较高。</p>
@@ -557,15 +559,15 @@
 <blockquote>
 <ol>
 <li>《HTTP权威指南》一书</li>
-<li>《数字证书原理》<a href="http://www.cnblogs.com/JeffreySun/archive/2010/06/24/1627247.html" target="_blank" rel="external">http://www.cnblogs.com/JeffreySun/archive/2010/06/24/1627247.html</a></li>
-<li>《数字签名是什么？》<a href="http://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html" target="_blank" rel="external">http://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html</a></li>
-<li>《HTTPS通信中的身份认证机制》<a href="https://cnodejs.org/topic/56eb698ec95e8f992473c5a3" target="_blank" rel="external">https://cnodejs.org/topic/56eb698ec95e8f992473c5a3</a></li>
-<li>《SSL证书必知必会：数字证书及CA基础知识》<a href="http://liuqunying.blog.51cto.com/3984207/1664246" target="_blank" rel="external">http://liuqunying.blog.51cto.com/3984207/1664246</a></li>
-<li>《SSL/TLS协议运行机制的概述》<a href="http://www.ruanyifeng.com/blog/2014/02/ssl_tls.html" target="_blank" rel="external">http://www.ruanyifeng.com/blog/2014/02/ssl_tls.html</a></li>
-<li>《大型网站的 HTTPS 实践（一）—— HTTPS 协议和原理》<a href="http://op.baidu.com/2015/04/https-s01a01/" target="_blank" rel="external">http://op.baidu.com/2015/04/https-s01a01/</a></li>
-<li>《理解 HTTPS 原理，SSL/TLS 协议》<a href="https://hacpai.com/article/1447920990604" target="_blank" rel="external">https://hacpai.com/article/1447920990604</a></li>
-<li>《HTTPS证书生成原理和部署细节》<a href="http://www.barretlee.com/blog/2015/10/05/how-to-build-a-https-server/" target="_blank" rel="external">http://www.barretlee.com/blog/2015/10/05/how-to-build-a-https-server/</a></li>
-<li>《HTTPS原理学习笔记》<a href="http://www.kevenwu.com/blogs/14/" target="_blank" rel="external">http://www.kevenwu.com/blogs/14/</a></li>
+<li><a href="http://www.cnblogs.com/JeffreySun/archive/2010/06/24/1627247.html" target="_blank" rel="external">《数字证书原理》</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html" target="_blank" rel="external">《数字签名是什么？》</a></li>
+<li><a href="https://cnodejs.org/topic/56eb698ec95e8f992473c5a3" target="_blank" rel="external">《HTTPS通信中的身份认证机制》</a></li>
+<li><a href="http://liuqunying.blog.51cto.com/3984207/1664246" target="_blank" rel="external">《SSL证书必知必会：数字证书及CA基础知识》</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2014/02/ssl_tls.html" target="_blank" rel="external">《SSL/TLS协议运行机制的概述》</a></li>
+<li><a href="http://op.baidu.com/2015/04/https-s01a01/" target="_blank" rel="external">《大型网站的 HTTPS 实践（一）—— HTTPS 协议和原理》</a></li>
+<li><a href="https://hacpai.com/article/1447920990604" target="_blank" rel="external">《理解 HTTPS 原理，SSL/TLS 协议》</a></li>
+<li><a href="http://www.barretlee.com/blog/2015/10/05/how-to-build-a-https-server/" target="_blank" rel="external">《HTTPS证书生成原理和部署细节》</a></li>
+<li><a href="http://www.kevenwu.com/blogs/14/" target="_blank" rel="external">《HTTPS原理学习笔记》</a></li>
 </ol>
 </blockquote>
 ]]></content>
@@ -644,7 +646,7 @@
     <link href="sikaixing.com/2016/03/15/wechat_in_sae/"/>
     <id>sikaixing.com/2016/03/15/wechat_in_sae/</id>
     <published>2016-03-14T16:09:26.000Z</published>
-    <updated>2016-08-21T14:10:40.000Z</updated>
+    <updated>2016-10-26T03:44:45.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="准备阶段"><a href="#准备阶段" class="headerlink" title="准备阶段"></a>准备阶段</h2><h3 id="SAE准备"><a href="#SAE准备" class="headerlink" title="SAE准备"></a>SAE准备</h3><p><em>SAE的应用平台提供了一个语言环境。比如提供了PHP环境的应用即可运行PHP代码。当然环境中也可以放HTML和CSS，将要展示的页面命名为index.html即可。</em></p>
 <p>SAE的申请略过。创建一个PHP5.6空应用，代码管理中打开git。本地文件就可以通过Git命令上传到SAE上了。具体命令SAE页面有写。<br>应用有个地址，记下来，需要填到微信中。</p>
@@ -675,16 +677,16 @@
 <p>参考资料：</p>
 <blockquote>
 <ol>
-<li>《中国天气网 天气预报API 国家气象局 根据城市名称抓取城市ID，XML格式、JSON格式、图片代码》<a href="http://www.wjxfpf.com/2015/10/69618.html" target="_blank" rel="external">http://www.wjxfpf.com/2015/10/69618.html</a></li>
-<li>《中国天气网天气预报API接口城市代码，XML格式，数据具体到县、区级别》<a href="http://www.wjxfpf.com/2015/10/279028.html" target="_blank" rel="external">http://www.wjxfpf.com/2015/10/279028.html</a></li>
-<li>《【荐】怎么用PHP发送HTTP请求（POST请求、GET请求）?》<a href="http://www.php-note.com/article/detail/161" target="_blank" rel="external">http://www.php-note.com/article/detail/161</a></li>
-<li>《curl网站开发指南》<a href="http://www.ruanyifeng.com/blog/2011/09/curl.html" target="_blank" rel="external">http://www.ruanyifeng.com/blog/2011/09/curl.html</a></li>
-<li>《<a href="http://php.net/manual/zh/book.curl.php》http://php.net/manual/zh/book.curl.php" target="_blank" rel="external">http://php.net/manual/zh/book.curl.php》http://php.net/manual/zh/book.curl.php</a></li>
-<li>《PHP通过SimpleXML访问xml文档》<a href="http://blog.csdn.net/guoguo1980/article/details/2436318" target="_blank" rel="external">http://blog.csdn.net/guoguo1980/article/details/2436318</a></li>
-<li>《json_decode》<a href="http://us3.php.net/manual/zh/function.json-decode.php" target="_blank" rel="external">http://us3.php.net/manual/zh/function.json-decode.php</a></li>
-<li>《PHP创建和解析JSON数据的方法》<a href="http://www.crazyant.net/920.html" target="_blank" rel="external">http://www.crazyant.net/920.html</a></li>
-<li>《在PHP语言中使用JSON》<a href="http://www.ruanyifeng.com/blog/2011/01/json_in_php.html" target="_blank" rel="external">http://www.ruanyifeng.com/blog/2011/01/json_in_php.html</a></li>
-<li>《PHP高级特性一之正则表达式用法》<a href="http://cuiqingcai.com/1186.html" target="_blank" rel="external">http://cuiqingcai.com/1186.html</a></li>
+<li><a href="http://www.wjxfpf.com/2015/10/69618.html" target="_blank" rel="external">《中国天气网 天气预报API 国家气象局 根据城市名称抓取城市ID，XML格式、JSON格式、图片代码》</a></li>
+<li><a href="http://www.wjxfpf.com/2015/10/279028.html" target="_blank" rel="external">《中国天气网天气预报API接口城市代码，XML格式，数据具体到县、区级别》</a></li>
+<li><a href="http://www.php-note.com/article/detail/161" target="_blank" rel="external">《【荐】怎么用PHP发送HTTP请求（POST请求、GET请求）?》</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2011/09/curl.html" target="_blank" rel="external">《curl网站开发指南》</a></li>
+<li><a href="http://php.net/manual/zh/book.curl.php" target="_blank" rel="external">《http://php.net/manual/zh/book.curl.php》</a></li>
+<li><a href="http://blog.csdn.net/guoguo1980/article/details/2436318" target="_blank" rel="external">《PHP通过SimpleXML访问xml文档》</a></li>
+<li><a href="http://us3.php.net/manual/zh/function.json-decode.php" target="_blank" rel="external">《json_decode》</a></li>
+<li><a href="http://www.crazyant.net/920.html" target="_blank" rel="external">《PHP创建和解析JSON数据的方法》</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2011/01/json_in_php.html" target="_blank" rel="external">《在PHP语言中使用JSON》</a></li>
+<li><a href="http://cuiqingcai.com/1186.html" target="_blank" rel="external">《PHP高级特性一之正则表达式用法》</a></li>
 </ol>
 </blockquote>
 ]]></content>
