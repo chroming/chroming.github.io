@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="sikaixing.com/"/>
-  <updated>2016-10-26T03:38:49.000Z</updated>
+  <updated>2016-11-13T11:42:13.000Z</updated>
   <id>sikaixing.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="sikaixing.com/2016/10/15/ios_url_schemes/"/>
     <id>sikaixing.com/2016/10/15/ios_url_schemes/</id>
     <published>2016-10-15T10:42:26.000Z</published>
-    <updated>2016-10-26T03:38:49.000Z</updated>
+    <updated>2016-11-13T11:42:13.000Z</updated>
     
     <content type="html"><![CDATA[<p><em>经常用到 URL Schemes，发现网上还没有比较完整的对于国内常用 App的 URL Schemes，故整理此文。内容基本收集自网络，如有侵权烦请告知。</em></p>
 <h2 id="iOS10-系统内置"><a href="#iOS10-系统内置" class="headerlink" title="iOS10 系统内置"></a>iOS10 系统内置</h2><p>此部分内容来源于此页面：<br><a href="https://github.com/cyanzhong/app-tutorials/blob/master/schemes.md" target="_blank" rel="external">https://github.com/cyanzhong/app-tutorials/blob/master/schemes.md</a></p>
@@ -54,11 +54,9 @@
 </ul>
 <h2 id="支付宝"><a href="#支付宝" class="headerlink" title="支付宝"></a>支付宝</h2><ul>
 <li><code>扫一扫</code> alipayqr://platformapi/startapp?saId=10000007</li>
-<li><code>付款码</code> alipayqr://platformapi/startapp?saId=20000056<ul>
+<li><code>付款码</code> alipayqr://platformapi/startapp?saId=20000056</li>
 <li><code>红包</code> alipay://platformapi/startapp?saId=88886666</li>
 <li><code>发起聊天</code> alipay://platformapi/startapp?appId=20000254&amp;actionType=createGroup</li>
-</ul>
-</li>
 </ul>
 <h2 id="淘宝"><a href="#淘宝" class="headerlink" title="淘宝"></a>淘宝</h2><ul>
 <li><code>打开</code> taobao://</li>
