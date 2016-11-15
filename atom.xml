@@ -245,7 +245,7 @@
     <link href="sikaixing.com/2016/09/17/installed_software_windows/"/>
     <id>sikaixing.com/2016/09/17/installed_software_windows/</id>
     <published>2016-09-16T16:59:00.000Z</published>
-    <updated>2016-10-12T06:35:07.000Z</updated>
+    <updated>2016-11-15T08:53:23.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="日常软件"><a href="#日常软件" class="headerlink" title="日常软件"></a>日常软件</h2><ol>
 <li>腾讯QQ轻聊版</li>
@@ -253,7 +253,7 @@
 <li>迅雷(备选：迅雷精简版)</li>
 <li>chrome</li>
 <li>7-zip(备选：winrar免费版)</li>
-<li>Internet Download Manager</li>
+<li>Internet Download Manager(备选：EagleGet)</li>
 <li>Everything</li>
 <li>Listary(备选：Wox)</li>
 <li>百度输入法</li>
@@ -267,24 +267,15 @@
 <li>flux</li>
 </ol>
 <h2 id="开发相关"><a href="#开发相关" class="headerlink" title="开发相关"></a>开发相关</h2><ol>
-<li><p>Pycharm</p>
-</li>
-<li><p>Python2 环境</p>
-</li>
-<li><p>ipython</p>
-</li>
-<li><p>Sublime Text</p>
-</li>
-<li><p>putty(备选：xshell)</p>
-</li>
-<li><p>Fiddler</p>
-</li>
-<li><p>Wireshark</p>
-</li>
-<li><p>zeal(备选：velocity)</p>
-</li>
-<li><p>Github客户端</p>
-</li>
+<li>Pycharm</li>
+<li>Python2 环境</li>
+<li>ipython</li>
+<li>Sublime Text</li>
+<li>putty(备选：xshell)</li>
+<li>Fiddler</li>
+<li>Wireshark</li>
+<li>zeal(备选：velocity)</li>
+<li>Github客户端</li>
 <li><p>Firefox</p>
 <p>​</p>
 </li>
