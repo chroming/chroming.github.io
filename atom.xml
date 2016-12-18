@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="sikaixing.com/"/>
-  <updated>2016-11-13T11:42:13.000Z</updated>
+  <updated>2016-12-18T10:45:19.000Z</updated>
   <id>sikaixing.com/</id>
   
   <author>
@@ -14,6 +14,96 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Python 的列表推导式、字典推导式</title>
+    <link href="sikaixing.com/2016/12/18/Python_%20comprehensions/"/>
+    <id>sikaixing.com/2016/12/18/Python_ comprehensions/</id>
+    <published>2016-12-18T10:41:00.000Z</published>
+    <updated>2016-12-18T10:45:19.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="列表推导式"><a href="#列表推导式" class="headerlink" title="列表推导式"></a>列表推导式</h2><p>列表解析是用一行代码实现根据一个列表生成另一个列表的写法。</p>
+<h3 id="基本写法"><a href="#基本写法" class="headerlink" title="基本写法"></a>基本写法</h3><p>要实现从一个列表中获取满足条件的某些元素组成新的列表：</p>
+<p><code>[x for x in [1,2,3,4] if x % 2 == 0]</code></p>
+<p>这行代码输出是 <code>[2, 4]</code>。如果没有 if 的话就是直接复制整个列表。</p>
+<h3 id="其他用法"><a href="#其他用法" class="headerlink" title="其他用法"></a>其他用法</h3><p>修改新列表的元素：</p>
+<p><code>[x/2 for x in [1,2,3,4]]</code></p>
+<p>将单个元素的列表重复此元素，扩展为指定长度的列表：</p>
+<p><code>[x for i in range(100)]</code></p>
+<p>提取嵌套列表中元素的第一项：</p>
+<p><code>[x[0] for x in [[1,2], [3,4], [5,6]]]</code></p>
+<p>嵌套循环的写法：</p>
+<p><code>[n for row in [[1,2], [3,4], [5,6]] for n in row]</code></p>
+<p>生成嵌套列表：</p>
+<p><code>[(x,x+10) for x in [1,2]</code></p>
+<p>多个参数：<br><code>[(x,y) for x,y in {1:2, 4:5}.items() if x % 2 == 0]</code></p>
+<p>与条件表达式结合：<br><code>[x if x % 3 == 0 else 1 for x in range(10)]</code></p>
+<p><code>[(x,y) if x % 2 == 0 else (y, 3) for x,y in {1:2, 4:5}.items() ]</code></p>
+<h2 id="字典推导式"><a href="#字典推导式" class="headerlink" title="字典推导式"></a>字典推导式</h2><p>与列表推导式类似，字典也有相应的推导式写法。</p>
+<h3 id="基本写法-1"><a href="#基本写法-1" class="headerlink" title="基本写法"></a>基本写法</h3><p><code>{x:y for y,x in {&#39;1&#39;:&#39;2&#39;, &#39;3&#39;:&#39;4&#39;}.items() if &#39;1&#39; in y}</code></p>
+<p>参考资料：</p>
+<blockquote>
+<p><a href="http://codingpy.com/article/python-list-comprehensions-explained-visually/" target="_blank" rel="external">《轻松学会Python列表解析式》</a><br><a href="http://www.shoucewang.com/python-senior/list-comprehensions.html" target="_blank" rel="external">《字典推导式》</a></p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;列表推导式&quot;&gt;&lt;a href=&quot;#列表推导式&quot; class=&quot;headerlink&quot; title=&quot;列表推导式&quot;&gt;&lt;/a&gt;列表推导式&lt;/h2&gt;&lt;p&gt;列表解析是用一行代码实现根据一个列表生成另一个列表的写法。&lt;/p&gt;
+&lt;h3 id=&quot;基本写法&quot;&gt;&lt;a href=&quot;#
+    
+    </summary>
+    
+      <category term="编程语言" scheme="sikaixing.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
+    
+      <category term="Python" scheme="sikaixing.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/"/>
+    
+    
+      <category term="Python" scheme="sikaixing.com/tags/Python/"/>
+    
+      <category term="Python 技巧" scheme="sikaixing.com/tags/Python-%E6%8A%80%E5%B7%A7/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Python list 替换项、dict及 orderDict替换 key 的方式</title>
+    <link href="sikaixing.com/2016/12/18/ordereddict_replace_key/"/>
+    <id>sikaixing.com/2016/12/18/ordereddict_replace_key/</id>
+    <published>2016-12-18T10:36:00.000Z</published>
+    <updated>2016-12-18T10:45:27.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="list-替换项"><a href="#list-替换项" class="headerlink" title="list 替换项"></a>list 替换项</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">index = list.index(value)</div><div class="line">list[index]() = new_value</div></pre></td></tr></table></figure>
+<h2 id="dict-替换-key"><a href="#dict-替换-key" class="headerlink" title="dict 替换 key"></a>dict 替换 key</h2><p>dict的 pop()方法可以删除一个 item，之后再添加一个新的 item即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">dict[new_key] = item[old_key]</div><div class="line">dict.pop[old_key]</div></pre></td></tr></table></figure>
+<p>还有更简答的写法：</p>
+<p><code>dict[new_key] = dict.pop(old_key)</code></p>
+<p>不过 pop()方法是删除并返回该 item。如果不需要返回还可以使用 del：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">dict[new_key] = item[old_key]</div><div class="line">del dict[old_key]</div></pre></td></tr></table></figure></p>
+<p>注意：<br>如果是在循环中替换 key 会将新 key 引入循环，导致重复处理。解决方法是在循环前深拷贝 dict.keys()，循环此 list。</p>
+<h2 id="orderedDict-替换-key"><a href="#orderedDict-替换-key" class="headerlink" title="orderedDict 替换 key"></a>orderedDict 替换 key</h2><p>orderedDict 是python 内置的有序 dict 类。</p>
+<p>直接套用 dict 的 <code>dict[new_key] = dict.pop(old_key)</code> 方法替换 key 会导致orderedDict顺序改变。 解决方法是重新建立一个orderedDict：</p>
+<p><code>new_order = OrderedDict([(&#39;__C__&#39;, v) if k == &#39;c&#39; else (k, v) for k, v in old_order.items()])</code></p>
+<p>参考资料：</p>
+<blockquote>
+<p> <a href="http://stackoverflow.com/questions/12150872/change-key-in-ordereddict-without-loosing-order" target="_blank" rel="external">《change key in OrderedDict without loosing order》</a></p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;list-替换项&quot;&gt;&lt;a href=&quot;#list-替换项&quot; class=&quot;headerlink&quot; title=&quot;list 替换项&quot;&gt;&lt;/a&gt;list 替换项&lt;/h2&gt;&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td c
+    
+    </summary>
+    
+      <category term="编程语言" scheme="sikaixing.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
+    
+      <category term="Python" scheme="sikaixing.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/"/>
+    
+    
+      <category term="Python" scheme="sikaixing.com/tags/Python/"/>
+    
+      <category term="Python 技巧" scheme="sikaixing.com/tags/Python-%E6%8A%80%E5%B7%A7/"/>
+    
+  </entry>
   
   <entry>
     <title>国内常用的 iOS 应用 URL Schemes 列表</title>
@@ -704,7 +794,7 @@
     <link href="sikaixing.com/2016/03/06/ss_manyuser/"/>
     <id>sikaixing.com/2016/03/06/ss_manyuser/</id>
     <published>2016-03-06T02:00:00.000Z</published>
-    <updated>2016-11-12T12:15:10.000Z</updated>
+    <updated>2016-12-18T10:28:18.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="manyuser安装及启用"><a href="#manyuser安装及启用" class="headerlink" title="manyuser安装及启用"></a>manyuser安装及启用</h2><h3 id="下载及依赖库安装"><a href="#下载及依赖库安装" class="headerlink" title="下载及依赖库安装"></a>下载及依赖库安装</h3><h4 id="下载manyuser"><a href="#下载manyuser" class="headerlink" title="下载manyuser"></a>下载manyuser</h4><p>shadowsocks manyuser是一个shadowsocks多用户修改版。官方地址：<a href="https://github.com/mengskysama/shadowsocks/tree/manyuser" target="_blank" rel="external">https://github.com/mengskysama/shadowsocks/tree/manyuser</a></p>
 <p>下载：<br><code>git clone -b manyuser https://github.com/mengskysama/shadowsocks.git</code><br>会在当前目录下载manyuser。<br>解压出来为/shadowsocks/shadowsocks</p>
@@ -740,7 +830,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">#Config Example</div><div class="line">MYSQL_HOST = &apos;localhost&apos;</div><div class="line">MYSQL_PORT = 3306</div><div class="line">MYSQL_USER = &apos;ssuser&apos;</div><div class="line">MYSQL_PASS = &apos;passwd&apos;</div><div class="line">MYSQL_DB = &apos;shadowsocks&apos;</div><div class="line"></div><div class="line">MANAGE_PASS = &apos;ss233333333&apos;</div><div class="line">#if you want manage in other server you should set this value to global ip</div><div class="line">MANAGE_BIND_IP = &apos;127.0.0.1&apos;</div><div class="line">#make sure this port is idle</div><div class="line">MANAGE_PORT = 23333</div></pre></td></tr></table></figure>
 <h3 id="防火墙配置"><a href="#防火墙配置" class="headerlink" title="防火墙配置"></a>防火墙配置</h3><p>不要忘记在系统防火墙中开启需要使用的端口：<br><code>firewall-cmd --zone=public --add-port=50000/tcp --permanent</code><br><code>firewall-cmd --reload</code></p>
 <h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><p><code>python server.py</code><br>如果没有报错就说明启动正常了。<br>后台运行且注销也不停止：<br><code>nohup python server.py &gt; /dev/null 2&gt;&amp;1 &amp;</code></p>
-<p>开机启动：（无法正常执行）<br>开机启动mariadb:<br><code>systemctl enable mariadb</code><br>开机启动many-user:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd /shadowsocks/shadowsocks/ #server.py配置文件在这个目录中，调用要先进入这个目录</div><div class="line">python server.py --fast-open #不知道fast-open参数是否有用</div></pre></td></tr></table></figure></p>
+<p>开机启动：（无法正常执行）<br>开机启动mariadb:<br><code>systemctl enable mariadb</code><br>开机启动many-user:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd /shadowsocks/shadowsocks/ # server.py配置文件在这个目录中，调用要先进入这个目录</div><div class="line">python server.py --fast-open</div></pre></td></tr></table></figure></p>
 <h3 id="本地配置"><a href="#本地配置" class="headerlink" title="本地配置"></a>本地配置</h3><p>本地配置的服务器IP填VPS的IP，端口和密码填VPS上服务开启后显示的端口和密码（也就是数据库表中的port和passwd），加密方式选rc4-md5。即可正常使用。</p>
 <blockquote>
 <p>《<a href="http://www.phpini.com/linux/redhat-centos-7-setup-apache-mariadb-php" target="_blank" rel="external">RHEL 及 CentOS 7 安裝 Apache, MariaDB, PHP(LAMP)</a>》<br>《<a href="http://www.cnblogs.com/mr-wid/archive/2013/05/09/3068229.html" target="_blank" rel="external">21分钟 MySQL 入门教程</a>》<br>《<a href="http://www.cnblogs.com/Dot-Boy/archive/2008/08/04/1260185.html" target="_blank" rel="external">mysql导入sql脚本</a>》<br>《<a href="http://www.111cn.net/database/mysql/46288.htm" target="_blank" rel="external">mysql 创建用户与授权、修改密码</a>》</p>
