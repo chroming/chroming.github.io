@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="sikaixing.com/"/>
-  <updated>2016-12-18T10:45:19.000Z</updated>
+  <updated>2016-12-20T06:57:05.000Z</updated>
   <id>sikaixing.com/</id>
   
   <author>
@@ -14,6 +14,44 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>PyQt4 解决主界面阻塞导致状态栏无法刷新的问题</title>
+    <link href="sikaixing.com/2016/12/20/PyQt4_gui_blocked/"/>
+    <id>sikaixing.com/2016/12/20/PyQt4_gui_blocked/</id>
+    <published>2016-12-20T06:55:00.000Z</published>
+    <updated>2016-12-20T06:57:05.000Z</updated>
+    
+    <content type="html"><![CDATA[<p><em>近期写的程序中有个访问网页的操作，比较耗时，于是准备给它加上个状态栏用于提醒当前后台进行到哪一步了。</em></p>
+<h2 id="多线程方式"><a href="#多线程方式" class="headerlink" title="多线程方式"></a>多线程方式</h2><p>之前写的程序也有这个需求，当时用多线程解决的。写法如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SetLabelText</span><span class="params">(QThread)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, label, message, parent=None)</span>:</span></div><div class="line">        super(SetLabelText, self).__init__(parent)</div><div class="line">        self.lable = label</div><div class="line">        self.message = message</div><div class="line">        </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__del__</span><span class="params">(self)</span>:</span></div><div class="line">        self.exiting = <span class="keyword">True</span></div><div class="line">        self.wait()</div><div class="line">        </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></div><div class="line">        self.lable.setText(<span class="string">u"%s"</span> % self.message)</div></pre></td></tr></table></figure>
+<p>另外在主程序中比较耗时的部分添加了调用语句：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">self.m1 = SetLabel(self.status_label, <span class="string">u"提醒"</span>)</div><div class="line">self.m1.start()</div></pre></td></tr></table></figure>
+<h2 id="更简单的方式"><a href="#更简单的方式" class="headerlink" title="更简单的方式"></a>更简单的方式</h2><p>多线程虽然看起来是解决问题了，但在面对一个方法中多次修改状态栏内容时还需要更多处理步骤才能完美解决所有问题，这样显得有些大材小用了。在查找资料的过程中发现了更简单的解决问题的方法，就是在主程序中直接写上提醒语句，另外还要加上一行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">self.status_label.setText(u&quot;正在读取配置……请稍候……&quot;)</div><div class="line">QCoreApplication.processEvents()</div></pre></td></tr></table></figure>
+<p>参考资料：</p>
+<blockquote>
+<p>《<a href="https://my.oschina.net/u/200628/blog/187865" target="_blank" rel="external">正确使用Qt多线程</a>》</p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;em&gt;近期写的程序中有个访问网页的操作，比较耗时，于是准备给它加上个状态栏用于提醒当前后台进行到哪一步了。&lt;/em&gt;&lt;/p&gt;
+&lt;h2 id=&quot;多线程方式&quot;&gt;&lt;a href=&quot;#多线程方式&quot; class=&quot;headerlink&quot; title=&quot;多线程方式&quot;&gt;&lt;/a&gt;多线程方
+    
+    </summary>
+    
+      <category term="编程语言" scheme="sikaixing.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
+    
+      <category term="Python" scheme="sikaixing.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/"/>
+    
+    
+      <category term="Python" scheme="sikaixing.com/tags/Python/"/>
+    
+      <category term="PyQt" scheme="sikaixing.com/tags/PyQt/"/>
+    
+  </entry>
   
   <entry>
     <title>Python 的列表推导式、字典推导式</title>
@@ -396,9 +434,9 @@
     <link href="sikaixing.com/2016/08/05/QLineEdit_click/"/>
     <id>sikaixing.com/2016/08/05/QLineEdit_click/</id>
     <published>2016-08-05T09:34:10.000Z</published>
-    <updated>2016-11-04T06:34:32.000Z</updated>
+    <updated>2016-12-20T06:46:48.000Z</updated>
     
-    <content type="html"><![CDATA[<p>最近收到一个需求：希望实现点击一个QLineEdit全选其中的文本。由于QLineEdit没有点击信号，要实现这个功能还是花了一点时间。</p>
+    <content type="html"><![CDATA[<p>最近收到一个需求：希望实现点击一个QLineEdit全文其中的文本。QLineEdit没有点击信号，要实现这个功能需要自己写方法。</p>
 <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>最近写的软件包含一个简单的网页浏览器的部分，其中地址栏用的标准QLineEdit。另外界面文件是用Qt Designer画的，代码中直接引用UI文件。这样修改界面比较直观。</p>
 <p>现在有个需求，希望点击地址栏的QLineEdit时直接全选地址，效果类似chrome浏览器地址栏的点击效果。</p>
 <h2 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h2><p>翻了一下QLineEdit的自带信号，并没有单击的信号。</p>
@@ -410,8 +448,7 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> PyQt4.uic <span class="keyword">import</span> loadUiType </div><div class="line"></div><div class="line">qtCreatorFile = <span class="string">"MyWindow.ui"</span></div><div class="line"></div><div class="line">Ui_MainWindow, QtBaseClass = loadUiType(qtCreatorFile)</div></pre></td></tr></table></figure>
 <p>修改为：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> MyWindow <span class="keyword">import</span> Ui_MainWindow</div></pre></td></tr></table></figure>
-<p>之后就是重写QLineEdit类了。这里有个问题：QLineEdit有两个相关的方法可以被重写：<code>mousePressEvent()</code></p>
-<p><code>focusInEvent()</code> 。一开始笔者重写了<code>focusInEvent ()</code>:</p>
+<p>之后就是重写QLineEdit类了。这里有个问题：QLineEdit有两个相关的方法可以被重写：<code>mousePressEvent()</code> ， <code>focusInEvent()</code> 。一开始笔者重写了<code>focusInEvent ()</code>:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">focusInEvent</span><span class="params">(self, event)</span>:</span></div><div class="line">    self.setText(<span class="string">"www"</span>)</div><div class="line">    self.selectAll()</div></pre></td></tr></table></figure>
 <p>但测试时发现<code>setText()</code>有效果，但<code>selectAll()</code>没有效果。搜索之后发现如下回答：</p>
 <p><em>With <code>focusInEvent</code>, when you click the widget, it gets executed, but since you click, it removes the selected text.</em></p>
@@ -431,8 +468,8 @@
     
     <summary type="html">
     
-      &lt;p&gt;最近收到一个需求：希望实现点击一个QLineEdit全选其中的文本。由于QLineEdit没有点击信号，要实现这个功能还是花了一点时间。&lt;/p&gt;
-&lt;h2 id=&quot;需求&quot;&gt;&lt;a href=&quot;#需求&quot; class=&quot;headerlink&quot; title=&quot;需求&quot;&gt;&lt;/a&gt;需求&lt;/
+      &lt;p&gt;最近收到一个需求：希望实现点击一个QLineEdit全文其中的文本。QLineEdit没有点击信号，要实现这个功能需要自己写方法。&lt;/p&gt;
+&lt;h2 id=&quot;需求&quot;&gt;&lt;a href=&quot;#需求&quot; class=&quot;headerlink&quot; title=&quot;需求&quot;&gt;&lt;/a&gt;需求&lt;/h2&gt;
     
     </summary>
     
