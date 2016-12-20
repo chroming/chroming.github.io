@@ -144,6 +144,44 @@
   </entry>
   
   <entry>
+    <title>PyQt4 中获取QListWidget 及 QTreeWidget 所有item的方式</title>
+    <link href="sikaixing.com/2016/11/01/PyQt4_get_all_item/"/>
+    <id>sikaixing.com/2016/11/01/PyQt4_get_all_item/</id>
+    <published>2016-11-01T06:18:00.000Z</published>
+    <updated>2016-12-20T10:23:24.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>PyQt4 的 QListWidget 和 QTreeWidget 中都没有现成的获取所有item的方法。在网上找到了比较简单的获取方式：</p>
+<p><em>QListWidget:</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">for i in range(0, listwidget.count()):</div><div class="line">	item = listwidget.item(i)</div></pre></td></tr></table></figure>
+<p><em>QTreeWidget:</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">def tree_items(self, tree):</div><div class="line">    it = QTreeWidgetItemIterator(tree)</div><div class="line">    while it.value():</div><div class="line">        yield it.value()</div><div class="line">        it += 1</div></pre></td></tr></table></figure>
+<p>参考资料:</p>
+<ol>
+<li>《<a href="http://stackoverflow.com/questions/12222594/how-can-i-iterate-through-qlistwidget-items-and-work-with-each-item" target="_blank" rel="external">How can i iterate through QListWidget items and work with each item?</a>》</li>
+<li>《<a href="http://icefire.iteye.com/blog/875076" target="_blank" rel="external">yield的应用——QTreeWidgetItem的迭代</a>》</li>
+</ol>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;PyQt4 的 QListWidget 和 QTreeWidget 中都没有现成的获取所有item的方法。在网上找到了比较简单的获取方式：&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;QListWidget:&lt;/em&gt;&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;t
+    
+    </summary>
+    
+      <category term="编程语言" scheme="sikaixing.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
+    
+      <category term="Python" scheme="sikaixing.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/"/>
+    
+    
+      <category term="Python" scheme="sikaixing.com/tags/Python/"/>
+    
+      <category term="PyQt" scheme="sikaixing.com/tags/PyQt/"/>
+    
+  </entry>
+  
+  <entry>
     <title>国内常用的 iOS 应用 URL Schemes 列表</title>
     <link href="sikaixing.com/2016/10/15/ios_url_schemes/"/>
     <id>sikaixing.com/2016/10/15/ios_url_schemes/</id>
