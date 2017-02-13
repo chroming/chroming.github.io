@@ -348,7 +348,7 @@
     <link href="sikaixing.com/2016/09/18/installed_software_macos/"/>
     <id>sikaixing.com/2016/09/18/installed_software_macos/</id>
     <published>2016-09-18T02:34:00.000Z</published>
-    <updated>2016-10-21T10:58:37.000Z</updated>
+    <updated>2017-02-13T05:50:43.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="MAS-软件"><a href="#MAS-软件" class="headerlink" title="MAS 软件"></a>MAS 软件</h2><ol>
 <li>QQ</li>
@@ -384,6 +384,7 @@
 <li>MacID</li>
 <li>Wireshark</li>
 <li>Homebrew</li>
+<li>Lepton</li>
 </ol>
 ]]></content>
     
@@ -411,7 +412,7 @@
     <link href="sikaixing.com/2016/09/17/installed_software_windows/"/>
     <id>sikaixing.com/2016/09/17/installed_software_windows/</id>
     <published>2016-09-16T16:59:00.000Z</published>
-    <updated>2016-11-15T08:53:23.000Z</updated>
+    <updated>2017-02-13T05:50:59.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="日常软件"><a href="#日常软件" class="headerlink" title="日常软件"></a>日常软件</h2><ol>
 <li>腾讯QQ轻聊版</li>
@@ -442,6 +443,7 @@
 <li>Wireshark</li>
 <li>zeal(备选：velocity)</li>
 <li>Github客户端</li>
+<li>Lepton</li>
 <li><p>Firefox</p>
 <p>​</p>
 </li>
