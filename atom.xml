@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="sikaixing.com/"/>
-  <updated>2016-12-20T06:57:05.000Z</updated>
+  <updated>2017-02-19T13:21:48.000Z</updated>
   <id>sikaixing.com/</id>
   
   <author>
@@ -14,6 +14,57 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Dash Docset 创建指南</title>
+    <link href="sikaixing.com/2017/02/19/create_dash%20docset/"/>
+    <id>sikaixing.com/2017/02/19/create_dash docset/</id>
+    <published>2017-02-19T13:20:00.000Z</published>
+    <updated>2017-02-19T13:21:48.000Z</updated>
+    
+    <content type="html"><![CDATA[<p><em>Dash 是Macos上一款十分方便的API查询工具，支持很多语言。Windows 平台有类似的应用zeal和velocity。</em></p>
+<p><em>本文基于<a href="https://kapeli.com/docsets" target="_blank" rel="external">Dash官方文档</a>所写，如有错误欢迎指正。</em></p>
+<h2 id="从其他文档格式转换"><a href="#从其他文档格式转换" class="headerlink" title="从其他文档格式转换"></a>从其他文档格式转换</h2><p>Docset 支持从其他标准文档格式转换。</p>
+<p>Python 文档(Sphinx、PyDoctor) 可以使用doc2dash模块转换。另外还需用到sphinx模块。两个模块均使用pip安装。</p>
+<p>由于直接转换格式比较容易，在此就不细说，具体步骤可以参考官方文档。</p>
+<h2 id="从HTML-中提取转换"><a href="#从HTML-中提取转换" class="headerlink" title="从HTML 中提取转换"></a>从HTML 中提取转换</h2><p>有些文档只有HTML 版本，比如笔者需要的PyQt4的本地文档。由于HTML文档没有统一的格式，要从HTML转换到Docset需要自己写程序。</p>
+<p>根据官方的步骤：</p>
+<h3 id="创建Docset-文件夹"><a href="#创建Docset-文件夹" class="headerlink" title="创建Docset 文件夹"></a>创建Docset 文件夹</h3><p>Mac下使用官方提供的命令创建：<br><code>mkdir -p &lt;docset name&gt;.docset/Contents/Resources/Documents/</code></p>
+<p>Windows 下直接新建这几级文件夹，最顶层文件夹名最后要加上.docset</p>
+<h3 id="将HTML-文档放入文件夹下"><a href="#将HTML-文档放入文件夹下" class="headerlink" title="将HTML 文档放入文件夹下"></a>将HTML 文档放入文件夹下</h3><p>第二步是把本地的HTML文档放入刚刚创建的 <code>&lt;docset name&gt;.docset/Contents/Resources/Documents/</code> 文件夹下。</p>
+<p>这里要提到一点，Dash右侧显示文档的部分基本上就是个HTML阅读器，所以我们需要把HTML文档放到文件夹里供Dash显示。但光有显示的文档还不够，Dash最好用的功能的是直接搜索方法名等并点击跳转到对应的文档位置。接下来我们需要去处理搜索部分。</p>
+<h3 id="创建一个Info-plist-文件"><a href="#创建一个Info-plist-文件" class="headerlink" title="创建一个Info.plist 文件"></a>创建一个Info.plist 文件</h3><p>下载<a href="https://kapeli.com/resources/Info.plist" target="_blank" rel="external">Info.plist</a>，并根据你自己的意愿修改里面的内容。具体项代表什么这里就不多解释。修改好之后将Info.plist文件放入<code>&lt;docset name&gt;.docset/Contents/</code>文件夹内。</p>
+<h3 id="创建SQLite-索引"><a href="#创建SQLite-索引" class="headerlink" title="创建SQLite 索引"></a>创建SQLite 索引</h3><p>Docset的查询索引使用SQLite存储。我们需要在<code>&lt;docset name&gt;.docset/Contents/Resources/</code>内创建一个数据库文件<code>docSet.dsidx</code>。创建表的SQL命令如下：</p>
+<p><code>CREATE TABLE searchIndex(id INTEGER PRIMARY KEY, name TEXT, type TEXT, path TEXT);</code></p>
+<h3 id="写入索引数据"><a href="#写入索引数据" class="headerlink" title="写入索引数据"></a>写入索引数据</h3><p>终于到最后一步，写入索引到数据库中。只要把这三个值：值(name)，类型(type)，路径(path)存储到数据库中，Dash就可以搜索到这个项。比如我想在Dash中直接搜索到PyQt4中QLineEdit类的isReadOnly()方法，我需要添加如下三个值：</p>
+<ul>
+<li>name: isReadOnly</li>
+<li>type: Method</li>
+<li>path: qlineedit.html#isReadOnly</li>
+</ul>
+<p>name对应的是在Dash左侧搜索到的项名。type则是Dash内置的项类型，在Dash界面对应的是搜索项名时名称前面的字母图标，Method的图标就是一个M。Dash内置的所有类型可以在<a href="https://kapeli.com/docsets#supportedentrytypes" target="_blank" rel="external">这里</a>找到。你想把这项显示成什么类型就填对应的字符串。最后一个值path，对应的是此项在HTML文档中的路径。</p>
+<p>之后就是用你熟悉的语言在HTML文档中找到这些值，然后写入到数据库中。写入语句为：</p>
+<p><code>INSERT OR IGNORE INTO searchIndex(name, type, path) VALUES (&#39;name&#39;, &#39;type&#39;, &#39;path&#39;);</code></p>
+<p><a href="https://github.com/chroming/html2docset" target="_blank" rel="external">这里</a>是我写的把PyQt4 的HTML文档转换成Docset的Python程序，可供参考。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;em&gt;Dash 是Macos上一款十分方便的API查询工具，支持很多语言。Windows 平台有类似的应用zeal和velocity。&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;本文基于&lt;a href=&quot;https://kapeli.com/docsets&quot; target=&quot;_bl
+    
+    </summary>
+    
+      <category term="编程语言" scheme="sikaixing.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
+    
+      <category term="Python" scheme="sikaixing.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/"/>
+    
+    
+      <category term="Python" scheme="sikaixing.com/tags/Python/"/>
+    
+      <category term="文档" scheme="sikaixing.com/tags/%E6%96%87%E6%A1%A3/"/>
+    
+  </entry>
   
   <entry>
     <title>PyQt4 解决主界面阻塞导致状态栏无法刷新的问题</title>
@@ -1292,35 +1343,6 @@
     <summary type="html">
     
       &lt;h2 id=&quot;问题&quot;&gt;&lt;a href=&quot;#问题&quot; class=&quot;headerlink&quot; title=&quot;问题&quot;&gt;&lt;/a&gt;问题&lt;/h2&gt;&lt;p&gt;之前公司电脑安装了SecureCRT 6中文版，今天笔者重新覆盖安装了个SecureCRT 7.2.5的英文版。结果发现会话列表还在，但是打
-    
-    </summary>
-    
-      <category term="日常问题" scheme="sikaixing.com/categories/%E6%97%A5%E5%B8%B8%E9%97%AE%E9%A2%98/"/>
-    
-      <category term="日常工具" scheme="sikaixing.com/categories/%E6%97%A5%E5%B8%B8%E9%97%AE%E9%A2%98/%E6%97%A5%E5%B8%B8%E5%B7%A5%E5%85%B7/"/>
-    
-    
-      <category term="secureCRT" scheme="sikaixing.com/tags/secureCRT/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>SecureCRT初始化设置</title>
-    <link href="sikaixing.com/2015/11/19/secure-crt-start/"/>
-    <id>sikaixing.com/2015/11/19/secure-crt-start/</id>
-    <published>2015-11-18T16:16:16.000Z</published>
-    <updated>2016-08-09T16:35:34.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>##自动记录日志<br>Options – Global Options – General – Default Session – Terminal – Log File</p>
-<p>##防止长时间不使用自动断开<br>Options – Global Options – General – Default Session – Terminal –Send protocol NO-OP 60s<br>(每60s发送无任何操作的操作指令）</p>
-<p>##没有找到防火墙<br>在C:/用户/当前用户/AppData/Roaming/VanDyke/Config/sessions/Default.ini 中找到Firewall Name修改默认的Firewall<br>或者在C:/用户/当前用户/AppData/Roaming/VanDyke/Config/<br>下建立一个FireWalls文件夹，里面建一个空的 None.ini(或 空.ini）</p>
-<p>修改C:/用户/当前用户/AppData/Roaming/VanDyke/Config/sessions/ 下会话的Firewall Name</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;##自动记录日志&lt;br&gt;Options – Global Options – General – Default Session – Terminal – Log File&lt;/p&gt;
-&lt;p&gt;##防止长时间不使用自动断开&lt;br&gt;Options – Global Options 
     
     </summary>
     
