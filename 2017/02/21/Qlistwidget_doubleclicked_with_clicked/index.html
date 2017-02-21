@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="shadowsocks,Centos," />
+  <meta name="keywords" content="Python,PyQt," />
 
 
 
@@ -86,19 +86,16 @@
 
 
 
-<meta name="description" content="manyuser安装及启用下载及依赖库安装下载manyusershadowsocks manyuser是一个shadowsocks多用户修改版。官方地址：https://github.com/mengskysama/shadowsocks/tree/manyuser
-下载：git clone -b manyuser https://github.com/mengskysama/shadowsock">
+<meta name="description" content="问题来源QListWidget 中有itemClicked和itemDoubleClicked两个信号, 分别代表鼠标单击和鼠标双击信号. 不过如果要同时用这两个信号就会发现itemDoubleClicked 信号会触发itemClicked信号. 如果是两个无关的操作倒是没关系, 但如果正好要把这两个信号的槽定义为有关联的动作就要区分这两个信号了, 也就是让itemDoubleClicked不会">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Centos7中使用shadowsocks建立多用户并控制流量全记录">
-<meta property="og:url" content="sikaixing.com/2016/03/06/ss_manyuser/index.html">
+<meta property="og:title" content="PyQt4 中区分 QListWidget 的双击(itemDoubleClicked)和单击(itemClicked) 信号">
+<meta property="og:url" content="sikaixing.com/2017/02/21/Qlistwidget_doubleclicked_with_clicked/index.html">
 <meta property="og:site_name" content="司开星的博客">
-<meta property="og:description" content="manyuser安装及启用下载及依赖库安装下载manyusershadowsocks manyuser是一个shadowsocks多用户修改版。官方地址：https://github.com/mengskysama/shadowsocks/tree/manyuser
-下载：git clone -b manyuser https://github.com/mengskysama/shadowsock">
-<meta property="og:updated_time" content="2016-12-18T10:28:18.000Z">
+<meta property="og:description" content="问题来源QListWidget 中有itemClicked和itemDoubleClicked两个信号, 分别代表鼠标单击和鼠标双击信号. 不过如果要同时用这两个信号就会发现itemDoubleClicked 信号会触发itemClicked信号. 如果是两个无关的操作倒是没关系, 但如果正好要把这两个信号的槽定义为有关联的动作就要区分这两个信号了, 也就是让itemDoubleClicked不会">
+<meta property="og:updated_time" content="2017-02-21T08:24:45.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Centos7中使用shadowsocks建立多用户并控制流量全记录">
-<meta name="twitter:description" content="manyuser安装及启用下载及依赖库安装下载manyusershadowsocks manyuser是一个shadowsocks多用户修改版。官方地址：https://github.com/mengskysama/shadowsocks/tree/manyuser
-下载：git clone -b manyuser https://github.com/mengskysama/shadowsock">
+<meta name="twitter:title" content="PyQt4 中区分 QListWidget 的双击(itemDoubleClicked)和单击(itemClicked) 信号">
+<meta name="twitter:description" content="问题来源QListWidget 中有itemClicked和itemDoubleClicked两个信号, 分别代表鼠标单击和鼠标双击信号. 不过如果要同时用这两个信号就会发现itemDoubleClicked 信号会触发itemClicked信号. 如果是两个无关的操作倒是没关系, 但如果正好要把这两个信号的槽定义为有关联的动作就要区分这两个信号了, 也就是让itemDoubleClicked不会">
 
 
 
@@ -126,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="sikaixing.com/2016/03/06/ss_manyuser/"/>
+  <link rel="canonical" href="sikaixing.com/2017/02/21/Qlistwidget_doubleclicked_with_clicked/"/>
 
 
 
 
 
-  <title> Centos7中使用shadowsocks建立多用户并控制流量全记录 | 司开星的博客 </title>
+  <title> PyQt4 中区分 QListWidget 的双击(itemDoubleClicked)和单击(itemClicked) 信号 | 司开星的博客 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -273,7 +270,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="sikaixing.com/2016/03/06/ss_manyuser/">
+  <link itemprop="mainEntityOfPage" href="sikaixing.com/2017/02/21/Qlistwidget_doubleclicked_with_clicked/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="司开星">
@@ -297,7 +294,7 @@
             
             
               
-                Centos7中使用shadowsocks建立多用户并控制流量全记录
+                PyQt4 中区分 QListWidget 的双击(itemDoubleClicked)和单击(itemClicked) 信号
               
             
           </h1>
@@ -309,8 +306,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-03-06T10:00:00+08:00">
-              2016-03-06
+            <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-21T16:24:00+08:00">
+              2017-02-21
             </time>
 
             &nbsp;|&nbsp;
@@ -318,8 +315,8 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-check-o"></i>
             </span>
-            <time title="Post modified" itemprop="dateModified" datetime="2016-12-18T18:28:18+08:00">
-              2016-12-18
+            <time title="Post modified" itemprop="dateModified" datetime="2017-02-21T16:24:45+08:00">
+              2017-02-21
             </time>
             
           </span>
@@ -333,8 +330,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/日常问题/" itemprop="url" rel="index">
-                    <span itemprop="name">日常问题</span>
+                  <a href="/categories/编程语言/" itemprop="url" rel="index">
+                    <span itemprop="name">编程语言</span>
                   </a>
                 </span>
 
@@ -345,8 +342,8 @@
 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/日常问题/日常工具/" itemprop="url" rel="index">
-                    <span itemprop="name">日常工具</span>
+                  <a href="/categories/编程语言/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
                   </a>
                 </span>
 
@@ -365,7 +362,7 @@
 
           
           
-             <span id="/2016/03/06/ss_manyuser/" class="leancloud_visitors" data-flag-title="Centos7中使用shadowsocks建立多用户并控制流量全记录">
+             <span id="/2017/02/21/Qlistwidget_doubleclicked_with_clicked/" class="leancloud_visitors" data-flag-title="PyQt4 中区分 QListWidget 的双击(itemDoubleClicked)和单击(itemClicked) 信号">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -390,44 +387,15 @@
       
 
       
-        <h2 id="manyuser安装及启用"><a href="#manyuser安装及启用" class="headerlink" title="manyuser安装及启用"></a>manyuser安装及启用</h2><h3 id="下载及依赖库安装"><a href="#下载及依赖库安装" class="headerlink" title="下载及依赖库安装"></a>下载及依赖库安装</h3><h4 id="下载manyuser"><a href="#下载manyuser" class="headerlink" title="下载manyuser"></a>下载manyuser</h4><p>shadowsocks manyuser是一个shadowsocks多用户修改版。官方地址：<a href="https://github.com/mengskysama/shadowsocks/tree/manyuser" target="_blank" rel="external">https://github.com/mengskysama/shadowsocks/tree/manyuser</a></p>
-<p>下载：<br><code>git clone -b manyuser https://github.com/mengskysama/shadowsocks.git</code><br>会在当前目录下载manyuser。<br>解压出来为/shadowsocks/shadowsocks</p>
-<h4 id="安装及使用Mysql"><a href="#安装及使用Mysql" class="headerlink" title="安装及使用Mysql"></a>安装及使用Mysql</h4><p>manyuser使用Mysql存储数据。故需要先安装mysql，centos7中默认为mariaDB（myspl修改版）</p>
-<p><code>yum install mariadb-server mariadb</code></p>
-<ul>
-<li><p>启动及关闭：<br><code>systemctl start mariadb</code><br><code>systemctl enable mariadb</code></p>
-</li>
-<li><p>修改密码：<br><code>/usr/bin/mysql_secure_installation</code></p>
-</li>
-<li><p>登录：<br><code>mysql -u root -p</code></p>
-</li>
-<li><p>根据manyuser官方指南需要创建一个shadowsocks数据库：<br><code>create database shadowsocks</code></p>
-</li>
-<li><p>选择数据库<br><code>use shadowsocks</code></p>
-</li>
-<li><p>导入下载的manyuser的/shadowsocks/shadowsocks/下的shadowsocks.sql脚本：<br><code>source /shadowsocks/shadowsocks/shadowsocks.sql</code><br>脚本会自动在数据库中建立一个user表。<br>查看脚本写入的内容：<br><code>show tables</code></p>
-</li>
-<li><p>查看表内容：<br><code>select * from user</code><br>其中：</p>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">passwd: server pass</div><div class="line"></div><div class="line">port: server port</div><div class="line"></div><div class="line">t: last keepalive time</div><div class="line"></div><div class="line">u: upload transfer</div><div class="line"></div><div class="line">d: download transer</div><div class="line"></div><div class="line">transfer_enable: if u + d &gt; transfer_enable this server will be stop (db_transfer.py del_server_out_of_bound_safe)</div></pre></td></tr></table></figure>
-<ul>
-<li><p>添加内容：<br><code>insert into user() values()</code></p>
-</li>
-<li><p>修改内容<br><code>update 表名称 set 列名称=新值 where 更新条件;</code></p>
-</li>
-<li><p>新建一个数据库用户以方便shadowsocks程序管理数据库：<br><code>create user ssuser@localhost identified by &#39;passwd&#39;</code><br>授权：<br><code>grant all on shadowsocks.* to &#39;ssuser&#39;@&#39;localhost&#39;</code></p>
-</li>
-</ul>
-<h4 id="安装其他依赖"><a href="#安装其他依赖" class="headerlink" title="安装其他依赖"></a>安装其他依赖</h4><p><code>yum install m2crypto</code><br><code>pip install cymysql</code></p>
-<h4 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h4><p><code>vi Config.py</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">#Config Example</div><div class="line">MYSQL_HOST = &apos;localhost&apos;</div><div class="line">MYSQL_PORT = 3306</div><div class="line">MYSQL_USER = &apos;ssuser&apos;</div><div class="line">MYSQL_PASS = &apos;passwd&apos;</div><div class="line">MYSQL_DB = &apos;shadowsocks&apos;</div><div class="line"></div><div class="line">MANAGE_PASS = &apos;ss233333333&apos;</div><div class="line">#if you want manage in other server you should set this value to global ip</div><div class="line">MANAGE_BIND_IP = &apos;127.0.0.1&apos;</div><div class="line">#make sure this port is idle</div><div class="line">MANAGE_PORT = 23333</div></pre></td></tr></table></figure>
-<h3 id="防火墙配置"><a href="#防火墙配置" class="headerlink" title="防火墙配置"></a>防火墙配置</h3><p>不要忘记在系统防火墙中开启需要使用的端口：<br><code>firewall-cmd --zone=public --add-port=50000/tcp --permanent</code><br><code>firewall-cmd --reload</code></p>
-<h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><p><code>python server.py</code><br>如果没有报错就说明启动正常了。<br>后台运行且注销也不停止：<br><code>nohup python server.py &gt; /dev/null 2&gt;&amp;1 &amp;</code></p>
-<p>开机启动：（无法正常执行）<br>开机启动mariadb:<br><code>systemctl enable mariadb</code><br>开机启动many-user:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd /shadowsocks/shadowsocks/ # server.py配置文件在这个目录中，调用要先进入这个目录</div><div class="line">python server.py --fast-open</div></pre></td></tr></table></figure></p>
-<h3 id="本地配置"><a href="#本地配置" class="headerlink" title="本地配置"></a>本地配置</h3><p>本地配置的服务器IP填VPS的IP，端口和密码填VPS上服务开启后显示的端口和密码（也就是数据库表中的port和passwd），加密方式选rc4-md5。即可正常使用。</p>
+        <h2 id="问题来源"><a href="#问题来源" class="headerlink" title="问题来源"></a>问题来源</h2><p>QListWidget 中有itemClicked和itemDoubleClicked两个信号, 分别代表鼠标单击和鼠标双击信号. 不过如果要同时用这两个信号就会发现itemDoubleClicked 信号会触发itemClicked信号. 如果是两个无关的操作倒是没关系, 但如果正好要把这两个信号的槽定义为有关联的动作就要区分这两个信号了, 也就是让itemDoubleClicked不会触发itemClicked.</p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>Qt 中对于这个问题没有现成的解决方法. 有些人建议如果能不同时使用这两个信号就不同时使用. 如果实在想用也是有办法解决的, 自己写个区分两个信号的方法即可.</p>
+<p>在Stackoverflow上有这样一种写法:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> YourClass::itemClicked(QListWidgetItem* listWidgetItem) &#123;</div><div class="line">    <span class="keyword">if</span> (!mDoubleClicked) &#123;</div><div class="line">        QTimer::singleShot(<span class="number">300</span>, <span class="keyword">this</span>, SLOT(itemClickedTimeout()));</div><div class="line">        mSingleClickedItem = listWidgetItem;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">void</span> YourClass::itemClickedTimeout() &#123;</div><div class="line">    <span class="keyword">if</span> (!mDoubleClicked) &#123;</div><div class="line">        <span class="comment">// do something, listitem has been clicked once</span></div><div class="line">    &#125; <span class="keyword">else</span> mDoubleClicked = <span class="literal">false</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">void</span> YourClass::itemDoubleClicked(QListWidgetItem* listWidgetItem) &#123;</div><div class="line">    mDoubleClicked = <span class="literal">true</span>;</div><div class="line"></div><div class="line">    <span class="comment">// do something, listitem has been clicked twice</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>转换成PyQt的写法就是:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Main</span><span class="params">(QtGui.QMainWindow)</span>:</span></div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">()</span>:</span></div><div class="line">        </div><div class="line">        self.is_double_clicked = <span class="keyword">False</span></div><div class="line">        self.listwidget.itemClicked.connect(self.item_clicked)</div><div class="line">        self.listwidget.itemDoubleClicked.connect(self.item_double_clicked)</div><div class="line">    </div><div class="line">    .....................................</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">item_clicked</span><span class="params">(self, item)</span>:</span></div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self.is_double_clicked:</div><div class="line">            QtCore.QTimer.singleShot(<span class="number">300</span>, self.item_clicked_timeout)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">item_clicked_timeout</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self.is_double_clicked:</div><div class="line">            <span class="comment"># do something when item clicked</span></div><div class="line">            <span class="keyword">pass</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            self.is_double_clicked = <span class="keyword">False</span></div><div class="line">            </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">item_double_clicked</span><span class="params">(self)</span>:</span></div><div class="line">        self.is_double_clicked = <span class="keyword">True</span></div><div class="line">        <span class="comment"># do something when item double clicked</span></div><div class="line">        <span class="keyword">pass</span></div></pre></td></tr></table></figure>
+<p>参考资料:</p>
 <blockquote>
-<p>《<a href="http://www.phpini.com/linux/redhat-centos-7-setup-apache-mariadb-php" target="_blank" rel="external">RHEL 及 CentOS 7 安裝 Apache, MariaDB, PHP(LAMP)</a>》<br>《<a href="http://www.cnblogs.com/mr-wid/archive/2013/05/09/3068229.html" target="_blank" rel="external">21分钟 MySQL 入门教程</a>》<br>《<a href="http://www.cnblogs.com/Dot-Boy/archive/2008/08/04/1260185.html" target="_blank" rel="external">mysql导入sql脚本</a>》<br>《<a href="http://www.111cn.net/database/mysql/46288.htm" target="_blank" rel="external">mysql 创建用户与授权、修改密码</a>》</p>
+<p>《<a href="http://stackoverflow.com/questions/22142485/qlistwidget-itemclicked-and-itemdoubleclicked-block-single-click-if-double-cli" target="_blank" rel="external">QListWidget itemClicked and itemDoubleClicked - block single click if double click</a>》</p>
 </blockquote>
 
       
@@ -452,9 +420,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/shadowsocks/" rel="tag"># shadowsocks</a>
+            <a href="/tags/Python/" rel="tag"># Python</a>
           
-            <a href="/tags/Centos/" rel="tag"># Centos</a>
+            <a href="/tags/PyQt/" rel="tag"># PyQt</a>
           
         </div>
       
@@ -463,8 +431,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/03/01/mac-aircrack-ng/" rel="next" title="Mac下使用aircrack-ng记录">
-                <i class="fa fa-chevron-left"></i> Mac下使用aircrack-ng记录
+              <a href="/2017/02/19/create_dash docset/" rel="next" title="Dash Docset 创建指南">
+                <i class="fa fa-chevron-left"></i> Dash Docset 创建指南
               </a>
             
           </div>
@@ -472,10 +440,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/03/15/wechat_in_sae/" rel="prev" title="SAE 上使用PHP搭建微信公众号后台">
-                SAE 上使用PHP搭建微信公众号后台 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -637,7 +601,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#manyuser安装及启用"><span class="nav-number">1.</span> <span class="nav-text">manyuser安装及启用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#下载及依赖库安装"><span class="nav-number">1.1.</span> <span class="nav-text">下载及依赖库安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#下载manyuser"><span class="nav-number">1.1.1.</span> <span class="nav-text">下载manyuser</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装及使用Mysql"><span class="nav-number">1.1.2.</span> <span class="nav-text">安装及使用Mysql</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装其他依赖"><span class="nav-number">1.1.3.</span> <span class="nav-text">安装其他依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置文件"><span class="nav-number">1.1.4.</span> <span class="nav-text">配置文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#防火墙配置"><span class="nav-number">1.2.</span> <span class="nav-text">防火墙配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动"><span class="nav-number">1.3.</span> <span class="nav-text">启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#本地配置"><span class="nav-number">1.4.</span> <span class="nav-text">本地配置</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题来源"><span class="nav-number">1.</span> <span class="nav-text">问题来源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决方法"><span class="nav-number">2.</span> <span class="nav-text">解决方法</span></a></li></ol></div>
             
 
           </div>

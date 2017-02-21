@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="sikaixing.com/"/>
-  <updated>2017-02-19T13:21:48.000Z</updated>
+  <updated>2017-02-21T08:24:45.000Z</updated>
   <id>sikaixing.com/</id>
   
   <author>
@@ -14,6 +14,42 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>PyQt4 中区分 QListWidget 的双击(itemDoubleClicked)和单击(itemClicked) 信号</title>
+    <link href="sikaixing.com/2017/02/21/Qlistwidget_doubleclicked_with_clicked/"/>
+    <id>sikaixing.com/2017/02/21/Qlistwidget_doubleclicked_with_clicked/</id>
+    <published>2017-02-21T08:24:00.000Z</published>
+    <updated>2017-02-21T08:24:45.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="问题来源"><a href="#问题来源" class="headerlink" title="问题来源"></a>问题来源</h2><p>QListWidget 中有itemClicked和itemDoubleClicked两个信号, 分别代表鼠标单击和鼠标双击信号. 不过如果要同时用这两个信号就会发现itemDoubleClicked 信号会触发itemClicked信号. 如果是两个无关的操作倒是没关系, 但如果正好要把这两个信号的槽定义为有关联的动作就要区分这两个信号了, 也就是让itemDoubleClicked不会触发itemClicked.</p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>Qt 中对于这个问题没有现成的解决方法. 有些人建议如果能不同时使用这两个信号就不同时使用. 如果实在想用也是有办法解决的, 自己写个区分两个信号的方法即可.</p>
+<p>在Stackoverflow上有这样一种写法:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> YourClass::itemClicked(QListWidgetItem* listWidgetItem) &#123;</div><div class="line">    <span class="keyword">if</span> (!mDoubleClicked) &#123;</div><div class="line">        QTimer::singleShot(<span class="number">300</span>, <span class="keyword">this</span>, SLOT(itemClickedTimeout()));</div><div class="line">        mSingleClickedItem = listWidgetItem;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">void</span> YourClass::itemClickedTimeout() &#123;</div><div class="line">    <span class="keyword">if</span> (!mDoubleClicked) &#123;</div><div class="line">        <span class="comment">// do something, listitem has been clicked once</span></div><div class="line">    &#125; <span class="keyword">else</span> mDoubleClicked = <span class="literal">false</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">void</span> YourClass::itemDoubleClicked(QListWidgetItem* listWidgetItem) &#123;</div><div class="line">    mDoubleClicked = <span class="literal">true</span>;</div><div class="line"></div><div class="line">    <span class="comment">// do something, listitem has been clicked twice</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>转换成PyQt的写法就是:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Main</span><span class="params">(QtGui.QMainWindow)</span>:</span></div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">()</span>:</span></div><div class="line">        </div><div class="line">        self.is_double_clicked = <span class="keyword">False</span></div><div class="line">        self.listwidget.itemClicked.connect(self.item_clicked)</div><div class="line">        self.listwidget.itemDoubleClicked.connect(self.item_double_clicked)</div><div class="line">    </div><div class="line">    .....................................</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">item_clicked</span><span class="params">(self, item)</span>:</span></div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self.is_double_clicked:</div><div class="line">            QtCore.QTimer.singleShot(<span class="number">300</span>, self.item_clicked_timeout)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">item_clicked_timeout</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self.is_double_clicked:</div><div class="line">            <span class="comment"># do something when item clicked</span></div><div class="line">            <span class="keyword">pass</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            self.is_double_clicked = <span class="keyword">False</span></div><div class="line">            </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">item_double_clicked</span><span class="params">(self)</span>:</span></div><div class="line">        self.is_double_clicked = <span class="keyword">True</span></div><div class="line">        <span class="comment"># do something when item double clicked</span></div><div class="line">        <span class="keyword">pass</span></div></pre></td></tr></table></figure>
+<p>参考资料:</p>
+<blockquote>
+<p>《<a href="http://stackoverflow.com/questions/22142485/qlistwidget-itemclicked-and-itemdoubleclicked-block-single-click-if-double-cli" target="_blank" rel="external">QListWidget itemClicked and itemDoubleClicked - block single click if double click</a>》</p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;问题来源&quot;&gt;&lt;a href=&quot;#问题来源&quot; class=&quot;headerlink&quot; title=&quot;问题来源&quot;&gt;&lt;/a&gt;问题来源&lt;/h2&gt;&lt;p&gt;QListWidget 中有itemClicked和itemDoubleClicked两个信号, 分别代表鼠标单击和鼠标双击
+    
+    </summary>
+    
+      <category term="编程语言" scheme="sikaixing.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
+    
+      <category term="Python" scheme="sikaixing.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/"/>
+    
+    
+      <category term="Python" scheme="sikaixing.com/tags/Python/"/>
+    
+      <category term="PyQt" scheme="sikaixing.com/tags/PyQt/"/>
+    
+  </entry>
   
   <entry>
     <title>Dash Docset 创建指南</title>
@@ -1315,34 +1351,6 @@
 &lt;li&gt;/ARG +主题：可以在运行时给SecureCRT脚本传递参数。在一个命令中可以使用多个/ARG参数&lt;/li&gt;
 &lt;li&gt;/COLOR_SCHEME +方案：设置该会话的颜色方案&lt;/li&gt;
 &lt;
-    
-    </summary>
-    
-      <category term="日常问题" scheme="sikaixing.com/categories/%E6%97%A5%E5%B8%B8%E9%97%AE%E9%A2%98/"/>
-    
-      <category term="日常工具" scheme="sikaixing.com/categories/%E6%97%A5%E5%B8%B8%E9%97%AE%E9%A2%98/%E6%97%A5%E5%B8%B8%E5%B7%A5%E5%85%B7/"/>
-    
-    
-      <category term="secureCRT" scheme="sikaixing.com/tags/secureCRT/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>SecureCRT中文版升级英文版后出现『the firewall &#39;无&#39; was not found in the database.This session will attempt to connect without a firewall』的解决办法</title>
-    <link href="sikaixing.com/2015/11/19/secure-crt-no-firewall/"/>
-    <id>sikaixing.com/2015/11/19/secure-crt-no-firewall/</id>
-    <published>2015-11-18T16:18:54.000Z</published>
-    <updated>2016-08-09T16:33:05.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>之前公司电脑安装了SecureCRT 6中文版，今天笔者重新覆盖安装了个SecureCRT 7.2.5的英文版。结果发现会话列表还在，但是打开之后会提示”the firewall ‘无’ was not found in the database.This session will attempt to connect without a firewall”<br>在刚刚开始用这台电脑时也出现类似的情况，当时是直接百度找到了解决办法。但是这次的问题在网上没有找到。后来慢慢摸索总算找到了解决办法，特此记录下来。</p>
-<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>默认在C:/用户/当前用户/AppData/Roaming/VanDyke/Config/Sessions/下有会话列表的配置文件。其中Default.ini是默认的配置，里面有一行：<br>“Firewall Name”=无<br>把这个 无 改成None就可以了。</p>
-<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p>中文版需要：<br>“Firewall Name”=无<br>英文版需要：<br>“Firewall Name”=None</p>
-<p>另外secureCRT有防火墙列表，在C:/用户/当前用户/AppData/Roaming/VanDyke/Config/FireWalls/ 。没有的话可以新建一个文件夹，如果在里面新建一个空的None.ini文件则可以在Options – Global Options – Firewal中看到一个None防火墙。这个就是中文版中出现 找不到防火墙None 的None防火墙，也就是默认的一个空防火墙。原本可以直接在这里添加一个防火墙，但是可惜的是英文版只有一个None.ini默认的空防火墙，读取不了 无.ini，所以只有修改配置文件才能解决中文转英文的问题。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;问题&quot;&gt;&lt;a href=&quot;#问题&quot; class=&quot;headerlink&quot; title=&quot;问题&quot;&gt;&lt;/a&gt;问题&lt;/h2&gt;&lt;p&gt;之前公司电脑安装了SecureCRT 6中文版，今天笔者重新覆盖安装了个SecureCRT 7.2.5的英文版。结果发现会话列表还在，但是打
     
     </summary>
     
