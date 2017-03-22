@@ -1,0 +1,865 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Python,lxml," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="司开星的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="初始问题近期在使用lxml.html.soupparser.fromstring()载入某个网页HTML时得到一条报错：
+ValueError: All strings must be XML compatible: Unicode or ASCII, no NULL bytes or control characters
+仔细对比了这个HTML与其他不会产生这个错误的HTML，发现报错的HTML">
+<meta property="og:type" content="article">
+<meta property="og:title" content="lxml.html.soupparser.fromstring() 出现ValueError Comment may not contain '--' or end with '-' 的解决办法">
+<meta property="og:url" content="sikaixing.com/2017/03/21/lxml_html_soupparser/index.html">
+<meta property="og:site_name" content="司开星的博客">
+<meta property="og:description" content="初始问题近期在使用lxml.html.soupparser.fromstring()载入某个网页HTML时得到一条报错：
+ValueError: All strings must be XML compatible: Unicode or ASCII, no NULL bytes or control characters
+仔细对比了这个HTML与其他不会产生这个错误的HTML，发现报错的HTML">
+<meta property="og:updated_time" content="2017-03-22T02:07:02.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="lxml.html.soupparser.fromstring() 出现ValueError Comment may not contain '--' or end with '-' 的解决办法">
+<meta name="twitter:description" content="初始问题近期在使用lxml.html.soupparser.fromstring()载入某个网页HTML时得到一条报错：
+ValueError: All strings must be XML compatible: Unicode or ASCII, no NULL bytes or control characters
+仔细对比了这个HTML与其他不会产生这个错误的HTML，发现报错的HTML">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="sikaixing.com/2017/03/21/lxml_html_soupparser/"/>
+
+
+
+
+
+  <title> lxml.html.soupparser.fromstring() 出现ValueError Comment may not contain '--' or end with '-' 的解决办法 | 司开星的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?c7ff29f060abd4d184d8c4d40dbe6a17";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">司开星的博客</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="sikaixing.com/2017/03/21/lxml_html_soupparser/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="司开星">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/uploads/avatar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="司开星的博客">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="司开星的博客" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                lxml.html.soupparser.fromstring() 出现ValueError Comment may not contain '--' or end with '-' 的解决办法
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-21T18:00:00+08:00">
+              2017-03-21
+            </time>
+
+            &nbsp;|&nbsp;
+
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-check-o"></i>
+            </span>
+            <time title="Post modified" itemprop="dateModified" datetime="2017-03-22T10:07:02+08:00">
+              2017-03-22
+            </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/编程语言/" itemprop="url" rel="index">
+                    <span itemprop="name">编程语言</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/编程语言/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/03/21/lxml_html_soupparser/" class="leancloud_visitors" data-flag-title="lxml.html.soupparser.fromstring() 出现ValueError Comment may not contain '--' or end with '-' 的解决办法">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="初始问题"><a href="#初始问题" class="headerlink" title="初始问题"></a>初始问题</h2><p>近期在使用<code>lxml.html.soupparser.fromstring()</code>载入某个网页HTML时得到一条报错：</p>
+<p><em>ValueError: All strings must be XML compatible: Unicode or ASCII, no NULL bytes or control characters</em></p>
+<p>仔细对比了这个HTML与其他不会产生这个错误的HTML，发现报错的HTML中有几个ascii控制字符，即错误信息中的<em>control characters</em>。于是搜索了解决办法，在<a href="https://github.com/html5lib/html5lib-python/issues/96" target="_blank" rel="external">https://github.com/html5lib/html5lib-python/issues/96</a> 这里找到了以下函数可以删去HTML中的控制字符：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> re</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">remove_control_characters</span><span class="params">(html)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">str_to_int</span><span class="params">(s, default, base=<span class="number">10</span>)</span>:</span></div><div class="line">        <span class="keyword">if</span> int(s, base) &lt; <span class="number">0x10000</span>:</div><div class="line">            <span class="keyword">return</span> unichr(int(s, base))</div><div class="line">        <span class="keyword">return</span> default</div><div class="line">    html = re.sub(<span class="string">ur"&amp;#(\d+);?"</span>, <span class="keyword">lambda</span> c: str_to_int(c.group(<span class="number">1</span>), c.group(<span class="number">0</span>)), html)</div><div class="line">    html = re.sub(<span class="string">ur"&amp;#[xX]([0-9a-fA-F]+);?"</span>, <span class="keyword">lambda</span> c: str_to_int(c.group(<span class="number">1</span>), c.group(<span class="number">0</span>), base=<span class="number">16</span>), html)</div><div class="line">    html = re.sub(<span class="string">ur"[\x00-\x08\x0b\x0e-\x1f\x7f]"</span>, <span class="string">""</span>, html)</div><div class="line">    <span class="keyword">return</span> html</div></pre></td></tr></table></figure>
+<p>或者下面的函数(<a href="http://stackoverflow.com/questions/4324790/removing-control-characters-from-a-string-in-python)：" target="_blank" rel="external">http://stackoverflow.com/questions/4324790/removing-control-characters-from-a-string-in-python)：</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> unicodedata</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">remove_control_characters</span><span class="params">(s)</span>:</span></div><div class="line">    <span class="keyword">return</span> <span class="string">""</span>.join(ch <span class="keyword">for</span> ch <span class="keyword">in</span> s <span class="keyword">if</span> unicodedata.category(ch)[<span class="number">0</span>]!=<span class="string">"C"</span>)</div></pre></td></tr></table></figure>
+<p>测试了第一个函数发现确实可以解决问题。</p>
+<h2 id="另一个问题"><a href="#另一个问题" class="headerlink" title="另一个问题"></a>另一个问题</h2><p>如果程序只是我自己运行的话问题到这就结束了。但实际上相关的服务器程序也要抓取同样的页面，而后台在抓取这个HTML后出现了另一种报错：</p>
+<p><em>ValueError: Comment may not contain ‘–’ or end with ‘-‘</em></p>
+<p>排查过其他原因后发现问题出在lxml的版本上。我本机的lxml版本是3.4.4, 服务器程序的版本是3.6.4。于是我把本地的lxml升级到了最新版3.7.3，出现了与服务器相同的报错。</p>
+<h2 id="寻找解决办法"><a href="#寻找解决办法" class="headerlink" title="寻找解决办法"></a>寻找解决办法</h2><p>直接在Google搜索这个问题确实可以搜到一些。其中有一条<a href="http://stackoverflow.com/questions/34595275/disable-comments-check-for-in-lxml" target="_blank" rel="external">http://stackoverflow.com/questions/34595275/disable-comments-check-for-in-lxml</a> 提供了解决办法：将本地的<code>html5parser.py</code>替换成github上最新版。但实测无效，仔细查看问题觉得原因是问题中使用的方法为<code>html5parser.fromstring</code>，而我使用的是<code>soupparser.fromstring</code>。</p>
+<p>搜索无果之后开始在官方文档和源码中找原因和解决办法。一段时间的查看之后发现了以下几个相关点：</p>
+<ol>
+<li><code>soupparser.fromstring</code>首先使用<code>BeautifulSoup</code>载入HTML, 之后再依靠<code>html.parser.makeelement</code>来生成树;</li>
+<li><code>soupparser.fromstring</code>虽然有<code>makeelement</code>参数可以传递其他Element factory function，但没有文档说明如何定义自己的Element factory function ；</li>
+<li><code>makeelement</code>方法继承自<code>lxml.etree</code>，但<code>etree</code>模块是用Cython（一种类似Python但会与C模块交互的语言）写的；</li>
+<li>错误<em>ValueError: Comment may not contain ‘–’ or end with ‘-‘</em> 及 <em>ValueError: All strings must be XML compatible: Unicode or ASCII, no NULL bytes or control characters</em> 也是在<code>etree</code>中定义的；</li>
+<li><code>BeautifulSoup</code>在载入源码后已经改变了<code>comment</code>处的结构。</li>
+</ol>
+<p><code>etree</code>模块并非Python写的，意味着想通过继承重写相关方法比较麻烦。</p>
+<p><code>BeautifulSoup</code>会改变<code>comment</code>处结构，说不定可以从这里入手。但尝试给<code>beautifulsoup</code>参数传递了不同的<code>beautifulsoup</code> (包括bs3,bs4以及继承重写相关方法后的bs4)后发现无法解决问题。</p>
+<p>于是没有在这条路上找到解决办法。</p>
+<h2 id="回到起点"><a href="#回到起点" class="headerlink" title="回到起点"></a>回到起点</h2><p>回想了一开始的问题，发现只要我把控制字符删除之后就可以正常执行<code>fromstring</code>, 于是开始考虑不同版本之间的区别。查看了changelog，没有发现相关的bug fix记录。于是在virtualenv中开始测试从哪个版本开始有这个报错的：</p>
+<p><code>pip install lxml==3.5.0b1</code></p>
+<p>发现从3.4.4之后的版本，也就是3.5.0b1开始，就有这个报错了。看了这个版本的changelog，相关的记录只有<code>soupparser</code>的<code>BeautifulSoup</code>从<code>bs3</code>换成<code>bs4</code>了，但已经试过更换不同版本的<code>bs</code>，并没有解决问题。</p>
+<p>于是只能选最无趣的办法，把服务器的<code>lxml</code>也换成3.4.4版本，并且使用之前提到的函数预先过滤HTML中的控制字符。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/lxml/" rel="tag"># lxml</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/15/lxml_changed_html/" rel="next" title="解决 lxml 处理HTML引起的标签顺序改变问题">
+                <i class="fa fa-chevron-left"></i> 解决 lxml 处理HTML引起的标签顺序改变问题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="司开星" />
+          <p class="site-author-name" itemprop="name">司开星</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">24</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/chroming" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/chromerplus" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/chroming" target="_blank" title="CSND">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  CSND
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-nd.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#初始问题"><span class="nav-number">1.</span> <span class="nav-text">初始问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#另一个问题"><span class="nav-number">2.</span> <span class="nav-text">另一个问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#寻找解决办法"><span class="nav-number">3.</span> <span class="nav-text">寻找解决办法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#回到起点"><span class="nav-number">4.</span> <span class="nav-text">回到起点</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">司开星</span>
+</div>
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("7i5MUsWXY3NmljUbNIYbB5G3-gzGzoHsz", "1UYFkJkKuvoUs4MANdHnFxS7");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+
+</body>
+</html>

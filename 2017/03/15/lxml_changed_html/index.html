@@ -1,0 +1,849 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Python,lxml," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="司开星的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="问题细节近期在用lxml处理某个网页HTML源码时发现&amp;lt;font&amp;gt;标签的结束标签位置会被改变，具体来说是&amp;lt;font&amp;gt;标签本身包围了一些&amp;lt;p&amp;gt;标签，当&amp;lt;font&amp;gt;外存在&amp;lt;div标签时，&amp;lt;font&amp;gt;标签的结束标签&amp;lt;/font&amp;gt;位置会被改变，原本被包围在中间的的&amp;lt;p&amp;gt;标签全部变成&amp;lt;font&amp;gt;的兄弟节点。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="解决 lxml 处理HTML引起的标签顺序改变问题">
+<meta property="og:url" content="sikaixing.com/2017/03/15/lxml_changed_html/index.html">
+<meta property="og:site_name" content="司开星的博客">
+<meta property="og:description" content="问题细节近期在用lxml处理某个网页HTML源码时发现&amp;lt;font&amp;gt;标签的结束标签位置会被改变，具体来说是&amp;lt;font&amp;gt;标签本身包围了一些&amp;lt;p&amp;gt;标签，当&amp;lt;font&amp;gt;外存在&amp;lt;div标签时，&amp;lt;font&amp;gt;标签的结束标签&amp;lt;/font&amp;gt;位置会被改变，原本被包围在中间的的&amp;lt;p&amp;gt;标签全部变成&amp;lt;font&amp;gt;的兄弟节点。">
+<meta property="og:updated_time" content="2017-03-22T01:56:19.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="解决 lxml 处理HTML引起的标签顺序改变问题">
+<meta name="twitter:description" content="问题细节近期在用lxml处理某个网页HTML源码时发现&amp;lt;font&amp;gt;标签的结束标签位置会被改变，具体来说是&amp;lt;font&amp;gt;标签本身包围了一些&amp;lt;p&amp;gt;标签，当&amp;lt;font&amp;gt;外存在&amp;lt;div标签时，&amp;lt;font&amp;gt;标签的结束标签&amp;lt;/font&amp;gt;位置会被改变，原本被包围在中间的的&amp;lt;p&amp;gt;标签全部变成&amp;lt;font&amp;gt;的兄弟节点。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="sikaixing.com/2017/03/15/lxml_changed_html/"/>
+
+
+
+
+
+  <title> 解决 lxml 处理HTML引起的标签顺序改变问题 | 司开星的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?c7ff29f060abd4d184d8c4d40dbe6a17";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">司开星的博客</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="sikaixing.com/2017/03/15/lxml_changed_html/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="司开星">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/uploads/avatar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="司开星的博客">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="司开星的博客" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                解决 lxml 处理HTML引起的标签顺序改变问题
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-15T18:00:00+08:00">
+              2017-03-15
+            </time>
+
+            &nbsp;|&nbsp;
+
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-check-o"></i>
+            </span>
+            <time title="Post modified" itemprop="dateModified" datetime="2017-03-22T09:56:19+08:00">
+              2017-03-22
+            </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/编程语言/" itemprop="url" rel="index">
+                    <span itemprop="name">编程语言</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/编程语言/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/03/15/lxml_changed_html/" class="leancloud_visitors" data-flag-title="解决 lxml 处理HTML引起的标签顺序改变问题">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="问题细节"><a href="#问题细节" class="headerlink" title="问题细节"></a>问题细节</h2><p>近期在用lxml处理某个网页HTML源码时发现<code>&lt;font&gt;</code>标签的结束标签位置会被改变，具体来说是<code>&lt;font&gt;</code>标签本身包围了一些<code>&lt;p&gt;</code>标签，当<code>&lt;font&gt;</code>外存在<code>&lt;div</code>标签时，<code>&lt;font&gt;</code>标签的结束标签<code>&lt;/font&gt;</code>位置会被改变，原本被包围在中间的的<code>&lt;p&gt;</code>标签全部变成<code>&lt;font&gt;</code>的兄弟节点。</p>
+<h2 id="寻找原因"><a href="#寻找原因" class="headerlink" title="寻找原因"></a>寻找原因</h2><p>一开始直接在google搜索问题原因，但一直没找到类似的问题。于是开始从使用的模块入手。笔者使用的HTML导入模块是<code>lxml.html.soupparser</code>，这个模块的文档中并没提到相关的问题，不过模块调用了<code>BeautifulSoup</code>模块处理HTML，于是查看了BeautifulSoup的源码。果然找到了影响这两个标签的部分：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#According to the HTML standard, each of these inline tags can</span></div><div class="line"><span class="comment">#contain another tag of the same type. Furthermore, it's common</span></div><div class="line"><span class="comment">#to actually use these tags this way.</span></div><div class="line">NESTABLE_INLINE_TAGS = (<span class="string">'span'</span>, <span class="string">'font'</span>, <span class="string">'q'</span>, <span class="string">'object'</span>, <span class="string">'bdo'</span>, <span class="string">'sub'</span>, <span class="string">'sup'</span>,</div><div class="line">                        <span class="string">'center'</span>)</div><div class="line"></div><div class="line"><span class="comment">#According to the HTML standard, these block tags can contain</span></div><div class="line"><span class="comment">#another tag of the same type. Furthermore, it's common</span></div><div class="line"><span class="comment">#to actually use these tags this way.</span></div><div class="line">NESTABLE_BLOCK_TAGS = (<span class="string">'blockquote'</span>, <span class="string">'div'</span>, <span class="string">'fieldset'</span>, <span class="string">'ins'</span>, <span class="string">'del'</span>)</div></pre></td></tr></table></figure>
+<p>也就是<code>BeautifulSoup</code>是根据HTML标准来规范那些不规范的HTML，其中这两类标签根据标准只能包围类别中的标签。</p>
+<p>##　解决方法</p>
+<h3 id="修改源码"><a href="#修改源码" class="headerlink" title="修改源码"></a>修改源码</h3><p>最简单的方法就是直接删掉<code>BeautifulSoup</code>源码中这个list中的标签。不过这种方法弊端也很明显：会影响其他项目中引用的<code>BeautifulSoup</code>功能。要不影响其他项目可以把修改后的<code>BeautifulSoup</code>源码放在此项目中。不过这样也会影响此项目中其他用到<code>BeautifulSoup</code>的部分。</p>
+<h3 id="子类修改"><a href="#子类修改" class="headerlink" title="子类修改"></a>子类修改</h3><p>更普遍的做法是继承之后通过子类修改相应属性。</p>
+<p>这里有个问题，由于我们使用的实际是<code>lxml</code>，但修改属性只能通过继承<code>BeautifulSoup</code>，所以要写两个新类分别继承两个模块，这样略显麻烦。幸运的是，在查看源码的过程中发现<code>lxml.html.soupparser.fromstring()</code>方法中有一个<code>beautifulsoup</code>参数，如果没有提供这个参数则默认使用<code>BeautifulSoup</code>。这样就简单多了，不需要动<code>lxml</code>部分，只需要写个BeautifulSoup的新类即可：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> BeautifulSoup <span class="keyword">import</span> BeautifulSoup</div><div class="line"></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">new_BeautifulSoup</span><span class="params">(BeautifulSoup)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,  *args, **kwargs)</span>:</span></div><div class="line">        super(new_BeautifulSoup, self).__init__(*args, **kwargs)</div><div class="line">        super(new_BeautifulSoup, self).NESTABLE_TAGS.pop(<span class="string">'font'</span>, <span class="keyword">None</span>)</div><div class="line">        super(new_BeautifulSoup, self).NESTABLE_TAGS.pop(<span class="string">'div'</span>, <span class="keyword">None</span>)</div><div class="line">        super(new_BeautifulSoup, self).RESET_NESTING_TAGS.pop(<span class="string">'div'</span>, <span class="keyword">None</span>)</div></pre></td></tr></table></figure>
+<p>虽然在源码中影响这两个标签的属性是<code>NESTABLE_INLINE_TAGS</code>和<code>NESTABLE_BLOCK_TAGS</code>，但实际测试发现直接覆写这两个属性没有效果，修改<code>NESTABLE_TAGS</code>和<code>RESET_NESTING_TAGS</code>则可以达到预期效果。</p>
+<p>##　延伸问题</p>
+<p>除了这种改变标签顺序的问题，lxml在导入HTML时还会影响其他结构，比如添加修改引号，修改标签多个属性的顺序等。这些问题可以当作是模块对非标准化源码(broken html)的标准化处理，在处理少量规范网页时没什么影响，但如果是要处理大量不规范网页则需要多多注意。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/lxml/" rel="tag"># lxml</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/21/Qlistwidget_doubleclicked_with_clicked/" rel="next" title="PyQt4 中区分 QListWidget 的双击(itemDoubleClicked)和单击(itemClicked) 信号">
+                <i class="fa fa-chevron-left"></i> PyQt4 中区分 QListWidget 的双击(itemDoubleClicked)和单击(itemClicked) 信号
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/21/lxml_html_soupparser/" rel="prev" title="lxml.html.soupparser.fromstring() 出现ValueError Comment may not contain '--' or end with '-' 的解决办法">
+                lxml.html.soupparser.fromstring() 出现ValueError Comment may not contain '--' or end with '-' 的解决办法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="司开星" />
+          <p class="site-author-name" itemprop="name">司开星</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">24</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/chroming" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/chromerplus" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/chroming" target="_blank" title="CSND">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  CSND
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-nd.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题细节"><span class="nav-number">1.</span> <span class="nav-text">问题细节</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#寻找原因"><span class="nav-number">2.</span> <span class="nav-text">寻找原因</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#修改源码"><span class="nav-number">2.1.</span> <span class="nav-text">修改源码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子类修改"><span class="nav-number">2.2.</span> <span class="nav-text">子类修改</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">司开星</span>
+</div>
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("7i5MUsWXY3NmljUbNIYbB5G3-gzGzoHsz", "1UYFkJkKuvoUs4MANdHnFxS7");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+
+</body>
+</html>

@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="sikaixing.com/"/>
-  <updated>2017-02-21T08:24:45.000Z</updated>
+  <updated>2017-03-22T02:07:02.000Z</updated>
   <id>sikaixing.com/</id>
   
   <author>
@@ -14,6 +14,96 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>lxml.html.soupparser.fromstring() 出现ValueError Comment may not contain &#39;--&#39; or end with &#39;-&#39; 的解决办法</title>
+    <link href="sikaixing.com/2017/03/21/lxml_html_soupparser/"/>
+    <id>sikaixing.com/2017/03/21/lxml_html_soupparser/</id>
+    <published>2017-03-21T10:00:00.000Z</published>
+    <updated>2017-03-22T02:07:02.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="初始问题"><a href="#初始问题" class="headerlink" title="初始问题"></a>初始问题</h2><p>近期在使用<code>lxml.html.soupparser.fromstring()</code>载入某个网页HTML时得到一条报错：</p>
+<p><em>ValueError: All strings must be XML compatible: Unicode or ASCII, no NULL bytes or control characters</em></p>
+<p>仔细对比了这个HTML与其他不会产生这个错误的HTML，发现报错的HTML中有几个ascii控制字符，即错误信息中的<em>control characters</em>。于是搜索了解决办法，在<a href="https://github.com/html5lib/html5lib-python/issues/96" target="_blank" rel="external">https://github.com/html5lib/html5lib-python/issues/96</a> 这里找到了以下函数可以删去HTML中的控制字符：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> re</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">remove_control_characters</span><span class="params">(html)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">str_to_int</span><span class="params">(s, default, base=<span class="number">10</span>)</span>:</span></div><div class="line">        <span class="keyword">if</span> int(s, base) &lt; <span class="number">0x10000</span>:</div><div class="line">            <span class="keyword">return</span> unichr(int(s, base))</div><div class="line">        <span class="keyword">return</span> default</div><div class="line">    html = re.sub(<span class="string">ur"&amp;#(\d+);?"</span>, <span class="keyword">lambda</span> c: str_to_int(c.group(<span class="number">1</span>), c.group(<span class="number">0</span>)), html)</div><div class="line">    html = re.sub(<span class="string">ur"&amp;#[xX]([0-9a-fA-F]+);?"</span>, <span class="keyword">lambda</span> c: str_to_int(c.group(<span class="number">1</span>), c.group(<span class="number">0</span>), base=<span class="number">16</span>), html)</div><div class="line">    html = re.sub(<span class="string">ur"[\x00-\x08\x0b\x0e-\x1f\x7f]"</span>, <span class="string">""</span>, html)</div><div class="line">    <span class="keyword">return</span> html</div></pre></td></tr></table></figure>
+<p>或者下面的函数(<a href="http://stackoverflow.com/questions/4324790/removing-control-characters-from-a-string-in-python)：" target="_blank" rel="external">http://stackoverflow.com/questions/4324790/removing-control-characters-from-a-string-in-python)：</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> unicodedata</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">remove_control_characters</span><span class="params">(s)</span>:</span></div><div class="line">    <span class="keyword">return</span> <span class="string">""</span>.join(ch <span class="keyword">for</span> ch <span class="keyword">in</span> s <span class="keyword">if</span> unicodedata.category(ch)[<span class="number">0</span>]!=<span class="string">"C"</span>)</div></pre></td></tr></table></figure>
+<p>测试了第一个函数发现确实可以解决问题。</p>
+<h2 id="另一个问题"><a href="#另一个问题" class="headerlink" title="另一个问题"></a>另一个问题</h2><p>如果程序只是我自己运行的话问题到这就结束了。但实际上相关的服务器程序也要抓取同样的页面，而后台在抓取这个HTML后出现了另一种报错：</p>
+<p><em>ValueError: Comment may not contain ‘–’ or end with ‘-‘</em></p>
+<p>排查过其他原因后发现问题出在lxml的版本上。我本机的lxml版本是3.4.4, 服务器程序的版本是3.6.4。于是我把本地的lxml升级到了最新版3.7.3，出现了与服务器相同的报错。</p>
+<h2 id="寻找解决办法"><a href="#寻找解决办法" class="headerlink" title="寻找解决办法"></a>寻找解决办法</h2><p>直接在Google搜索这个问题确实可以搜到一些。其中有一条<a href="http://stackoverflow.com/questions/34595275/disable-comments-check-for-in-lxml" target="_blank" rel="external">http://stackoverflow.com/questions/34595275/disable-comments-check-for-in-lxml</a> 提供了解决办法：将本地的<code>html5parser.py</code>替换成github上最新版。但实测无效，仔细查看问题觉得原因是问题中使用的方法为<code>html5parser.fromstring</code>，而我使用的是<code>soupparser.fromstring</code>。</p>
+<p>搜索无果之后开始在官方文档和源码中找原因和解决办法。一段时间的查看之后发现了以下几个相关点：</p>
+<ol>
+<li><code>soupparser.fromstring</code>首先使用<code>BeautifulSoup</code>载入HTML, 之后再依靠<code>html.parser.makeelement</code>来生成树;</li>
+<li><code>soupparser.fromstring</code>虽然有<code>makeelement</code>参数可以传递其他Element factory function，但没有文档说明如何定义自己的Element factory function ；</li>
+<li><code>makeelement</code>方法继承自<code>lxml.etree</code>，但<code>etree</code>模块是用Cython（一种类似Python但会与C模块交互的语言）写的；</li>
+<li>错误<em>ValueError: Comment may not contain ‘–’ or end with ‘-‘</em> 及 <em>ValueError: All strings must be XML compatible: Unicode or ASCII, no NULL bytes or control characters</em> 也是在<code>etree</code>中定义的；</li>
+<li><code>BeautifulSoup</code>在载入源码后已经改变了<code>comment</code>处的结构。</li>
+</ol>
+<p><code>etree</code>模块并非Python写的，意味着想通过继承重写相关方法比较麻烦。</p>
+<p><code>BeautifulSoup</code>会改变<code>comment</code>处结构，说不定可以从这里入手。但尝试给<code>beautifulsoup</code>参数传递了不同的<code>beautifulsoup</code> (包括bs3,bs4以及继承重写相关方法后的bs4)后发现无法解决问题。</p>
+<p>于是没有在这条路上找到解决办法。</p>
+<h2 id="回到起点"><a href="#回到起点" class="headerlink" title="回到起点"></a>回到起点</h2><p>回想了一开始的问题，发现只要我把控制字符删除之后就可以正常执行<code>fromstring</code>, 于是开始考虑不同版本之间的区别。查看了changelog，没有发现相关的bug fix记录。于是在virtualenv中开始测试从哪个版本开始有这个报错的：</p>
+<p><code>pip install lxml==3.5.0b1</code></p>
+<p>发现从3.4.4之后的版本，也就是3.5.0b1开始，就有这个报错了。看了这个版本的changelog，相关的记录只有<code>soupparser</code>的<code>BeautifulSoup</code>从<code>bs3</code>换成<code>bs4</code>了，但已经试过更换不同版本的<code>bs</code>，并没有解决问题。</p>
+<p>于是只能选最无趣的办法，把服务器的<code>lxml</code>也换成3.4.4版本，并且使用之前提到的函数预先过滤HTML中的控制字符。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;初始问题&quot;&gt;&lt;a href=&quot;#初始问题&quot; class=&quot;headerlink&quot; title=&quot;初始问题&quot;&gt;&lt;/a&gt;初始问题&lt;/h2&gt;&lt;p&gt;近期在使用&lt;code&gt;lxml.html.soupparser.fromstring()&lt;/code&gt;载入某个网页HTML时
+    
+    </summary>
+    
+      <category term="编程语言" scheme="sikaixing.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
+    
+      <category term="Python" scheme="sikaixing.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/"/>
+    
+    
+      <category term="Python" scheme="sikaixing.com/tags/Python/"/>
+    
+      <category term="lxml" scheme="sikaixing.com/tags/lxml/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>解决 lxml 处理HTML引起的标签顺序改变问题</title>
+    <link href="sikaixing.com/2017/03/15/lxml_changed_html/"/>
+    <id>sikaixing.com/2017/03/15/lxml_changed_html/</id>
+    <published>2017-03-15T10:00:00.000Z</published>
+    <updated>2017-03-22T01:56:19.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="问题细节"><a href="#问题细节" class="headerlink" title="问题细节"></a>问题细节</h2><p>近期在用lxml处理某个网页HTML源码时发现<code>&lt;font&gt;</code>标签的结束标签位置会被改变，具体来说是<code>&lt;font&gt;</code>标签本身包围了一些<code>&lt;p&gt;</code>标签，当<code>&lt;font&gt;</code>外存在<code>&lt;div</code>标签时，<code>&lt;font&gt;</code>标签的结束标签<code>&lt;/font&gt;</code>位置会被改变，原本被包围在中间的的<code>&lt;p&gt;</code>标签全部变成<code>&lt;font&gt;</code>的兄弟节点。</p>
+<h2 id="寻找原因"><a href="#寻找原因" class="headerlink" title="寻找原因"></a>寻找原因</h2><p>一开始直接在google搜索问题原因，但一直没找到类似的问题。于是开始从使用的模块入手。笔者使用的HTML导入模块是<code>lxml.html.soupparser</code>，这个模块的文档中并没提到相关的问题，不过模块调用了<code>BeautifulSoup</code>模块处理HTML，于是查看了BeautifulSoup的源码。果然找到了影响这两个标签的部分：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#According to the HTML standard, each of these inline tags can</span></div><div class="line"><span class="comment">#contain another tag of the same type. Furthermore, it's common</span></div><div class="line"><span class="comment">#to actually use these tags this way.</span></div><div class="line">NESTABLE_INLINE_TAGS = (<span class="string">'span'</span>, <span class="string">'font'</span>, <span class="string">'q'</span>, <span class="string">'object'</span>, <span class="string">'bdo'</span>, <span class="string">'sub'</span>, <span class="string">'sup'</span>,</div><div class="line">                        <span class="string">'center'</span>)</div><div class="line"></div><div class="line"><span class="comment">#According to the HTML standard, these block tags can contain</span></div><div class="line"><span class="comment">#another tag of the same type. Furthermore, it's common</span></div><div class="line"><span class="comment">#to actually use these tags this way.</span></div><div class="line">NESTABLE_BLOCK_TAGS = (<span class="string">'blockquote'</span>, <span class="string">'div'</span>, <span class="string">'fieldset'</span>, <span class="string">'ins'</span>, <span class="string">'del'</span>)</div></pre></td></tr></table></figure>
+<p>也就是<code>BeautifulSoup</code>是根据HTML标准来规范那些不规范的HTML，其中这两类标签根据标准只能包围类别中的标签。</p>
+<p>##　解决方法</p>
+<h3 id="修改源码"><a href="#修改源码" class="headerlink" title="修改源码"></a>修改源码</h3><p>最简单的方法就是直接删掉<code>BeautifulSoup</code>源码中这个list中的标签。不过这种方法弊端也很明显：会影响其他项目中引用的<code>BeautifulSoup</code>功能。要不影响其他项目可以把修改后的<code>BeautifulSoup</code>源码放在此项目中。不过这样也会影响此项目中其他用到<code>BeautifulSoup</code>的部分。</p>
+<h3 id="子类修改"><a href="#子类修改" class="headerlink" title="子类修改"></a>子类修改</h3><p>更普遍的做法是继承之后通过子类修改相应属性。</p>
+<p>这里有个问题，由于我们使用的实际是<code>lxml</code>，但修改属性只能通过继承<code>BeautifulSoup</code>，所以要写两个新类分别继承两个模块，这样略显麻烦。幸运的是，在查看源码的过程中发现<code>lxml.html.soupparser.fromstring()</code>方法中有一个<code>beautifulsoup</code>参数，如果没有提供这个参数则默认使用<code>BeautifulSoup</code>。这样就简单多了，不需要动<code>lxml</code>部分，只需要写个BeautifulSoup的新类即可：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> BeautifulSoup <span class="keyword">import</span> BeautifulSoup</div><div class="line"></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">new_BeautifulSoup</span><span class="params">(BeautifulSoup)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,  *args, **kwargs)</span>:</span></div><div class="line">        super(new_BeautifulSoup, self).__init__(*args, **kwargs)</div><div class="line">        super(new_BeautifulSoup, self).NESTABLE_TAGS.pop(<span class="string">'font'</span>, <span class="keyword">None</span>)</div><div class="line">        super(new_BeautifulSoup, self).NESTABLE_TAGS.pop(<span class="string">'div'</span>, <span class="keyword">None</span>)</div><div class="line">        super(new_BeautifulSoup, self).RESET_NESTING_TAGS.pop(<span class="string">'div'</span>, <span class="keyword">None</span>)</div></pre></td></tr></table></figure>
+<p>虽然在源码中影响这两个标签的属性是<code>NESTABLE_INLINE_TAGS</code>和<code>NESTABLE_BLOCK_TAGS</code>，但实际测试发现直接覆写这两个属性没有效果，修改<code>NESTABLE_TAGS</code>和<code>RESET_NESTING_TAGS</code>则可以达到预期效果。</p>
+<p>##　延伸问题</p>
+<p>除了这种改变标签顺序的问题，lxml在导入HTML时还会影响其他结构，比如添加修改引号，修改标签多个属性的顺序等。这些问题可以当作是模块对非标准化源码(broken html)的标准化处理，在处理少量规范网页时没什么影响，但如果是要处理大量不规范网页则需要多多注意。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;问题细节&quot;&gt;&lt;a href=&quot;#问题细节&quot; class=&quot;headerlink&quot; title=&quot;问题细节&quot;&gt;&lt;/a&gt;问题细节&lt;/h2&gt;&lt;p&gt;近期在用lxml处理某个网页HTML源码时发现&lt;code&gt;&amp;lt;font&amp;gt;&lt;/code&gt;标签的结束标签位置会被改变，
+    
+    </summary>
+    
+      <category term="编程语言" scheme="sikaixing.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
+    
+      <category term="Python" scheme="sikaixing.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/"/>
+    
+    
+      <category term="Python" scheme="sikaixing.com/tags/Python/"/>
+    
+      <category term="lxml" scheme="sikaixing.com/tags/lxml/"/>
+    
+  </entry>
   
   <entry>
     <title>PyQt4 中区分 QListWidget 的双击(itemDoubleClicked)和单击(itemClicked) 信号</title>
@@ -1047,319 +1137,6 @@
     
     
       <category term="macOS" scheme="sikaixing.com/tags/macOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Python中的多进程，多线程，协程</title>
-    <link href="sikaixing.com/2016/01/21/multiprocess_in_python/"/>
-    <id>sikaixing.com/2016/01/21/multiprocess_in_python/</id>
-    <published>2016-01-20T16:16:21.000Z</published>
-    <updated>2016-11-12T12:19:50.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="多进程"><a href="#多进程" class="headerlink" title="多进程"></a>多进程</h2><h3 id="Linux-系统"><a href="#Linux-系统" class="headerlink" title="Linux 系统"></a>Linux 系统</h3><p>linux系统可通过<code>os.fork()</code>复制当前进程状态作为子进程。复制时子进程返回0,父进程返回子进程的pid. 子进程可通过<code>os.getppid()</code>获取父进程的pid.同时<code>os.getpid()</code>可获得当前进程的pid.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> os</div><div class="line"></div><div class="line"><span class="keyword">print</span> <span class="string">'Process (%s) start...'</span> % os.getpid()</div><div class="line">pid = os.fork()</div><div class="line"><span class="keyword">if</span> pid==<span class="number">0</span>:</div><div class="line">    <span class="keyword">print</span> <span class="string">'I am child process (%s) and my parent is %s.'</span> % (os.getpid(),                os.getppid())</div><div class="line"><span class="keyword">else</span>:</div><div class="line"><span class="keyword">print</span> <span class="string">'I (%s) just created a child process (%s).'</span> % (os.getpid(), pid)</div></pre></td></tr></table></figure>
-<p>结果:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Process (876) start...</div><div class="line">I (876) just created a child process (877).</div><div class="line">I am child process (877) and my parent is 876.</div></pre></td></tr></table></figure>
-<h3 id="Python自带的多进程模块"><a href="#Python自带的多进程模块" class="headerlink" title="Python自带的多进程模块"></a>Python自带的多进程模块</h3><p>windows没有<code>fork()</code>.可以通过python提供的通用多进程模块<code>multiprocessing</code>创建多进程。</p>
-<pre><code>  创建多进程需要导入`Process`模块:
-
-  `from multiprocess import Process`
-
-  使用
-
-  `p = Process(target=function, args=(parament,...)`
-
-  创建子进程实例.其中`target=`传入子进程需执行的*函数本身*`function`,args传入函数需要的参数.参数数量不固定.
-  之后使用
-
-  `p.start()`
-
-  运行实例.要等待该子进程运行结束再运行之后的代码可以使用:
-
-  `p.join()`
-
-  以下是一个例子:
-
-​<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">  <span class="keyword">from</span> multiprocessing <span class="keyword">import</span> Process</div><div class="line">  <span class="keyword">import</span> os</div><div class="line">  </div><div class="line">  <span class="comment"># 子进程要执行的代码</span></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">run_proc</span><span class="params">(name)</span>:</span></div><div class="line">      <span class="keyword">print</span> <span class="string">'Run child process %s (%s)...'</span> % (name, os.getpid())</div><div class="line">  </div><div class="line">  <span class="keyword">if</span> __name__==<span class="string">'__main__'</span>:</div><div class="line">      <span class="keyword">print</span> <span class="string">'Parent process %s.'</span> % os.getpid()</div><div class="line">      p = Process(target=run_proc, args=(<span class="string">'test'</span>,))</div><div class="line">      <span class="keyword">print</span> <span class="string">'Process will start.'</span></div><div class="line">      p.start()</div><div class="line">      p.join()</div><div class="line">      <span class="keyword">print</span> <span class="string">'Process end.'</span></div><div class="line">​</div></pre></td></tr></table></figure>
-
-  结果:
-
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Parent process 928.</div><div class="line">Process will start.</div><div class="line">Run child process test (929)...</div><div class="line">Process end.</div></pre></td></tr></table></figure>
-</code></pre><p>对于需启动大量子进程的情况,可使用<code>Pool</code>模块:</p>
-<pre><code>    `from multiprocessing import Pool`
-
-    使用:
-
-    `p = Pool(number)`
-
-    创建进程池.其中number为进程池包含子进程数量.不写默认为CPU核数.
-
-    使用:
-    `p.map(function,inter)`
-    `p.map_async(function,inter)`
-    `p.apply(function, args=(parament,...)`
-    `p.apply_async(function, args=(parament,...)`
-    其中之一同时运行子进程.其中map只支持单个参数.inter为可迭代对象.async为非阻塞方式运行，即不等结果出来主程序也会继续运行后面的代码。而apply输入则是一个list中的数量超过一个的参数。
-
-    之后需关闭进程池:
-
-    `p.close()`
-
-    同时,需等待所有子进程运行结束可使用:
-
-    `p.join()`
-
-    简单的例子：
-
-    ​<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">        from multiprocessing import Pool</div><div class="line">​    ​    import os </div><div class="line">        def Pri(x):</div><div class="line">            print x*x</div><div class="line">            print os.getpid()</div><div class="line">            </div><div class="line">        p = Pool(5)</div><div class="line">        for i in range(10):</div><div class="line">            p.apply_async(Pri, [i])</div><div class="line">            p.close()</div><div class="line">        ​</div></pre></td></tr></table></figure>
-
-
-    ​<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">        from multiprocessing import Pool</div><div class="line">​    ​    import os </div><div class="line">        def Pri(x):</div><div class="line">            print x*x</div><div class="line">            print os.getpid()</div><div class="line">            </div><div class="line">        p = Pool(5)</div><div class="line">        p.map(Pri, range(10))</div><div class="line">        p.close()</div><div class="line">        ​</div></pre></td></tr></table></figure>
-
-
-    另一个例子:
-
-​<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">    <span class="keyword">from</span> multiprocessing <span class="keyword">import</span> Pool</div><div class="line">    <span class="keyword">import</span> os, time, random</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">long_time_task</span><span class="params">(name)</span>:</span></div><div class="line">        <span class="keyword">print</span> <span class="string">'Run task %s (%s)...'</span> % (name, os.getpid())</div><div class="line">        start = time.time()</div><div class="line">        time.sleep(random.random() * <span class="number">3</span>)</div><div class="line">        end = time.time()</div><div class="line">        <span class="keyword">print</span> <span class="string">'Task %s runs %0.2f seconds.'</span> % (name, (end - start))</div><div class="line">    </div><div class="line">    <span class="keyword">if</span> __name__==<span class="string">'__main__'</span>:</div><div class="line">        <span class="keyword">print</span> <span class="string">'Parent process %s.'</span> % os.getpid()</div><div class="line">        p = Pool()</div><div class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>):</div><div class="line">            p.apply_async(long_time_task, args=(i,))</div><div class="line">        <span class="keyword">print</span> <span class="string">'Waiting for all subprocesses done...'</span></div><div class="line">        p.close()</div><div class="line">        p.join()</div><div class="line">        <span class="keyword">print</span> <span class="string">'All subprocesses done.'</span></div><div class="line">​</div></pre></td></tr></table></figure>
-
-
-    结果:
-
-    ​<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">Parent process 669.</div><div class="line">Waiting for all subprocesses done...</div><div class="line">Run task 0 (671)...</div><div class="line">Run task 1 (672)...</div><div class="line">Run task 2 (673)...</div><div class="line">Run task 3 (674)...</div><div class="line">Task 2 runs 0.14 seconds.</div><div class="line">Run task 4 (673)...</div><div class="line">Task 1 runs 0.27 seconds.</div><div class="line">Task 3 runs 0.86 seconds.</div><div class="line">Task 0 runs 1.41 seconds.</div><div class="line">Task 4 runs 1.91 seconds.</div><div class="line">All subprocesses done.</div><div class="line">​</div></pre></td></tr></table></figure>
-</code></pre><ul>
-<li><p>进程间通讯</p>
-<pre><code>不同进程间可以通过`Queue`,`Pipe`来通信.`Pipe`用于两个进程间通信,`Quene`用于多个进程间通信.在只有两个进程通信的情况下`Pipe`效率高于`Queue`.
-</code></pre><ul>
-<li><p>Pipe</p>
-<p>  导入<code>Pipe</code>模块:</p>
-<p>  <code>from multiprocessing import Pipe</code></p>
-<p>  创建Pipe通信的两端(返回一个双元素的list):</p>
-<p>  <code>p = Pipe(duplex=False)</code><br>  其中<code>duplex=False</code>表示该<code>Pipe只</code>能单向通信.默认不写该参数为双向通信.</p>
-<p>  <code>p[0]</code>,<code>p[1]</code>可以分别作为两个子进程的参数传递给子进程函数.也可以只传递一端给子进程,另一端交给父进程.</p>
-<p>  <code>Pipe</code>的两端可通过<code>p.send()</code>传送值,<code>p.recv()</code>接收值.</p>
-<p>  例子1:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> multiprocessing <span class="keyword">import</span> Process, Pipe</div><div class="line">       </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">(conn)</span>:</span></div><div class="line">    conn.send([<span class="number">42</span>, <span class="keyword">None</span>, <span class="string">'hello'</span>])</div><div class="line">    conn.close()</div><div class="line"> </div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    parent_conn, child_conn = Pipe()</div><div class="line">    p = Process(target=f, args=(child_conn,))</div><div class="line">    p.start()</div><div class="line">    <span class="keyword">print</span> parent_conn.recv()   <span class="comment"># prints "[42, None, 'hello']"</span></div><div class="line">    p.join()</div></pre></td></tr></table></figure>
-<p>  例子2:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> multiprocessing <span class="keyword">as</span> mul</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">proc1</span><span class="params">(pipe)</span>:</span></div><div class="line">    pipe.send(<span class="string">'hello'</span>)</div><div class="line">    print(<span class="string">'proc1 rec:'</span>,pipe.recv())</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">proc2</span><span class="params">(pipe)</span>:</span></div><div class="line">    print(<span class="string">'proc2 rec:'</span>,pipe.recv())</div><div class="line">    pipe.send(<span class="string">'hello, too'</span>)</div><div class="line"></div><div class="line"><span class="comment"># Build a pipe</span></div><div class="line">pipe = mul.Pipe()</div><div class="line"></div><div class="line"><span class="comment"># Pass an end of the pipe to process 1</span></div><div class="line">p1   = mul.Process(target=proc1, args=(pipe[<span class="number">0</span>],))</div><div class="line"><span class="comment"># Pass the other end of the pipe to process 2</span></div><div class="line">p2   = mul.Process(target=proc2, args=(pipe[<span class="number">1</span>],))</div><div class="line">p1.start()</div><div class="line">p2.start()</div><div class="line">p1.join()</div><div class="line">p2.join()</div></pre></td></tr></table></figure>
-</li>
-<li><p>Queue</p>
-<p>  导入<code>Queue</code>模块:</p>
-<p>  <code>from multiprocessing import Queue</code></p>
-<p>  创建<code>Queue</code>对象:</p>
-<p>  <code>q = Queue(max)</code><br>  其中max表示对象中可以存放的最大数量.</p>
-<p>  q可作为全局变量使用,也可以作为参数传递给子进程.<br>  使用<code>q.put()</code>在<code>Queue</code>对象中放入需传递的值,<code>q.get()</code>取出值.</p>
-<p>  例子1:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> multiprocessing <span class="keyword">import</span> Process,Queue</div><div class="line">       </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">writer_proc</span><span class="params">()</span>:</span></div><div class="line">   q.put(<span class="number">100</span>)</div><div class="line"> </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">reader_proc</span><span class="params">()</span>:</span></div><div class="line">   <span class="keyword">print</span> q.get()</div><div class="line"> </div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    q = Queue()</div><div class="line">    reader = Process(target=reader_proc,args=(q,))</div><div class="line">    reader.start()</div><div class="line">    writer = Process(target=writer_proc,args=(q,))</div><div class="line">    writer.start()</div><div class="line">    reader.join()</div><div class="line">    writer.join()</div></pre></td></tr></table></figure>
-<p>  例子2:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> multiprocessing</div><div class="line">       </div><div class="line">q = multiprocessing.Queue()</div><div class="line"> </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">reader_proc</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">print</span> q.get()</div><div class="line"> </div><div class="line">reader = multiprocessing.Process(target=reader_proc)</div><div class="line">reader.start()</div><div class="line"> </div><div class="line">q.put(<span class="number">100</span>)</div><div class="line">reader.join()</div></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h2><p>多任务除了使用多进程外还可以使用多线程来完成.单个进程中可以有多个线程,它们共享进程中的数据.<br>​<br>python中可使用高级模块<code>Threading</code>来创建多线程.其使用方法与<code>multiprocessing</code>相似.</p>
-<p>导入<code>Threading</code>模块:</p>
-<p><code>import Threading</code></p>
-<p><em>threading 模块提供的常用方法：<br>threading.currentThread(): 返回当前的线程变量。 (也可以使用threading.current_thread())<br>threading.enumerate(): 返回一个包含正在运行的线程的list。正在运行指线程启动后、结束前，不包括启动前和终止后的线程。<br>threading.activeCount(): 返回正在运行的线程数量，与len(threading.enumerate())有相同的结果。<br>threading模块提供的类：<br>Thread, Lock, Rlock, Condition, [Bounded]Semaphore, Event, Timer, local.</em></p>
-<p>构建新线程实例:</p>
-<p><code>t = Threading.thread(target=function,...)</code><br>同时构建实例支持以下几种方法:</p>
-<p><em>Thread(group=None, target=None, name=None, args=(), kwargs={})<br>group: 线程组，目前还没有实现，库引用中提示必须是None；<br>target: 要执行的方法；<br>name: 线程名；<br>args/kwargs: 要传入方法的参数。</em></p>
-<p>实例支持以下方法:<br><em>isAlive(): 返回线程是否在运行。正在运行指启动后、终止前。<br>get/setName(name): 获取/设置线程名。<br>is/setDaemon(bool): 获取/设置是否守护线程。初始值从创建该线程的线程继承。当没有非守护线程仍在运行时，程序将终止。<br>start(): 启动线程。<br>join([timeout]): 阻塞当前上下文环境的线程，直到调用此方法的线程终止或到达指定的timeout（可选参数）。</em></p>
-<p>使用:</p>
-<p><code>t.start()</code><br>运行新线程.</p>
-<p>如需等待线程运行结束:</p>
-<p><code>t.join()</code></p>
-<ul>
-<li><p>锁<br>  由于多线程共享进程中的变量, 如果直接使用多线程修改变量的话容易出问题.所以多线程中一般会创建锁.</p>
-<p>  创建锁:</p>
-<p>  <code>lock = threading.Lock()</code><br>  此时有了一个锁的实例.</p>
-<p>  <em>锁的实例方法:<br>  acquire([timeout]): 使线程进入同步阻塞状态，尝试获得锁定。<br>  release(): 释放锁。使用前线程必须已获得锁定，否则将抛出异常。</em></p>
-<p>  在每个线程需要修改变量前调用实例方法,尝试将修改变量的过程置于锁中,不让其他线程修改变量:</p>
-<p>  <code>lock.acquire()</code></p>
-<p>  修改之后需要释放锁:</p>
-<p>  <code>lock.release()</code></p>
-<p>  例子1:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">balance = <span class="number">0</span></div><div class="line">lock = threading.Lock()</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">run_thread</span><span class="params">(n)</span>:</span></div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">100000</span>):</div><div class="line">        <span class="comment"># 先要获取锁:</span></div><div class="line">        lock.acquire()</div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            <span class="comment"># 放心地改吧:</span></div><div class="line">            change_it(n)</div><div class="line">        <span class="keyword">finally</span>:</div><div class="line">            <span class="comment"># 改完了一定要释放锁:</span></div><div class="line">            lock.release()</div></pre></td></tr></table></figure>
-<p>  例子2:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># encoding: UTF-8</span></div><div class="line"><span class="keyword">import</span> threading</div><div class="line"><span class="keyword">import</span> time</div><div class="line"> </div><div class="line">data = <span class="number">0</span></div><div class="line">lock = threading.Lock()</div><div class="line"> </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">global</span> data</div><div class="line">    <span class="keyword">print</span> <span class="string">'%s acquire lock...'</span> % threading.currentThread().getName()</div><div class="line">    </div><div class="line">    <span class="comment"># 调用acquire([timeout])时，线程将一直阻塞，</span></div><div class="line">    <span class="comment"># 直到获得锁定或者直到timeout秒后（timeout参数可选）。</span></div><div class="line">    <span class="comment"># 返回是否获得锁。</span></div><div class="line">    <span class="keyword">if</span> lock.acquire():</div><div class="line">        <span class="keyword">print</span> <span class="string">'%s get the lock.'</span> % threading.currentThread().getName()</div><div class="line">        data += <span class="number">1</span></div><div class="line">        time.sleep(<span class="number">2</span>)</div><div class="line">        <span class="keyword">print</span> <span class="string">'%s release lock...'</span> % threading.currentThread().getName()</div><div class="line">        </div><div class="line">        <span class="comment"># 调用release()将释放锁。</span></div><div class="line">        lock.release()</div><div class="line"> </div><div class="line">t1 = threading.Thread(target=func)</div><div class="line">t2 = threading.Thread(target=func)</div><div class="line">t3 = threading.Thread(target=func)</div><div class="line">t1.start()</div><div class="line">t2.start()</div><div class="line">t3.start()</div></pre></td></tr></table></figure>
-<p>  其他锁及线程间通信见参考资料5中.</p>
-</li>
-<li><p>多线程的全局变量与局部变量<br>  多线程之间修改全局变量需要加锁. 在线程的函数中创建局部变量可以解决加锁问题, 但如果线程需要运行不同函数, 函数之间需要共享变量, 局部变量调用不是很方便. <code>threading.local()</code>可以解决这个问题.<br>  <code>localschool = threading.local()</code></p>
-<p>  创建实例后, 不同线程在同时使用实例时不会产生冲突.</p>
-<p>  例子:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> threading</div><div class="line"></div><div class="line"><span class="comment"># 创建全局ThreadLocal对象:</span></div><div class="line">local_school = threading.local()</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">process_student</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">print</span> <span class="string">'Hello, %s (in %s)'</span> % (local_school.student, threading.current_thread().name)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">process_thread</span><span class="params">(name)</span>:</span></div><div class="line">    <span class="comment"># 绑定ThreadLocal的student:</span></div><div class="line">    local_school.student = name</div><div class="line">    process_student()</div><div class="line"></div><div class="line">t1 = threading.Thread(target= process_thread, args=(<span class="string">'Alice'</span>,), name=<span class="string">'Thread-A'</span>)</div><div class="line">t2 = threading.Thread(target= process_thread, args=(<span class="string">'Bob'</span>,), name=<span class="string">'Thread-B'</span>)</div><div class="line">t1.start()</div><div class="line">t2.start()</div><div class="line">t1.join()</div><div class="line">t2.join()</div></pre></td></tr></table></figure>
-</li>
-<li><p>分布式进程(待完善</p>
-</li>
-</ul>
-<h2 id="协程"><a href="#协程" class="headerlink" title="协程"></a>协程</h2><p>协程是单线程在不同的函数间中断并相互切换的一种运行模式.比如在函数A运行遇到阻塞时转向运行函数B,等到函数B运行结束再回来接着运行函数A.与多线程相比协程没有锁的问题.协程可以在IO密集的程序中节省IO等待时间,提高运行效率.</p>
-<ul>
-<li><p>yield<br>  python的生成器<code>yield</code>一定程度上支持协程.定义生成器<code>yield</code>可以直接在函数定义中将<code>return</code>换成<code>yield</code>.在调用生成器函数时首先将生成器赋给变量,通过变量的<code>.next()</code>方法调用生成器生成第一个值.再次调用<code>.next()</code>方法可生成第二个值.<code>.send(value)</code>方法可在调用生成器时给它传递一个参数.<br>  例子:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> time</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">consumer</span><span class="params">()</span>:</span></div><div class="line">    r = <span class="string">''</span></div><div class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">        n = <span class="keyword">yield</span> r</div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> n:</div><div class="line">            <span class="keyword">return</span></div><div class="line">        print(<span class="string">'[CONSUMER] Consuming %s...'</span> % n)</div><div class="line">        time.sleep(<span class="number">1</span>)</div><div class="line">        r = <span class="string">'200 OK'</span></div><div class="line">     </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">produce</span><span class="params">(c)</span>:</span></div><div class="line">    c.next()</div><div class="line">    n = <span class="number">0</span></div><div class="line">    <span class="keyword">while</span> n &lt; <span class="number">5</span>:</div><div class="line">        n = n + <span class="number">1</span></div><div class="line">        print(<span class="string">'[PRODUCER] Producing %s...'</span> % n)</div><div class="line">        r = c.send(n)</div><div class="line">        print(<span class="string">'[PRODUCER] Consumer return: %s'</span> % r)</div><div class="line">    c.close()</div><div class="line">     </div><div class="line"><span class="keyword">if</span> __name__==<span class="string">'__main__'</span>:</div><div class="line">    c = consumer()</div><div class="line">    produce(c)</div></pre></td></tr></table></figure>
-<p>  结果:</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">[PRODUCER] Producing 1...</div><div class="line">[CONSUMER] Consuming 1...</div><div class="line">[PRODUCER] Consumer return: 200 OK</div><div class="line">[PRODUCER] Producing 2...</div><div class="line">[CONSUMER] Consuming 2...</div><div class="line">[PRODUCER] Consumer return: 200 OK</div><div class="line">[PRODUCER] Producing 3...</div><div class="line">[CONSUMER] Consuming 3...</div><div class="line">[PRODUCER] Consumer return: 200 OK</div><div class="line">[PRODUCER] Producing 4...</div><div class="line">[CONSUMER] Consuming 4...</div><div class="line">[PRODUCER] Consumer return: 200 OK</div><div class="line">[PRODUCER] Producing 5...</div><div class="line">[CONSUMER] Consuming 5...</div><div class="line">[PRODUCER] Consumer return: 200 OK</div></pre></td></tr></table></figure>
-<p>  更多关于<code>yield</code>见参考资料6.</p>
-</li>
-<li><p>gevent</p>
-<pre><code>gevent模块为python提供了完整的协程实现.
-
-使用需先导入模块:
-
-`import gevent`
-</code></pre><ul>
-<li><p>在网络通信中一般还会导入<code>monkey</code>模块以将默认<code>socket</code>替换为可协程的<code>socket</code>:</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">from gevent import monkey</div><div class="line">monkey.patch_socket()</div></pre></td></tr></table></figure>
-<p>  或者将所有阻塞式调用,包括<code>socket</code>, <code>ssl</code>, <code>threading</code>, <code>select</code>都替换为异步式:</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">from gevent import monkey</div><div class="line">monkey.patch_all()</div></pre></td></tr></table></figure>
-<p>  这种替换调用一般放在第一行.替换后这些调用会自动处理阻塞问题.</p>
-<p>  在需使用协程时要用:</p>
-<p>  <code>g = gevent.spawn(function,parament)</code><br>  使用协程方式启动函数.参数为函数的参数.</p>
-<p>  等待任务结束可以使用:</p>
-<p>  <code>g.join()</code></p>
-<p>  等待所有任务结束可以使用:</p>
-<p>  <code>gevent.joinall(spawnlist)</code></p>
-</li>
-<li><p>不过使用<code>monkey</code>模块补丁自动处理有时候不能满足要求.这时我们可以使用其他模块.<br>如自动处理会并发所有连接,如果需要限制并发数量的话可以使用<code>Pool</code>模块.</p>
-<p>  <code>from gevent.pool import Pool</code></p>
-<p>  新建一个<code>Pool</code>池:</p>
-<p>  <code>p = Pool(number)</code><br>  number为最高并发数</p>
-<p>  在并发池中启动函数:</p>
-<p>  <code>p.spawn(function,parament)</code></p>
-<p>  等待所有任务结束:</p>
-<p>  <code>p.join()</code></p>
-</li>
-<li><p>需要直接指定跳转时用<code>sleep</code>函数:</p>
-<p>  <code>gevent.sleep(time)</code><br>  其中<code>time</code>表示此处至少要阻塞time秒.</p>
-</li>
-</ul>
-</li>
-</ul>
-<p>参考资料:</p>
-<ol>
-<li><p>《<a href="http://www.liaoxuefeng.com/wiki/001374738125095c955c1e6d8bb493182103fac9270762a000/0013868323401155ceb3db1e2044f80b974b469eb06cb43000" target="_blank" rel="external">多进程</a>》</p>
-</li>
-<li><p>《<a href="http://www.coder4.com/archives/3352" target="_blank" rel="external">Python多进程并发(multiprocessing)</a>》</p>
-</li>
-<li><p>《<a href="http://www.cnblogs.com/vamei/archive/2012/10/12/2721484.html" target="_blank" rel="external">Python标准库10 多进程初步 (multiprocessing包)</a>》</p>
-</li>
-<li><p>《<a href="https://blog.weizhe.net/?p=77" target="_blank" rel="external">python多线程模块multiprocessing的进程间通信</a>》</p>
-</li>
-<li><p>《<a href="http://www.cnblogs.com/huxi/archive/2010/06/26/1765808.html" target="_blank" rel="external">Python线程指南</a>》</p>
-</li>
-<li><p>《<a href="http://wiki.jikexueyuan.com/project/start-learning-python/215.html" target="_blank" rel="external">生成器</a>》</p>
-</li>
-<li><p>《<a href="http://www.gevent.org/intro.html#installation-and-requirements" target="_blank" rel="external">Gevent Introduction</a>》</p>
-</li>
-<li>《<a href="http://www.cnblogs.com/congbo/archive/2012/08/23/2652490.html" target="_blank" rel="external">python 进程池2 - Pool相关函数</a>》</li>
-</ol>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;多进程&quot;&gt;&lt;a href=&quot;#多进程&quot; class=&quot;headerlink&quot; title=&quot;多进程&quot;&gt;&lt;/a&gt;多进程&lt;/h2&gt;&lt;h3 id=&quot;Linux-系统&quot;&gt;&lt;a href=&quot;#Linux-系统&quot; class=&quot;headerlink&quot; title=&quot;Linux
-    
-    </summary>
-    
-      <category term="编程语言" scheme="sikaixing.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
-    
-      <category term="Python" scheme="sikaixing.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/"/>
-    
-    
-      <category term="Python" scheme="sikaixing.com/tags/Python/"/>
-    
-      <category term="多进程" scheme="sikaixing.com/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>SecureCRT命令行参数</title>
-    <link href="sikaixing.com/2015/11/24/secure-crt-command/"/>
-    <id>sikaixing.com/2015/11/24/secure-crt-command/</id>
-    <published>2015-11-23T16:21:47.000Z</published>
-    <updated>2016-08-09T16:23:04.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>翻译自官方帮助文档。</p>
-<p>###标准命令行参数</p>
-<ul>
-<li>/ARG +主题：可以在运行时给SecureCRT脚本传递参数。在一个命令中可以使用多个/ARG参数</li>
-<li>/COLOR_SCHEME +方案：设置该会话的颜色方案</li>
-<li>/F +文件夹：改变运行路径。如果没有此文件夹则新建。</li>
-<li>/FIREWALL +防火墙名：此会话使用特定防火墙连接</li>
-<li>/LOG +文件名：指定此会话的日志文件</li>
-<li>/MAC_COLS +数字：指定最大队列数（132~1024之间）</li>
-<li>/N +标签名：指定显示在标签上的名字</li>
-<li>/NOMENU ：隐藏菜单栏</li>
-<li>/NOTOOLBAR ：隐藏工具栏</li>
-<li>/NOSAVE ：不保存对设置的任何改变</li>
-<li>/POS +x y：设定窗口打开时的初始位置</li>
-<li>/SCRIPT +脚本名：运行脚本</li>
-<li>/SESSION_FOLDER +文件夹：在特定文件夹中打开会话</li>
-<li>/TITLEBAR +显示名：设置标题栏显示的名称</li>
-</ul>
-<p>###特殊命令行参数</p>
-<ul>
-<li>/S +会话名：打开一个会话，会话名可以是IP,可以使用目录下的会话名</li>
-<li>/T ：在新中打开会话。如/T /S alpha /S beta 将在两个不同窗口打开会话</li>
-<li>/SSH1 +[ssh1参数] [用户名@]主机名：使用SSH1连接主机<br>其中SSH1支持参数如下：<ol>
-<li>/ACCEPTHOSTKEYS ：定义SecureCRT支持热键</li>
-<li>/C ：定义该会话使用的加密方式</li>
-<li>/ENCRYPTEDPASSWORD +密码：使用编码过的密码连接。在Session Options中打开该会话的.ini文件，从中就可以找到编码过的密码</li>
-<li>/I +密钥文件：使用RSA密钥登录</li>
-<li>/L +用户名：使用某用户登录</li>
-<li>/P +端口：使用某个端口登录，默认端口22</li>
-<li>/PASSPHRASE +passphrase：使用passphrase密码登录</li>
-<li>/PASSWORD password：使用特定密码登录</li>
-<li>/Z +压缩等级：定义压缩等级，从1~9，0表示不使用压缩</li>
-</ol>
-</li>
-<li>/SSH2 +[ssh2参数][用户名@]主机名：使用SSH2连接主机<br>其中SSH2支持的参数如下：<ol>
-<li>/ACCEPTHOSTKEYS ：定义SecureCRT支持热键</li>
-<li>/AUTO +验证方式：定义SSH2服务器接收的验证方式，如/AUTH password,publickey,keyboard-interactive,gssapi</li>
-<li>/C ：定义该会话使用的加密方式</li>
-<li>/COMPRESSIONS +类型：定义会话的压缩类型</li>
-<li>/ENCRYPTEDPASSWORD +密码：使用编码过的密码连接。在Session Options中打开该会话的.ini文件，从中就可以找到编码过的密码</li>
-<li>/I +密钥文件：使用RSA密钥登录</li>
-<li>/L +用户名：使用某用户登录</li>
-<li>/LOCAL +[本地ip:]本地端口:主机:主机端口 ：设置一个本地监听IP地址用于端口转发</li>
-<li>/M +MAC验证码：定义MAC验证码</li>
-<li>/P +端口：使用某个端口登录，默认端口22</li>
-<li>/PASSPHRASE +passphrase：使用passphrase密码登录</li>
-<li>/PASSWORD password：使用特定密码登录</li>
-<li>/REMOTE [监听IP:]监听端口:目的主机:目的端口 ：远程端口转发</li>
-</ol>
-</li>
-<li>/TELNET +主机名[端口] ：使用telnet协议连接主机</li>
-<li>/RLOGIN +主机名：使用rlogin协议连接主机</li>
-<li>/TAPI +电话号码：使用TAPI协议连接主机</li>
-<li>/SERIAL +端口：使用串口连接。端口默认COM2<br>其中SERIAL支持的参数如下：<ol>
-<li>/BAUD +波特率：设置波特率。可设置选项为110,300,600,1200,2400,4800,9600,14400,19200,38400,57600,115200,230400,380400,460800</li>
-<li>/CTS(NOCTS)：是否允许RTS/CTS（request-to-send/clear-to-send)。默认为允许</li>
-<li>/DATA +数据位：设置数据位。可设置选项为5，6，7，8。默认为8</li>
-<li>/DSR(NODSR)：是否允许DTR/DSR(data-terminal-ready/date-set-ready)。默认为不允许</li>
-<li>/PARITY +校验方式：设置奇偶校验方式。可设置选项为NONE,ODD,EVEN,MARK,SPACE。默认为NONE</li>
-<li>/STOP +停止位：设置停止位。允许的停止位为0(1停止位)，1(1.5停止位)，2(2停止位)。默认为0</li>
-<li>/XON(NOXON)：是否允许XON/XOFF。默认为不允许。</li>
-</ol>
-</li>
-</ul>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;翻译自官方帮助文档。&lt;/p&gt;
-&lt;p&gt;###标准命令行参数&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;/ARG +主题：可以在运行时给SecureCRT脚本传递参数。在一个命令中可以使用多个/ARG参数&lt;/li&gt;
-&lt;li&gt;/COLOR_SCHEME +方案：设置该会话的颜色方案&lt;/li&gt;
-&lt;
-    
-    </summary>
-    
-      <category term="日常问题" scheme="sikaixing.com/categories/%E6%97%A5%E5%B8%B8%E9%97%AE%E9%A2%98/"/>
-    
-      <category term="日常工具" scheme="sikaixing.com/categories/%E6%97%A5%E5%B8%B8%E9%97%AE%E9%A2%98/%E6%97%A5%E5%B8%B8%E5%B7%A5%E5%85%B7/"/>
-    
-    
-      <category term="secureCRT" scheme="sikaixing.com/tags/secureCRT/"/>
     
   </entry>
   
