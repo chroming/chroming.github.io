@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Python,lxml," />
+  <meta name="keywords" content="Python," />
 
 
 
@@ -86,22 +86,25 @@
 
 
 
-<meta name="description" content="初始问题近期在使用lxml.html.soupparser.fromstring()载入某个网页HTML时得到一条报错：
-ValueError: All strings must be XML compatible: Unicode or ASCII, no NULL bytes or control characters
-仔细对比了这个HTML与其他不会产生这个错误的HTML，发现报错的HTML">
+<meta name="description" content="平时遇到的一些值得记录的小问题不好拿来写一篇博客，总结一下写个集合帖。
+Python导入导出json时保留对象(object)顺序json.dumps直接导出OrderDict()格式就能保留顺序;
+json.loads(fp, object_pairs_hook=collections.OrderedDict)即可将object类型都转成OrderedDict()类.
+pip 安装特定版本的软件">
 <meta property="og:type" content="article">
-<meta property="og:title" content="lxml.html.soupparser.fromstring() 出现ValueError Comment may not contain '--' or end with '-' 的解决办法">
-<meta property="og:url" content="sikaixing.com/2017/03/21/lxml_html_soupparser/index.html">
+<meta property="og:title" content="近期小问题总结">
+<meta property="og:url" content="sikaixing.com/2017/03/24/python_some_tips/index.html">
 <meta property="og:site_name" content="司开星的博客">
-<meta property="og:description" content="初始问题近期在使用lxml.html.soupparser.fromstring()载入某个网页HTML时得到一条报错：
-ValueError: All strings must be XML compatible: Unicode or ASCII, no NULL bytes or control characters
-仔细对比了这个HTML与其他不会产生这个错误的HTML，发现报错的HTML">
-<meta property="og:updated_time" content="2017-03-22T02:07:02.000Z">
+<meta property="og:description" content="平时遇到的一些值得记录的小问题不好拿来写一篇博客，总结一下写个集合帖。
+Python导入导出json时保留对象(object)顺序json.dumps直接导出OrderDict()格式就能保留顺序;
+json.loads(fp, object_pairs_hook=collections.OrderedDict)即可将object类型都转成OrderedDict()类.
+pip 安装特定版本的软件">
+<meta property="og:updated_time" content="2017-03-24T03:02:01.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="lxml.html.soupparser.fromstring() 出现ValueError Comment may not contain '--' or end with '-' 的解决办法">
-<meta name="twitter:description" content="初始问题近期在使用lxml.html.soupparser.fromstring()载入某个网页HTML时得到一条报错：
-ValueError: All strings must be XML compatible: Unicode or ASCII, no NULL bytes or control characters
-仔细对比了这个HTML与其他不会产生这个错误的HTML，发现报错的HTML">
+<meta name="twitter:title" content="近期小问题总结">
+<meta name="twitter:description" content="平时遇到的一些值得记录的小问题不好拿来写一篇博客，总结一下写个集合帖。
+Python导入导出json时保留对象(object)顺序json.dumps直接导出OrderDict()格式就能保留顺序;
+json.loads(fp, object_pairs_hook=collections.OrderedDict)即可将object类型都转成OrderedDict()类.
+pip 安装特定版本的软件">
 
 
 
@@ -129,13 +132,13 @@ ValueError: All strings must be XML compatible: Unicode or ASCII, no NULL bytes 
 
 
 
-  <link rel="canonical" href="sikaixing.com/2017/03/21/lxml_html_soupparser/"/>
+  <link rel="canonical" href="sikaixing.com/2017/03/24/python_some_tips/"/>
 
 
 
 
 
-  <title> lxml.html.soupparser.fromstring() 出现ValueError Comment may not contain '--' or end with '-' 的解决办法 | 司开星的博客 </title>
+  <title> 近期小问题总结 | 司开星的博客 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -276,7 +279,7 @@ ValueError: All strings must be XML compatible: Unicode or ASCII, no NULL bytes 
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="sikaixing.com/2017/03/21/lxml_html_soupparser/">
+  <link itemprop="mainEntityOfPage" href="sikaixing.com/2017/03/24/python_some_tips/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="司开星">
@@ -300,7 +303,7 @@ ValueError: All strings must be XML compatible: Unicode or ASCII, no NULL bytes 
             
             
               
-                lxml.html.soupparser.fromstring() 出现ValueError Comment may not contain '--' or end with '-' 的解决办法
+                近期小问题总结
               
             
           </h1>
@@ -312,8 +315,8 @@ ValueError: All strings must be XML compatible: Unicode or ASCII, no NULL bytes 
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-21T18:00:00+08:00">
-              2017-03-21
+            <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-24T08:24:00+08:00">
+              2017-03-24
             </time>
 
             &nbsp;|&nbsp;
@@ -321,8 +324,8 @@ ValueError: All strings must be XML compatible: Unicode or ASCII, no NULL bytes 
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-check-o"></i>
             </span>
-            <time title="Post modified" itemprop="dateModified" datetime="2017-03-22T10:07:02+08:00">
-              2017-03-22
+            <time title="Post modified" itemprop="dateModified" datetime="2017-03-24T11:02:01+08:00">
+              2017-03-24
             </time>
             
           </span>
@@ -368,7 +371,7 @@ ValueError: All strings must be XML compatible: Unicode or ASCII, no NULL bytes 
 
           
           
-             <span id="/2017/03/21/lxml_html_soupparser/" class="leancloud_visitors" data-flag-title="lxml.html.soupparser.fromstring() 出现ValueError Comment may not contain '--' or end with '-' 的解决办法">
+             <span id="/2017/03/24/python_some_tips/" class="leancloud_visitors" data-flag-title="近期小问题总结">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -393,32 +396,19 @@ ValueError: All strings must be XML compatible: Unicode or ASCII, no NULL bytes 
       
 
       
-        <h2 id="初始问题"><a href="#初始问题" class="headerlink" title="初始问题"></a>初始问题</h2><p>近期在使用<code>lxml.html.soupparser.fromstring()</code>载入某个网页HTML时得到一条报错：</p>
-<p><em>ValueError: All strings must be XML compatible: Unicode or ASCII, no NULL bytes or control characters</em></p>
-<p>仔细对比了这个HTML与其他不会产生这个错误的HTML，发现报错的HTML中有几个ascii控制字符，即错误信息中的<em>control characters</em>。于是搜索了解决办法，在<a href="https://github.com/html5lib/html5lib-python/issues/96" target="_blank" rel="external">https://github.com/html5lib/html5lib-python/issues/96</a> 这里找到了以下函数可以删去HTML中的控制字符：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> re</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">remove_control_characters</span><span class="params">(html)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">str_to_int</span><span class="params">(s, default, base=<span class="number">10</span>)</span>:</span></div><div class="line">        <span class="keyword">if</span> int(s, base) &lt; <span class="number">0x10000</span>:</div><div class="line">            <span class="keyword">return</span> unichr(int(s, base))</div><div class="line">        <span class="keyword">return</span> default</div><div class="line">    html = re.sub(<span class="string">ur"&amp;#(\d+);?"</span>, <span class="keyword">lambda</span> c: str_to_int(c.group(<span class="number">1</span>), c.group(<span class="number">0</span>)), html)</div><div class="line">    html = re.sub(<span class="string">ur"&amp;#[xX]([0-9a-fA-F]+);?"</span>, <span class="keyword">lambda</span> c: str_to_int(c.group(<span class="number">1</span>), c.group(<span class="number">0</span>), base=<span class="number">16</span>), html)</div><div class="line">    html = re.sub(<span class="string">ur"[\x00-\x08\x0b\x0e-\x1f\x7f]"</span>, <span class="string">""</span>, html)</div><div class="line">    <span class="keyword">return</span> html</div></pre></td></tr></table></figure>
-<p>或者下面的函数(<a href="http://stackoverflow.com/questions/4324790/removing-control-characters-from-a-string-in-python)：" target="_blank" rel="external">http://stackoverflow.com/questions/4324790/removing-control-characters-from-a-string-in-python)：</a></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> unicodedata</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">remove_control_characters</span><span class="params">(s)</span>:</span></div><div class="line">    <span class="keyword">return</span> <span class="string">""</span>.join(ch <span class="keyword">for</span> ch <span class="keyword">in</span> s <span class="keyword">if</span> unicodedata.category(ch)[<span class="number">0</span>]!=<span class="string">"C"</span>)</div></pre></td></tr></table></figure>
-<p>测试了第一个函数发现确实可以解决问题。</p>
-<h2 id="另一个问题"><a href="#另一个问题" class="headerlink" title="另一个问题"></a>另一个问题</h2><p>如果程序只是我自己运行的话问题到这就结束了。但实际上相关的服务器程序也要抓取同样的页面，而后台在抓取这个HTML后出现了另一种报错：</p>
-<p><em>ValueError: Comment may not contain ‘–’ or end with ‘-‘</em></p>
-<p>排查过其他原因后发现问题出在lxml的版本上。我本机的lxml版本是3.4.4, 服务器程序的版本是3.6.4。于是我把本地的lxml升级到了最新版3.7.3，出现了与服务器相同的报错。</p>
-<h2 id="寻找解决办法"><a href="#寻找解决办法" class="headerlink" title="寻找解决办法"></a>寻找解决办法</h2><p>直接在Google搜索这个问题确实可以搜到一些。其中有一条<a href="http://stackoverflow.com/questions/34595275/disable-comments-check-for-in-lxml" target="_blank" rel="external">http://stackoverflow.com/questions/34595275/disable-comments-check-for-in-lxml</a> 提供了解决办法：将本地的<code>html5parser.py</code>替换成github上最新版。但实测无效，仔细查看问题觉得原因是问题中使用的方法为<code>html5parser.fromstring</code>，而我使用的是<code>soupparser.fromstring</code>。</p>
-<p>搜索无果之后开始在官方文档和源码中找原因和解决办法。一段时间的查看之后发现了以下几个相关点：</p>
-<ol>
-<li><code>soupparser.fromstring</code>首先使用<code>BeautifulSoup</code>载入HTML, 之后再依靠<code>html.parser.makeelement</code>来生成树;</li>
-<li><code>soupparser.fromstring</code>虽然有<code>makeelement</code>参数可以传递其他Element factory function，但没有文档说明如何定义自己的Element factory function ；</li>
-<li><code>makeelement</code>方法继承自<code>lxml.etree</code>，但<code>etree</code>模块是用Cython（一种类似Python但会与C模块交互的语言）写的；</li>
-<li>错误<em>ValueError: Comment may not contain ‘–’ or end with ‘-‘</em> 及 <em>ValueError: All strings must be XML compatible: Unicode or ASCII, no NULL bytes or control characters</em> 也是在<code>etree</code>中定义的；</li>
-<li><code>BeautifulSoup</code>在载入源码后已经改变了<code>comment</code>处的结构。</li>
-</ol>
-<p><code>etree</code>模块并非Python写的，意味着想通过继承重写相关方法比较麻烦。</p>
-<p><code>BeautifulSoup</code>会改变<code>comment</code>处结构，说不定可以从这里入手。但尝试给<code>beautifulsoup</code>参数传递了不同的<code>beautifulsoup</code> (包括bs3,bs4以及继承重写相关方法后的bs4)后发现无法解决问题。</p>
-<p>于是没有在这条路上找到解决办法。</p>
-<h2 id="回到起点"><a href="#回到起点" class="headerlink" title="回到起点"></a>回到起点</h2><p>回想了一开始的问题，发现只要我把控制字符删除之后就可以正常执行<code>fromstring</code>, 于是开始考虑不同版本之间的区别。查看了changelog，没有发现相关的bug fix记录。于是在virtualenv中开始测试从哪个版本开始有这个报错的：</p>
-<p><code>pip install lxml==3.5.0b1</code></p>
-<p>发现从3.4.4之后的版本，也就是3.5.0b1开始，就有这个报错了。看了这个版本的changelog，相关的记录只有<code>soupparser</code>的<code>BeautifulSoup</code>从<code>bs3</code>换成<code>bs4</code>了，但已经试过更换不同版本的<code>bs</code>，并没有解决问题。</p>
-<p>于是只能选最无趣的办法，把服务器的<code>lxml</code>也换成3.4.4版本，并且使用之前提到的函数预先过滤HTML中的控制字符。</p>
+        <p>平时遇到的一些值得记录的小问题不好拿来写一篇博客，总结一下写个集合帖。</p>
+<h2 id="Python导入导出json时保留对象-object-顺序"><a href="#Python导入导出json时保留对象-object-顺序" class="headerlink" title="Python导入导出json时保留对象(object)顺序"></a>Python导入导出json时保留对象(object)顺序</h2><p><code>json.dumps</code>直接导出<code>OrderDict()</code>格式就能保留顺序;</p>
+<p><code>json.loads(fp, object_pairs_hook=collections.OrderedDict)</code>即可将<code>object</code>类型都转成<code>OrderedDict()</code>类.</p>
+<h2 id="pip-安装特定版本的软件包"><a href="#pip-安装特定版本的软件包" class="headerlink" title="pip 安装特定版本的软件包"></a>pip 安装特定版本的软件包</h2><p><code>pip install lxml==3.4.4</code></p>
+<p>只需要下载不需要安装的话：</p>
+<p><code>pip download lxml</code></p>
+<h2 id="Python中调用用chrome直接打开本地页面源码"><a href="#Python中调用用chrome直接打开本地页面源码" class="headerlink" title="Python中调用用chrome直接打开本地页面源码"></a>Python中调用用chrome直接打开本地页面源码</h2><p>先下载chromedriver:  <a href="https://sites.google.com/a/chromium.org/chromedriver/downloads" target="_blank" rel="external">https://sites.google.com/a/chromium.org/chromedriver/downloads</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</div><div class="line"></div><div class="line">driver = webdriver.Chrome(chromedriver_path)</div><div class="line">driver.get(<span class="string">'view-source:http://www.baidu.com'</span>)</div></pre></td></tr></table></figure>
+<h2 id="WebDriverException-Message-chrome-not-reachable"><a href="#WebDriverException-Message-chrome-not-reachable" class="headerlink" title="WebDriverException: Message: chrome not reachable"></a>WebDriverException: Message: chrome not reachable</h2><p><code>webdriver.quit()</code></p>
+<h2 id="requests-posts参数传递str的一个问题"><a href="#requests-posts参数传递str的一个问题" class="headerlink" title="requests posts参数传递str的一个问题"></a>requests posts参数传递str的一个问题</h2><p><code>requests</code>的<code>post</code> <code>data</code>参数可以传递<code>dict</code>或者<code>str</code>，传递<code>str</code>时是原样传递的。</p>
+<p>这里有个问题，<code>post</code>时<code>content-type</code>一般是<code>application/x-www-form-urlencoded</code>, 但<code>requests</code>直接<code>post</code> <code>str</code>时不会自动在<code>header</code>中加入这个参数，需要手动添加。</p>
+<p>不过传递<code>dict</code>时则会自动加入并且将<code>dict</code>组合成<code>str</code>。</p>
+<h2 id="PyQt中动态添加界面组件并重命名"><a href="#PyQt中动态添加界面组件并重命名" class="headerlink" title="PyQt中动态添加界面组件并重命名"></a>PyQt中动态添加界面组件并重命名</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">add_button_click</span><span class="params">(self)</span>:</span></div><div class="line">    new_label = QtGui.QLabel()</div><div class="line">    new_lineedit = QtGui.QLineEdit()</div><div class="line">    self.add_num += <span class="number">1</span></div><div class="line">    new_label.setText(str(self.add_num))</div><div class="line">    new_lineedit.setMinimumSize(<span class="number">500</span>, <span class="number">20</span>)</div><div class="line">    new_lineedit.setObjectName(<span class="string">'lineEdit_%s'</span> % self.add_num)</div><div class="line">    self.verticalLayout.addWidget(new_label)</div><div class="line">    self.verticalLayout_2.addWidget(new_lineedit)</div><div class="line">    self.added_lineedit.append(new_lineedit)</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -444,8 +434,6 @@ ValueError: All strings must be XML compatible: Unicode or ASCII, no NULL bytes 
           
             <a href="/tags/Python/" rel="tag"># Python</a>
           
-            <a href="/tags/lxml/" rel="tag"># lxml</a>
-          
         </div>
       
 
@@ -453,8 +441,8 @@ ValueError: All strings must be XML compatible: Unicode or ASCII, no NULL bytes 
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/03/15/lxml_changed_html/" rel="next" title="解决 lxml 处理HTML引起的标签顺序改变问题">
-                <i class="fa fa-chevron-left"></i> 解决 lxml 处理HTML引起的标签顺序改变问题
+              <a href="/2017/03/21/lxml_html_soupparser/" rel="next" title="lxml.html.soupparser.fromstring() 出现ValueError Comment may not contain '--' or end with '-' 的解决办法">
+                <i class="fa fa-chevron-left"></i> lxml.html.soupparser.fromstring() 出现ValueError Comment may not contain '--' or end with '-' 的解决办法
               </a>
             
           </div>
@@ -462,10 +450,6 @@ ValueError: All strings must be XML compatible: Unicode or ASCII, no NULL bytes 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/03/24/python_some_tips/" rel="prev" title="近期小问题总结">
-                近期小问题总结 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -627,7 +611,7 @@ ValueError: All strings must be XML compatible: Unicode or ASCII, no NULL bytes 
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#初始问题"><span class="nav-number">1.</span> <span class="nav-text">初始问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#另一个问题"><span class="nav-number">2.</span> <span class="nav-text">另一个问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#寻找解决办法"><span class="nav-number">3.</span> <span class="nav-text">寻找解决办法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#回到起点"><span class="nav-number">4.</span> <span class="nav-text">回到起点</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Python导入导出json时保留对象-object-顺序"><span class="nav-number">1.</span> <span class="nav-text">Python导入导出json时保留对象(object)顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pip-安装特定版本的软件包"><span class="nav-number">2.</span> <span class="nav-text">pip 安装特定版本的软件包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python中调用用chrome直接打开本地页面源码"><span class="nav-number">3.</span> <span class="nav-text">Python中调用用chrome直接打开本地页面源码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WebDriverException-Message-chrome-not-reachable"><span class="nav-number">4.</span> <span class="nav-text">WebDriverException: Message: chrome not reachable</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#requests-posts参数传递str的一个问题"><span class="nav-number">5.</span> <span class="nav-text">requests posts参数传递str的一个问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PyQt中动态添加界面组件并重命名"><span class="nav-number">6.</span> <span class="nav-text">PyQt中动态添加界面组件并重命名</span></a></li></ol></div>
             
 
           </div>

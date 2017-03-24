@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="sikaixing.com/"/>
-  <updated>2017-03-22T02:07:02.000Z</updated>
+  <updated>2017-03-24T03:02:01.000Z</updated>
   <id>sikaixing.com/</id>
   
   <author>
@@ -14,6 +14,44 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>近期小问题总结</title>
+    <link href="sikaixing.com/2017/03/24/python_some_tips/"/>
+    <id>sikaixing.com/2017/03/24/python_some_tips/</id>
+    <published>2017-03-24T00:24:00.000Z</published>
+    <updated>2017-03-24T03:02:01.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>平时遇到的一些值得记录的小问题不好拿来写一篇博客，总结一下写个集合帖。</p>
+<h2 id="Python导入导出json时保留对象-object-顺序"><a href="#Python导入导出json时保留对象-object-顺序" class="headerlink" title="Python导入导出json时保留对象(object)顺序"></a>Python导入导出json时保留对象(object)顺序</h2><p><code>json.dumps</code>直接导出<code>OrderDict()</code>格式就能保留顺序;</p>
+<p><code>json.loads(fp, object_pairs_hook=collections.OrderedDict)</code>即可将<code>object</code>类型都转成<code>OrderedDict()</code>类.</p>
+<h2 id="pip-安装特定版本的软件包"><a href="#pip-安装特定版本的软件包" class="headerlink" title="pip 安装特定版本的软件包"></a>pip 安装特定版本的软件包</h2><p><code>pip install lxml==3.4.4</code></p>
+<p>只需要下载不需要安装的话：</p>
+<p><code>pip download lxml</code></p>
+<h2 id="Python中调用用chrome直接打开本地页面源码"><a href="#Python中调用用chrome直接打开本地页面源码" class="headerlink" title="Python中调用用chrome直接打开本地页面源码"></a>Python中调用用chrome直接打开本地页面源码</h2><p>先下载chromedriver:  <a href="https://sites.google.com/a/chromium.org/chromedriver/downloads" target="_blank" rel="external">https://sites.google.com/a/chromium.org/chromedriver/downloads</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</div><div class="line"></div><div class="line">driver = webdriver.Chrome(chromedriver_path)</div><div class="line">driver.get(<span class="string">'view-source:http://www.baidu.com'</span>)</div></pre></td></tr></table></figure>
+<h2 id="WebDriverException-Message-chrome-not-reachable"><a href="#WebDriverException-Message-chrome-not-reachable" class="headerlink" title="WebDriverException: Message: chrome not reachable"></a>WebDriverException: Message: chrome not reachable</h2><p><code>webdriver.quit()</code></p>
+<h2 id="requests-posts参数传递str的一个问题"><a href="#requests-posts参数传递str的一个问题" class="headerlink" title="requests posts参数传递str的一个问题"></a>requests posts参数传递str的一个问题</h2><p><code>requests</code>的<code>post</code> <code>data</code>参数可以传递<code>dict</code>或者<code>str</code>，传递<code>str</code>时是原样传递的。</p>
+<p>这里有个问题，<code>post</code>时<code>content-type</code>一般是<code>application/x-www-form-urlencoded</code>, 但<code>requests</code>直接<code>post</code> <code>str</code>时不会自动在<code>header</code>中加入这个参数，需要手动添加。</p>
+<p>不过传递<code>dict</code>时则会自动加入并且将<code>dict</code>组合成<code>str</code>。</p>
+<h2 id="PyQt中动态添加界面组件并重命名"><a href="#PyQt中动态添加界面组件并重命名" class="headerlink" title="PyQt中动态添加界面组件并重命名"></a>PyQt中动态添加界面组件并重命名</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">add_button_click</span><span class="params">(self)</span>:</span></div><div class="line">    new_label = QtGui.QLabel()</div><div class="line">    new_lineedit = QtGui.QLineEdit()</div><div class="line">    self.add_num += <span class="number">1</span></div><div class="line">    new_label.setText(str(self.add_num))</div><div class="line">    new_lineedit.setMinimumSize(<span class="number">500</span>, <span class="number">20</span>)</div><div class="line">    new_lineedit.setObjectName(<span class="string">'lineEdit_%s'</span> % self.add_num)</div><div class="line">    self.verticalLayout.addWidget(new_label)</div><div class="line">    self.verticalLayout_2.addWidget(new_lineedit)</div><div class="line">    self.added_lineedit.append(new_lineedit)</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;平时遇到的一些值得记录的小问题不好拿来写一篇博客，总结一下写个集合帖。&lt;/p&gt;
+&lt;h2 id=&quot;Python导入导出json时保留对象-object-顺序&quot;&gt;&lt;a href=&quot;#Python导入导出json时保留对象-object-顺序&quot; class=&quot;headerlink
+    
+    </summary>
+    
+      <category term="编程语言" scheme="sikaixing.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
+    
+      <category term="Python" scheme="sikaixing.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/"/>
+    
+    
+      <category term="Python" scheme="sikaixing.com/tags/Python/"/>
+    
+  </entry>
   
   <entry>
     <title>lxml.html.soupparser.fromstring() 出现ValueError Comment may not contain &#39;--&#39; or end with &#39;-&#39; 的解决办法</title>
@@ -1105,38 +1143,6 @@
       <category term="shadowsocks" scheme="sikaixing.com/tags/shadowsocks/"/>
     
       <category term="Centos" scheme="sikaixing.com/tags/Centos/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Mac下使用aircrack-ng记录</title>
-    <link href="sikaixing.com/2016/03/01/mac-aircrack-ng/"/>
-    <id>sikaixing.com/2016/03/01/mac-aircrack-ng/</id>
-    <published>2016-02-29T16:06:30.000Z</published>
-    <updated>2016-11-12T12:16:12.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="安装aircrack-ng"><a href="#安装aircrack-ng" class="headerlink" title="安装aircrack-ng"></a>安装aircrack-ng</h2><p><code>brew install aircrack-ng</code><br>安装到最后发现aircrack-ng.org终端连不上。需要先设置一下终端使用http代理：<br><code>export https_proxy=&quot;http://127.0.0.1:6152&quot;</code><br><code>export http_proxy=&quot;http://127.0.0.1:6152&quot;</code><br>也可以使用</p>
-<h2 id="使用airport命令"><a href="#使用airport命令" class="headerlink" title="使用airport命令"></a>使用airport命令</h2><p>Mac系统自带一个airport命令可用来查看无线的详情。这个命令隐藏的很深，在<code>/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport</code>下。网上一般使用如下命令建立链接以方便使用：<br><code>sudo ln -s /System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport /usr/sbin/airport</code><br>但10.11下无法在/usr/sbin/下写入文件。故将路径修改，如下：<br><code>sudo ln -s /System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport /usr/local/bin/airport</code><br>这样即可使用airport命令</p>
-<h2 id="airport抓包"><a href="#airport抓包" class="headerlink" title="airport抓包"></a>airport抓包</h2><p>显示无线网列表：<br><code>airport -s</code><br>找一个信号好的信道，如1，使用命令开始抓包：<br><code>airport en1 sniff  1</code><br>几分钟后ctrl+c，包保存在/tmp下。</p>
-<h2 id="aircrack破解"><a href="#aircrack破解" class="headerlink" title="aircrack破解"></a>aircrack破解</h2><p><code>aircrack-ng -w zd.txt 1.cap</code><br>找有<code>1 handshake</code>的包。之后选择这条代码，就开始使用选择的字典破解。</p>
-<p>参考资料：</p>
-<blockquote>
-<p>《<a href="http://chaishiwei.com/blog/562.html" target="_blank" rel="external">Mac OS X 用终端破解附近 Wifi 密码教程</a>》<br>《<a href="http://walkginkgo.com/free/2015/09/09/mac-aircrack.html" target="_blank" rel="external">Mac安装Aircrack-ng</a>》<br>《<a href="http://codelife.me/blog/2012/09/02/how-to-set-proxy-for-terminal/" target="_blank" rel="external">如何为MacOS X终端设置代理</a>》<br>《<a href="http://venmos-com.qiniudn.com/blog/2013/06/18/cli-proxy" target="_blank" rel="external">MacOS让终端命令使用全局代理</a>》</p>
-</blockquote>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;安装aircrack-ng&quot;&gt;&lt;a href=&quot;#安装aircrack-ng&quot; class=&quot;headerlink&quot; title=&quot;安装aircrack-ng&quot;&gt;&lt;/a&gt;安装aircrack-ng&lt;/h2&gt;&lt;p&gt;&lt;code&gt;brew install aircrac
-    
-    </summary>
-    
-      <category term="日常问题" scheme="sikaixing.com/categories/%E6%97%A5%E5%B8%B8%E9%97%AE%E9%A2%98/"/>
-    
-      <category term="日常工具" scheme="sikaixing.com/categories/%E6%97%A5%E5%B8%B8%E9%97%AE%E9%A2%98/%E6%97%A5%E5%B8%B8%E5%B7%A5%E5%85%B7/"/>
-    
-    
-      <category term="macOS" scheme="sikaixing.com/tags/macOS/"/>
     
   </entry>
   
